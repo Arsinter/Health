@@ -164,6 +164,10 @@ export class CommonConstants {
   static readonly HAS_NO_INDEX: number = -1;
   static readonly OFFSET_24: number = -24;
   // targetSetting Range
+  static readonly SMILE_STEP: number = 1;
+  static readonly SMILE_MAX_RANGE: number = 3;
+  static readonly BRUSH_TEETH_STEP: number = 1;
+  static readonly BRUSH_TEETH_MAX_RANGE: number = 3;
   static readonly DRINK_STEP: number = 25;
   static readonly DRINK_MAX_RANGE: number = 500;
   static readonly TIMES_50: number = 50;

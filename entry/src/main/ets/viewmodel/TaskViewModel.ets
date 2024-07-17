@@ -215,6 +215,30 @@ export const formatTime = (value: TimePickerResult) => {
 }
 
 /**
+ * @description Generate the range of smiling 1 - 3
+ * @return Array<string>
+ */
+export const createSmileRange = () => {
+  const simleRangeArr: Array<string> = [];
+  for (let i = 1; i <= Const.SMILE_MAX_RANGE; i++) {
+    simleRangeArr.push(`${i} 次`);
+  }
+  return simleRangeArr;
+}
+
+/**
+ * @description Generate the range of brushing teeth 1 - 3
+ * @return Array<string>
+ */
+export const createTeethRange = () => {
+  const teethRangeArr: Array<string> = [];
+  for (let i = 1; i <= Const.BRUSH_TEETH_MAX_RANGE; i++) {
+    teethRangeArr.push(`${i} 次`);
+  }
+  return teethRangeArr;
+}
+
+/**
  * @description Range of generated drinking water 0.25 - 5 L
  * @return Array<string>
  */
@@ -238,25 +262,10 @@ export const createAppleRange = () => {
   return appleRangeArr;
 }
 
-//微笑次数
-export const createSmileRange = () => {
-  const simleRangeArr: Array<string> = [];
-  for (let i = 1; i <= 3; i++) {
-    simleRangeArr.push(`${i} 次`);
-  }
-  return simleRangeArr;
-}
-
-//刷牙次数
-export const createTeethRange = () => {
-  const teethRangeArr: Array<string> = [];
-  for (let i = 1; i <= 3; i++) {
-    teethRangeArr.push(`${i} 次`);
-  }
-  return teethRangeArr;
-}
-
-//跑步范围
+/**
+ * @description Generate the range of running 1 - 20 km
+ * @return Array<string>
+ */
 export const createRunRange = () => {
   const runRangeArr: Array<string> = [];
   for (let i = 1; i <= 20; i+=0.5) {
