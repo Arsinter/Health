@@ -37,9 +37,9 @@ class GlobalInfoApi {
      *
      * @param callback
      */
-    query(callback: Function): void {
+    query(callback: Function, id: number = 0): void {
         let predicates = new relationalStore.RdbPredicates(Const.GLOBAL_INFO.tableName ? Const.GLOBAL_INFO.tableName : '');
-        predicates.equalTo('id', 0);
+        predicates.equalTo('id', Number(id));
         RdbUtils.query(predicates).then(resultSet => {
             let count = resultSet.rowCount;
             if (count === 0) {

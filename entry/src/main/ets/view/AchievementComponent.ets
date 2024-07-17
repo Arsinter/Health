@@ -14,7 +14,7 @@
  */
 
 import { CommonConstants as Const } from '../common/constants/CommonConstants';
-import { BadgePanel } from './BadgePanelComponent';
+import { BadgePanel, SingleBadgePanel } from './BadgePanelComponent';
 import { TitleBar } from './TitleBarComponent';
 import Logger from '../common/utils/Logger';
 
@@ -30,12 +30,19 @@ export struct AchievementIndex {
 
   build() {
     Column({ space: Const.DEFAULT_20 }) {
-      TitleBar()
-      BadgePanel()
+      Scroll(){
+        Column(){
+          TitleBar()
+          BadgePanel()
+          SingleBadgePanel()
+        }
+      }
+
     }
     .padding(Const.DEFAULT_10)
     .height(Const.FULL_HEIGHT)
     .width(Const.FULL_WIDTH)
     .backgroundColor($r('app.color.black'))
+
   }
 }

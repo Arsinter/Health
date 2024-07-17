@@ -19,6 +19,10 @@ import GlobalInfoApi from '../common/database/tables/GlobalInfoApi';
 
 export const ACHIEVEMENT_LEVEL_KEY = 'AchievementLevelKey';
 
+export const SINGLE_LEVEL_KEYS = ['AchievementGetEarly','AchievementDrink','AchievementApple',
+  'AchievementSmile','AchievementBrush','AchievementSleepEarly','AchievementRun'];
+export const SINGLE_LEVEL_KEY_LIST = 'SingleLevelKeyList'
+
 export function getAchievementLevel() {
   GlobalInfoApi.query((res: GlobalInfo) => {
     let globalInfo: GlobalInfo = res;
@@ -28,6 +32,26 @@ export function getAchievementLevel() {
       AppStorage.set<Number>(ACHIEVEMENT_LEVEL_KEY, Number(achievements[achievements.length - 1]));
     }
   })
+
+}
+
+export function getSingleLevel() {
+  let successiveDays: Array<number> = [];
+  for(let i = 1; i <= 7; i++){
+    GlobalInfoApi.query((res: GlobalInfo) => {
+      let globalInfo: GlobalInfo = res;
+      let achievementStr = globalInfo.achievements ?? '';
+      let achievements = achievementStr.split(',');
+      if (achievements.length > 0) {
+        AppStorage.set<Number>(SINGLE_LEVEL_KEYS[i-1], Number(achievements[achievements.length - 1]));
+      }
+      if (achievements.length > 1) {
+        successiveDays.push(Number(achievements[achievements.length - 1]));
+      }
+      else successiveDays.push(0);
+    }, i)
+  }
+  AppStorage.set<Array<number>>(SINGLE_LEVEL_KEY_LIST, successiveDays);
 
 }
 
