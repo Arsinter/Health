@@ -77,6 +77,10 @@
       "value": "喝水"
     },
     {
+      "name": "task_run",
+      "value": "跑步"
+    },
+    {
       "name": "task_smile",
       "value": "每日微笑"
     },

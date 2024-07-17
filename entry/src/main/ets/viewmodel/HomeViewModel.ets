@@ -129,8 +129,11 @@ export class HomeStore {
       let startTime = editedTaskInfo.startTime;
       let endTime = editedTaskInfo.endTime;
       let isOpen = editedTaskInfo.isOpen;
+      //这里倒数第三个参数应该false 因为这是首次添加一个任务后的主页更新，应该是没有完成 然后倒数第二个参数是finValue初始应为""
+      /*let task = new TaskInfo(0, dateToStr(new Date()), taskID, targetValue, isAlarm,
+        startTime, endTime, frequency, true, targetValue, isOpen);*/
       let task = new TaskInfo(0, dateToStr(new Date()), taskID, targetValue, isAlarm,
-        startTime, endTime, frequency, true, targetValue, isOpen);
+        startTime, endTime, frequency, false, "", isOpen);
       this.dateArr = this.dateArr.map((item: WeekDateModel) => {
         if (task.date === item.dateStr) {
           Logger.info('item', JSON.stringify(item));

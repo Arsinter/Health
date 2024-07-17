@@ -69,6 +69,8 @@ export default struct TaskDetail {
       let taskInfo: TaskInfo = new TaskInfo(Const.ZERO, Const.GLOBAL_KEY, this.settingParams.taskID,
         this.settingParams.targetValue, this.settingParams.isAlarm, this.settingParams.startTime,
         this.settingParams.endTime, this.settingParams.frequency, false, '', this.settingParams.isOpen);
+      // 显示 taskInfo 的值
+      Logger.info('taskInfo:', JSON.stringify(taskInfo));
       addTask(taskInfo, context).then((res: number) => {
         GlobalContext.getContext().setObject('taskListChange', true);
         router.back({
@@ -77,12 +79,13 @@ export default struct TaskDetail {
             editTask: this.backIndexParams(),
           }
         })
+        //Logger.info('this.backIndexParams()', JSON.stringify(this.backIndexParams()));
         Logger.info('addTaskFinished', JSON.stringify(res));
       }).catch((error: Error) => {
         promptAction.showToast({
           message: Const.SETTING_FINISH_FAILED_MESSAGE
         })
-        Logger.error('addTaskFailed', JSON.stringify(error));
+        Logger.error('addTaskFailed你是？', JSON.stringify(error));
       })
       return;
     }
@@ -115,8 +118,8 @@ export default struct TaskDetail {
           .listItemStyle()
           .enabled(
             this.settingParams?.isOpen
-              // && this.settingParams?.taskID !== taskType.smile
-              // && this.settingParams?.taskID !== taskType.brushTeeth
+              //&& this.settingParams?.taskID !== taskType.smile
+              //&& this.settingParams?.taskID !== taskType.brushTeeth
           )
           .onClick(() => {
             this.broadCast.emit(

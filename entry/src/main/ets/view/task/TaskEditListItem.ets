@@ -25,9 +25,12 @@ function targetSetCommon() {
   .align(Alignment.End)
 }
 
-// 打开toggle以后 高亮显示 ，之前是 刷牙和微笑 的时候不会发生改变
 @Extend(Text)
 function targetSettingStyle(isOpen: boolean, taskID: number) {
+  //修改微笑、刷牙字体颜色
+  /*.fontColor(isOpen && taskID !== taskType.smile && taskID !== taskType.brushTeeth ?
+  $r('app.color.titleColor') :
+  $r('app.color.disabledColor'))*/
   .fontColor(isOpen  ?
   $r('app.color.titleColor') :
   $r('app.color.disabledColor'))
@@ -60,7 +63,12 @@ export struct TaskChooseItem {
         .height(Const.DEFAULT_32)
         .selectedColor($r('app.color.blueColor'))
         .onChange((isOn) => {
+          //让任务关闭时，提醒同步关即可
           this.settingParams.isOpen = isOn;
+          //if语句新增
+          if(this.settingParams.isOpen == false){
+            this.settingParams.isAlarm = isOn;
+          }
         })
     }
     .width(Const.THOUSANDTH_1000)

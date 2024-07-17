@@ -47,6 +47,10 @@ export struct TaskCard {
   targetValueBuilder() {
     if (this.taskInfo.isDone) {
       HealthText({ title: '', titleResource: $r('app.string.task_done') })
+      //调试用
+      /*Text(`Status: ${this.taskInfoStr}`)
+        .fontSize($r('app.float.default_24'))
+        .fontWeight(Const.FONT_WEIGHT_400);*/
     } else {
       Row() {
         HealthText({

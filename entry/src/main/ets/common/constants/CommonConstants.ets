@@ -50,7 +50,9 @@ export class CommonConstants {
     columns: ['id', 'formId', 'formName', 'formDimension']
   } as CommonConstantsInfo
   // TaskNum
-  static readonly TASK_NUM = 6;
+  //应该是6+1了
+  //static readonly TASK_NUM = 6;
+  static readonly TASK_NUM = 7;
   // THOUSANDTH
   static readonly THOUSANDTH_15: string = '1.5%'; // ‘1.5%’
   static readonly THOUSANDTH_12: string = '2.2%'; // ‘2.2%’
@@ -138,6 +140,8 @@ export class CommonConstants {
   // RemindContent
   static readonly GET_UP_TASK_NAME: string = '早起';
   static readonly DRINK_TASK_NAME: string = '喝水';
+  //新增跑步
+  static readonly RUN_TASK_NAME: string = '每日跑步';
   static readonly EAT_APPLE_TASK_NAME: string = '吃苹果';
   static readonly SMILE_TASK_NAME: string = '每日微笑';
   static readonly BRUSH_TEETH_TASK_NAME: string = '每日刷牙';
@@ -147,6 +151,8 @@ export class CommonConstants {
   static readonly EAT_APPLE_CONTENT: string = '该吃苹果啦';
   static readonly SMILE_CONTENT: string = '请保持微笑';
   static readonly BRUSH_TEETH_CONTENT: string = '每日刷牙';
+  //新增跑步
+  static readonly RUN_CONTENT: string = '该跑步啦';
   static readonly SLEEP_CONTENT: string = '早睡';
   static readonly H_STORE: string = 'healthAppStore';
   static readonly REMINDER_AGENT_TAG: string = 'reminderAgent';
@@ -158,10 +164,6 @@ export class CommonConstants {
   static readonly HAS_NO_INDEX: number = -1;
   static readonly OFFSET_24: number = -24;
   // targetSetting Range
-  static readonly SMILE_STEP: number = 1;
-  static readonly SMILE_MAX_RANGE: number = 3;
-  static readonly BRUSH_TEETH_STEP: number = 1;
-  static readonly BRUSH_TEETH_MAX_RANGE: number = 3;
   static readonly DRINK_STEP: number = 25;
   static readonly DRINK_MAX_RANGE: number = 500;
   static readonly TIMES_50: number = 50;
@@ -199,12 +201,16 @@ export enum TaskType {
   Apple = 'apple',
   Smile = 'smile',
   Clean = 'clean',
-  Sleep = 'sleep'
+  Sleep = 'sleep',
+  //新增跑步
+  Run = 'run',
 }
 
 export enum Unit {
   Liter = 'L',
   Pcs = '个',
   Times = '次',
-  Empty = ''
+  Empty = '',
+  //新增
+  Kile = '公里'
 }

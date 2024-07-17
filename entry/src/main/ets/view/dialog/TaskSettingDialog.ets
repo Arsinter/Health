@@ -16,9 +16,8 @@
 import { promptAction } from '@kit.ArkUI';
 import { ITaskItem } from '../../model/TaskInitList';
 import { frequencyRange } from '../../common/utils/Utils';
-import { returnTimeStamp, createAppleRange, createDrinkRange, formatTime,
-  createSmileRange,
-  createBrushTeethRange} from '../../viewmodel/TaskViewModel';
+//引用了新的3函数
+import { returnTimeStamp, createAppleRange, createDrinkRange, createSmileRange, createTeethRange, createRunRange,formatTime } from '../../viewmodel/TaskViewModel';
 import { taskType } from '../../viewmodel/TaskInfo';
 import { CommonConstants as Const } from '../..//common/constants/CommonConstants';
 import { FrequencyContentType } from '../../model/TaskInitList';
@@ -27,14 +26,14 @@ import { FrequencyContentType } from '../../model/TaskInitList';
 export struct TargetSettingDialog {
   @Consume settingParams: ITaskItem;
   controller: CustomDialogController = new CustomDialogController({ builder: '' });
-  smileRange: string[] = createSmileRange();
-  brushTeethRange: string[] = createBrushTeethRange();
   drinkRange: string[] = createDrinkRange();
   appleRange: string[] = createAppleRange();
+  smileRange: string[] = createSmileRange();    //新增笑次数
+  teethRange: string[] = createTeethRange();    //新增刷牙次数
+  runRange: string[] = createRunRange(); //新增跑步范围
   currentValue: string = this.settingParams.targetValue;
   currentTime: string = Const.DEFAULT_TIME;
 
-  // 判断输入的起止时间是否合法
   compareTime(startTime: string, endTime: string) {
     if (returnTimeStamp(this.currentTime) < returnTimeStamp(startTime) ||
       returnTimeStamp(this.currentTime) > returnTimeStamp(endTime)) {
@@ -77,7 +76,6 @@ export struct TargetSettingDialog {
       .width(Const.THOUSANDTH_1000)
       .justifyContent(FlexAlign.Start)
 
-      // 设置 目标设置 的范围
       if ([taskType.getup, taskType.sleepEarly].indexOf(this.settingParams?.taskID) > Const.HAS_NO_INDEX) {
         TimePicker({
           selected: new Date(`${new Date().toDateString()} 8:00:00`),
@@ -86,23 +84,29 @@ export struct TargetSettingDialog {
           .useMilitaryTime(true)
           .onChange((value: TimePickerResult) => {
             this.currentTime = formatTime(value);
-          });
-      } else if ([taskType.smile, taskType.brushTeeth].indexOf(this.settingParams?.taskID) > Const.HAS_NO_INDEX) {
-        TextPicker({ range: this.settingParams?.taskID === taskType.smile ? this.smileRange : this.brushTeethRange })
-          .width(Const.THOUSANDTH_900)
-          .height(Const.THOUSANDTH_800)
-          .onChange((value: string | string[]) => {
-            this.currentValue = (value as string)?.split(' ')[0];
-          });
+          })
       } else {
-        TextPicker({ range: this.settingParams?.taskID === taskType.drinkWater ? this.drinkRange : this.appleRange })
-          .width(Const.THOUSANDTH_900)
-          .height(Const.THOUSANDTH_800)
+      //新增修改
+        //TextPicker({ range: this.settingParams?.taskID === taskType.drinkWater ? this.drinkRange : this.appleRange })
+        TextPicker({
+          range: this.settingParams?.taskID === taskType.drinkWater
+            ? this.drinkRange
+            : this.settingParams?.taskID === taskType.eatApple
+              ? this.appleRange
+                : this.settingParams?.taskID === taskType.smile
+                  ? this.smileRange
+                  : this.settingParams?.taskID === taskType.brushTeeth
+                    ? this.teethRange
+                    : this.settingParams?.taskID === taskType.run
+                      ? this.runRange
+                      : []
+        })
+          .width(Const.THOUSANDTH_900,)
+          .height(Const.THOUSANDTH_800,)
           .onChange((value: string | string[]) => {
             this.currentValue = (value as string)?.split(' ')[0];
-          });
+          })
       }
-
 
       Row() {
         Text($r('app.string.cancel')).fontSize(Const.DEFAULT_20).fontColor($r('app.color.blueColor'))
