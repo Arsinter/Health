@@ -1,0 +1,2 @@
+[2024-07-17T09:10:04.207] [DEBUG] debug-file - java daemon tryConnect failed Error: connect ECONNREFUSED ::1:45050
+[2024-07-17T09:10:04.226] [DEBUG] debug-file - java daemon started at port 45050 pid 21088
