@@ -4,7 +4,7 @@ if (!("finalizeConstruction" in ViewPU.prototype)) {
 interface AchievementIndex_Params {
 }
 import { CommonConstants as Const } from "@bundle:com.example.healthy_life/entry/ets/common/constants/CommonConstants";
-import { BadgePanel } from "@bundle:com.example.healthy_life/entry/ets/view/BadgePanelComponent";
+import { BadgePanel, SingleBadgePanel } from "@bundle:com.example.healthy_life/entry/ets/view/BadgePanelComponent";
 import { TitleBar } from "@bundle:com.example.healthy_life/entry/ets/view/TitleBarComponent";
 import Logger from "@bundle:com.example.healthy_life/entry/ets/common/utils/Logger";
 export class AchievementIndex extends ViewPU {
@@ -40,10 +40,16 @@ export class AchievementIndex extends ViewPU {
             Column.width(Const.FULL_WIDTH);
             Column.backgroundColor({ "id": 16777267, "type": 10001, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
         }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Scroll.create();
+        }, Scroll);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+        }, Column);
         {
             this.observeComponentCreation2((elmtId, isInitialRender) => {
                 if (isInitialRender) {
-                    let componentCall = new TitleBar(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/AchievementComponent.ets", line: 33 });
+                    let componentCall = new TitleBar(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/AchievementComponent.ets", line: 35 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {};
@@ -58,7 +64,7 @@ export class AchievementIndex extends ViewPU {
         {
             this.observeComponentCreation2((elmtId, isInitialRender) => {
                 if (isInitialRender) {
-                    let componentCall = new BadgePanel(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/AchievementComponent.ets", line: 34 });
+                    let componentCall = new BadgePanel(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/AchievementComponent.ets", line: 36 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {};
@@ -70,6 +76,23 @@ export class AchievementIndex extends ViewPU {
                 }
             }, { name: "BadgePanel" });
         }
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new SingleBadgePanel(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/AchievementComponent.ets", line: 37 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {};
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {});
+                }
+            }, { name: "SingleBadgePanel" });
+        }
+        Column.pop();
+        Scroll.pop();
         Column.pop();
     }
     rerender() {

@@ -27,10 +27,20 @@ export struct BadgeCard {
         .width(Const.FULL_WIDTH)
         .height(Const.ACHIEVE_CARD_IMG_HEIGHT)
         .objectFit(ImageFit.Contain)
-      Text($r('app.string.task_achievement_level', Number(this.content)))
-        .lineHeight($r('app.float.default_16'))
-        .fontSize($r('app.float.default_12'))
-        .fontColor($r('app.color.white'))
+
+      if(this.content.length>2){
+        Text(this.content)
+          .lineHeight($r('app.float.default_16'))
+          .fontSize($r('app.float.default_12'))
+          .fontColor($r('app.color.white'))
+      }else{
+        Text($r('app.string.task_achievement_level', Number(this.content)))
+          .lineHeight($r('app.float.default_16'))
+          .fontSize($r('app.float.default_12'))
+          .fontColor($r('app.color.white'))
+      }
+
+
     }
     .width(ratio2percent(Const.ACHIEVE_SPLIT_RATIO))
     .padding({ top: Const.ACHIEVE_CARD_TOP, bottom: Const.ACHIEVE_CARD_BOTTOM })

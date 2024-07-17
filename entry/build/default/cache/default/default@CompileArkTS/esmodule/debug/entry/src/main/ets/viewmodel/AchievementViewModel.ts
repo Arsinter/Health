@@ -1,5 +1,5 @@
 import CardInfo from "@bundle:com.example.healthy_life/entry/ets/viewmodel/CardInfo";
-import { ACHIEVEMENT_LEVEL_LIST, AchievementMap } from "@bundle:com.example.healthy_life/entry/ets/model/TaskInitList";
+import { ACHIEVEMENT_LEVEL_LIST, AchievementMap, CONTINUE_LEVEL_LIST } from "@bundle:com.example.healthy_life/entry/ets/model/TaskInitList";
 export function getBadgeCardItems(successiveDays: number): Array<CardInfo> {
     let badgeMileStones = ACHIEVEMENT_LEVEL_LIST;
     let cardItems: Array<CardInfo> = [];
@@ -10,6 +10,22 @@ export function getBadgeCardItems(successiveDays: number): Array<CardInfo> {
         cardInfo.titleContent = titleContent;
         cardInfo.achievement = getAchievement(`${onOrOff}_${badgeMileStones[i]}`);
         cardItems.push(cardInfo);
+    }
+    return cardItems;
+}
+export function getContinueCardItems(successiveDays: Array<number>): Array<CardInfo> {
+    let ContinueList: Array<string> = ['早起', '喝水', '吃苹果', '每日微笑', '每日刷牙', '早睡', '跑步'];
+    let badgeMileStones = CONTINUE_LEVEL_LIST; // 单任务成就标准
+    let cardItems: Array<CardInfo> = [];
+    for (let k = 0; k < ContinueList.length; k++) {
+        for (let i = 0; i < badgeMileStones.length; i++) {
+            let onOrOff = successiveDays[k] >= badgeMileStones[i] ? 'on' : 'off';
+            let titleContent = String(badgeMileStones[i]);
+            let cardInfo: CardInfo = new CardInfo();
+            cardInfo.titleContent = '连续' + titleContent + '天' + ContinueList[k];
+            cardInfo.achievement = getAchievement(`${onOrOff}_${badgeMileStones[i]}`); // 复用图片
+            cardItems.push(cardInfo);
+        }
     }
     return cardItems;
 }
