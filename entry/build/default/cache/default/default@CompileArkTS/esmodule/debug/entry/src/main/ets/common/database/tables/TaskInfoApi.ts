@@ -47,7 +47,6 @@ class TaskInfoApi {
         if (!tableName) {
             return;
         }
-        //Logger.info('我是tablename',JSON.stringify(tableName));
         let predicates = new relationalStore.RdbPredicates(tableName);
         predicates.equalTo('date', taskInfo.date).and().equalTo('taskID', taskInfo.taskID);
         RdbUtils.update(valueBucket, predicates).then((result: number) => {

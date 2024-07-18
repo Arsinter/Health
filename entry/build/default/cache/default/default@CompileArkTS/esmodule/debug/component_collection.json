@@ -104,12 +104,6 @@
     "LongPressGesture",
     "If"
   ],
-  "entry\\src\\main\\ets\\common\\database\\tables\\CustomTaskApi.ets": [
-    "If"
-  ],
-  "entry\\src\\main\\ets\\common\\database\\rdb\\CustomTaskHelper.ets": [
-    "If"
-  ],
   "entry\\src\\main\\ets\\view\\home\\HomeTopComponent.ets": [
     "Text",
     "Column",
@@ -159,8 +153,7 @@
     "Text",
     "CustomDialogController",
     "Column",
-    "Button",
-    "If"
+    "Button"
   ],
   "entry\\src\\main\\ets\\common\\utils\\BroadCast.ets": [
     "If"
@@ -239,8 +232,6 @@
   "entry\\src\\main\\ets\\view\\task\\TaskEditListItem.ets": [
     "Text",
     "Row",
-    "TextInput",
-    "Button",
     "Toggle",
     "Blank",
     "Image",
