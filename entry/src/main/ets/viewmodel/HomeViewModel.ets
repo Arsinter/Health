@@ -244,22 +244,36 @@ export class HomeStore {
     } as AchievementInfo;
   }
 
+  // 对任务状态进行更新
+  // 新增字段 isTargetReached 用于避免 finValue 被 targetValue 覆盖
   updateTask(task: TaskInfo): Promise<TaskInfo> {
     return new Promise((resolve, reject) => {
       let taskID = task.taskID;
       let targetValue = task.targetValue;
       let finValue = task.finValue;
       let updateTask = new TaskInfo(task.id, task.date, taskID, targetValue, task.isAlarm, task.startTime,
-        task.endTime, task.frequency, task.isDone, finValue, task.isOpen);
+        task.endTime, task.frequency, task.isDone, task.finValue, task.isOpen, task.isTargetReached);
       let step = TaskMapById[taskID - 1].step;
       let hasExceed = updateTask.isDone;
       if (step === 0) {
         updateTask.isDone = true;
         updateTask.finValue = targetValue;
+        updateTask.isTargetReached = true;
       } else {
         let value = Number(finValue) + step;
-        updateTask.isDone = updateTask.isDone || value >= Number(targetValue);
-        updateTask.finValue = updateTask.isDone ? targetValue : `${value}`;
+        // 此处判断 任务是否完成
+        // updateTask.isDone = updateTask.isDone || value >= Number(targetValue);
+        // updateTask.finValue = updateTask.isDone ? targetValue : `${value}`;
+        Logger.info("ready to find outside",finValue);
+        if (value >= Number(targetValue)) {
+          updateTask.isDone = true;
+          updateTask.isTargetReached = true;
+          updateTask.finValue = `${value}`;
+          Logger.info("ready to find inside",finValue);
+        } else {
+          updateTask.finValue = `${value}`;
+        }
+        task.finValue = updateTask.finValue;
       }
       TaskInfoTableApi.updateDataByDate(updateTask, (res: number) => {
         if (!res || hasExceed) {

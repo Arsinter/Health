@@ -42,9 +42,10 @@ export default class TaskInfo {
   isDone: boolean;
   finValue: string;
   isOpen: boolean;
+  public isTargetReached: boolean;
 
   constructor(id: number, date: string, taskID: number, targetValue: string, isAlarm: boolean, startTime: string,
-              endTime: string, frequency: string, isDone: boolean, finValue: string, isOpen = false) {
+              endTime: string, frequency: string, isDone: boolean, finValue: string, isOpen = false, isTargetReached = false) {
     this.id = id;
     this.date = date;
     this.taskID = taskID;
@@ -56,6 +57,7 @@ export default class TaskInfo {
     this.isDone = isDone;
     this.finValue = finValue;
     this.isOpen = isOpen;
+    this.isTargetReached = isTargetReached;
   }
 }
 
