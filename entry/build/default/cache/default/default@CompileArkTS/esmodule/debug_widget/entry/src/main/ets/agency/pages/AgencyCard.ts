@@ -50,7 +50,11 @@ class AgencyCard extends ViewPU {
             apple: { "id": 16777388, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
             smile: { "id": 16777392, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
             clean: { "id": 16777389, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
-            sleep: { "id": 16777391, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" }
+            sleep: { "id": 16777391, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
+            //新增run
+            run: { "id": 16777408, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
+            //新增自定义
+            custom: { "id": 16777411, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" }
         } as iconInfo;
         this.ACTION_TYPE = 'router';
         this.ABILITY_NAME = 'EntryAbility';
@@ -243,6 +247,13 @@ class AgencyCard extends ViewPU {
                 break;
             case 'sleep':
                 result = { "id": 16777391, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" };
+                break;
+            //新增 run custom
+            case 'run':
+                result = { "id": 16777408, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" };
+                break;
+            case 'custom':
+                result = { "id": 16777411, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" };
                 break;
             default:
                 break;
@@ -441,6 +452,8 @@ interface iconInfo {
     smile: Resource;
     clean: Resource;
     sleep: Resource;
+    run: Resource;
+    custom: Resource;
 }
 ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent());
 loadEtsCard(new AgencyCard(undefined, {}, agencyStorage), "com.example.healthy_life/entry/ets/agency/pages/AgencyCard");

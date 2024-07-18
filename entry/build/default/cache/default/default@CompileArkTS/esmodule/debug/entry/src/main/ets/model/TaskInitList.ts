@@ -31,7 +31,8 @@ export const TaskList: TaskInfo[] = [
     new TaskInfo(2, '', 3, '3', true, '08: 00', '', '', false, '', true),
     new TaskInfo(3, '', 4, '1', true, '', ';', '', false, '', true),
     new TaskInfo(4, '', 5, '21:30', true, '', ';', '', false, '', true),
-    new TaskInfo(5, '', 6, '22:00', true, '', ';', '', false, '', true)
+    new TaskInfo(5, '', 6, '22:00', true, '', ';', '', false, '', true),
+    new TaskInfo(6, '', 7, '1.0', true, '', ';', '', false, '', true),
 ];
 let achievementMap = new AchievementMapInfo();
 export const AchievementMap = achievementMap;
@@ -125,7 +126,39 @@ export const TaskMapById: Array<ITaskItem> = [
         startTime: '08: 00',
         endTime: '00: 00',
         frequency: '1, 2, 3, 4, 5, 6, 7'
-    }
+    },
+    //新增跑步
+    {
+        taskID: 7,
+        taskName: { "id": 16777405, "type": 10003, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
+        icon: { "id": 16777408, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
+        dialogBg: { "id": 16777407, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
+        targetValue: '1.0',
+        isOpen: false,
+        unit: '公里',
+        step: 0,
+        isInit: true,
+        isAlarm: false,
+        startTime: '08: 00',
+        endTime: '00: 00',
+        frequency: '1, 2, 3, 4, 5, 6, 7'
+    },
+    //新增自定义暂时让他只支持设置时间
+    {
+        taskID: 8,
+        taskName: { "id": 16777409, "type": 10003, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
+        icon: { "id": 16777411, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
+        dialogBg: { "id": 16777410, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
+        targetValue: '08: 00',
+        isOpen: false,
+        unit: '',
+        step: 0,
+        isInit: true,
+        isAlarm: false,
+        startTime: '08: 00',
+        endTime: '00: 00',
+        frequency: '1, 2, 3, 4, 5, 6, 7'
+    },
 ];
 export const TaskItem = new TaskInfo(1, '', 0, '7:00', true, 'string', 'string;', '', true, '6:58', false);
 export const RemindContentMap: Array<RemindContentItem> = [
@@ -152,6 +185,16 @@ export const RemindContentMap: Array<RemindContentItem> = [
     {
         title: Const.SLEEP_TASK_NAME,
         content: Const.SLEEP_CONTENT
-    }
+    },
+    //新增跑步
+    {
+        title: Const.RUN_TASK_NAME,
+        content: Const.RUN_CONTENT
+    },
+    //新增自定义用早起代替  之后想办法用数据库里保存的字段
+    {
+        title: Const.Custom_TASK_NAME,
+        content: Const.Custom_CONTENT
+    },
 ];
 export const ACHIEVEMENT_LEVEL_LIST = [3, 7, 30, 50, 73, 99];

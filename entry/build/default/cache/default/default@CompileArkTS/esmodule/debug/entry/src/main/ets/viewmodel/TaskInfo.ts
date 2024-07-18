@@ -46,6 +46,10 @@ export enum taskType {
     'eatApple' = 3,
     'smile' = 4,
     'brushTeeth' = 5,
-    'sleepEarly' = 6
+    'sleepEarly' = 6,
+    //新增跑步
+    'run' = 7,
+    //新增自定义
+    'custom' = 8
 }
 export const oneWeek = oneWeekDictFunc();

@@ -106,7 +106,7 @@ export const addTask = (params: TaskInfo, context: Context) => {
         }
         TaskInfoApi.updateDataByDate(params, (flag: number) => {
             if (!flag) {
-                Logger.error('insertTaskSetting', 'updateTaskSetting Error!');
+                Logger.error('insertTaskSetting', 'updateTaskSetting Error!我是flag');
                 reject(flag);
             }
             resolve(flag);
@@ -114,7 +114,10 @@ export const addTask = (params: TaskInfo, context: Context) => {
         let taskInfoStr = JSON.stringify(params);
         let taskInfo: TaskInfo = JSON.parse(taskInfoStr);
         taskInfo.date = new Date().toDateString();
-        taskInfo.isDone = true;
+        //bug 第一次设置后为false表示没完成
+        //taskInfo.isDone = true;
+        taskInfo.isDone = false;
+        //Logger.info('see_isdone', JSON.stringify(taskInfo));
         TaskInfoApi.updateDataByDate(taskInfo, (flag: number) => {
             if (!flag) {
                 Logger.error('insertTaskSetting', 'updateTaskSetting Error!');
@@ -190,28 +193,6 @@ export const formatTime = (value: TimePickerResult) => {
     return `${padTo2Digits(hour)}:${padTo2Digits(minute)}`;
 };
 /**
- * @description Range of smiling 1 - 3 times
- * @return Array<string>
- */
-export const createSmileRange = () => {
-    const smileRangeArr: Array<string> = [];
-    for (let i = Const.SMILE_STEP; i <= Const.SMILE_MAX_RANGE; i += Const.SMILE_STEP) {
-        smileRangeArr.push(`${i} 次`);
-    }
-    return smileRangeArr;
-};
-/**
- * @description Range of brushing teeth 1 - 3 times
- * @return Array<string>
- */
-export const createBrushTeethRange = () => {
-    const brushTeethRangeArr: Array<string> = [];
-    for (let i = Const.BRUSH_TEETH_STEP; i <= Const.BRUSH_TEETH_MAX_RANGE; i += Const.BRUSH_TEETH_STEP) {
-        brushTeethRangeArr.push(`${i} 次`);
-    }
-    return brushTeethRangeArr;
-};
-/**
  * @description Range of generated drinking water 0.25 - 5 L
  * @return Array<string>
  */
@@ -232,4 +213,28 @@ export const createAppleRange = () => {
         appleRangeArr.push(`${i} 个`);
     }
     return appleRangeArr;
+};
+//微笑次数
+export const createSmileRange = () => {
+    const simleRangeArr: Array<string> = [];
+    for (let i = 1; i <= 3; i++) {
+        simleRangeArr.push(`${i} 次`);
+    }
+    return simleRangeArr;
+};
+//刷牙次数
+export const createTeethRange = () => {
+    const teethRangeArr: Array<string> = [];
+    for (let i = 1; i <= 3; i++) {
+        teethRangeArr.push(`${i} 次`);
+    }
+    return teethRangeArr;
+};
+//跑步范围
+export const createRunRange = () => {
+    const runRangeArr: Array<string> = [];
+    for (let i = 1; i <= 20; i += 0.5) {
+        runRangeArr.push(`${i} 公里`);
+    }
+    return runRangeArr;
 };
