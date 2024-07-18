@@ -16,8 +16,8 @@
 import { promptAction } from '@kit.ArkUI';
 import { ITaskItem } from '../../model/TaskInitList';
 import { frequencyRange } from '../../common/utils/Utils';
-//引用了新的3函数
-import { returnTimeStamp, createAppleRange, createDrinkRange, createSmileRange, createTeethRange, createRunRange,formatTime } from '../../viewmodel/TaskViewModel';
+//引用了新的4函数
+import { returnTimeStamp, createAppleRange, createDrinkRange, createSmileRange, createTeethRange, createRunRange, createCustom2Range, formatTime } from '../../viewmodel/TaskViewModel';
 import { taskType } from '../../viewmodel/TaskInfo';
 import { CommonConstants as Const } from '../..//common/constants/CommonConstants';
 import { FrequencyContentType } from '../../model/TaskInitList';
@@ -31,6 +31,7 @@ export struct TargetSettingDialog {
   smileRange: string[] = createSmileRange();    //新增笑次数
   teethRange: string[] = createTeethRange();    //新增刷牙次数
   runRange: string[] = createRunRange(); //新增跑步范围
+  custom2Range: string[] = createCustom2Range(); //自定义次数类
   currentValue: string = this.settingParams.targetValue;
   currentTime: string = Const.DEFAULT_TIME;
 
@@ -112,7 +113,9 @@ export struct TargetSettingDialog {
                     ? this.teethRange
                     : this.settingParams?.taskID === taskType.run
                       ? this.runRange
-                      : []
+                      : this.settingParams?.taskID === taskType.custom2
+                        ? this.custom2Range
+                        : []
         })
           .width(Const.THOUSANDTH_900,)
           .height(Const.THOUSANDTH_800,)

@@ -273,4 +273,17 @@ export const createRunRange = () => {
   }
   return runRangeArr;
 }
+/**
+ * @description Generate the range of custom2  1 - 100
+ * @return Array<string>
+ */
+export const createCustom2Range = () => {
+  const custom2RangeArr: Array<string> = [];
+  for (let i = 1; i <= 100; i++) {
+    custom2RangeArr.push(`${i} 次`);
+  }
+  return custom2RangeArr;
+}
+
+
 

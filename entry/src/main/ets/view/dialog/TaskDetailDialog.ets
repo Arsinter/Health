@@ -47,7 +47,7 @@ export struct TaskDetailDialog {
   private CustomTaskTable = new CustomTaskApi(() => {
   });
   @State customTaskInfo: TaskData[] = [];
-  @State customtaskname: string = '.';
+  @State customtaskname: string = '';
 
   async aboutToAppear() {
     //数据库中取出用户自定义的数据

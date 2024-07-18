@@ -98,6 +98,8 @@ struct Index {
 
   @State name: string = ''
   @State customTaskInfo: TaskData[] = []
+  params = router.getParams() as Record<string, Object>
+  taskID = this.params.taskID as number
   /*@State type : number = 0
   @State typeString : string = '时间类型'
   provideTargetType : string[] = ['时间类型','次数类型']*/
@@ -174,13 +176,23 @@ struct Index {
               }
               // 保存成功
               this.CustomTaskTable.getRdbStore(() => { // 获取数据库
-                this.CustomTaskTable.query(8, (result: TaskData[]) => { // 查询数据库中的用户
-                  this.customTaskInfo.push(result[0]);
-                  this.customTaskInfo[0].name = this.name
-                  //this.customTaskInfo[0].type = this.type
-                  Logger.info('CustomTaskEditNamePage', `${this.name}`);
-                  this.CustomTaskTable.updateData(this.customTaskInfo[0], () => {
-                  });
+                this.CustomTaskTable.query(this.taskID, (result: TaskData[]) => { // 查询数据库中的用户
+                  if(this.taskID === 8){
+                    this.customTaskInfo.push(result[0]);
+                    this.customTaskInfo[0].name = this.name
+                    //this.customTaskInfo[0].type = this.type
+                    Logger.info('CustomTaskEditNamePage', `${this.name}`);
+                    this.CustomTaskTable.updateData(this.customTaskInfo[0], () => {
+                    });
+                  }
+                  else if(this.taskID === 9){
+                    this.customTaskInfo.push(result[0]);
+                    this.customTaskInfo[0].name = this.name
+                    //this.customTaskInfo[0].type = this.type
+                    Logger.info('CustomTaskEditNamePagedddd', `${this.taskID}`, `${this.customTaskInfo[0].id}`);
+                    this.CustomTaskTable.updateData(this.customTaskInfo[0], () => {
+                    });
+                  }
                   // 定义一个eventId为1的事件，事件优先级为Low
                   let event: emitter.InnerEvent = {
                     eventId: 2,

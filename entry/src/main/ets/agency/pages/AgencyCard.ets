@@ -30,7 +30,8 @@ struct AgencyCard {
     //新增run
     run: $r('app.media.ic_task_run'),
     //新增自定义
-    custom: $r('app.media.ic_task_custom')
+    custom: $r('app.media.ic_task_custom'),
+    custom2: $r('app.media.ic_task_custom2'),
   } as iconInfo;
   /*
    * The action type.
@@ -128,6 +129,9 @@ struct AgencyCard {
         break;
       case 'custom':
         result = $r('app.media.ic_task_custom');
+        break;
+      case 'custom2':
+        result = $r('app.media.ic_task_custom2');
         break;
       default:
         break;
@@ -262,6 +266,8 @@ interface iconInfo {
   smile: Resource;
   clean: Resource;
   sleep: Resource;
+  //新增
   run: Resource;
-  custom : Resource
+  custom : Resource;
+  custom2 : Resource;
 }

@@ -67,10 +67,14 @@ export struct TaskChooseItem {
   });
   @Consume customTaskInfo: TaskData[];
   @Consume customtaskname: string;
+  //次数类
+  @Consume custom2TaskInfo: TaskData[];
+  @Consume custom2taskname: string;
   inputTaskName: string = '';
   /*--------------------------------------*/
-  //aboutToAppear是完全新增的,用于获取订阅的事件，来修改任务名称和类型
+  //aboutToAppear是完全新增的,用于获取订阅的事件，来修改任务名称
   async aboutToAppear() {
+    Logger.info('custom2taskname孩子' + JSON.stringify(this.custom2taskname));
     const TAG: string = 'ThreadModel';
     // 定义一个eventId为1的事件
     let event: emitter.InnerEvent = {
@@ -80,8 +84,14 @@ export struct TaskChooseItem {
     let callback = (eventData: emitter.EventData): void => {
       // 更新用户信息
       let taskName = eventData.data?.taskName as string
-      this.customTaskInfo[0].name = taskName;
-      this.customtaskname = this.customTaskInfo[0].name;
+      if(this.settingParams.taskID === 8){
+        this.customTaskInfo[0].name = taskName;
+        this.customtaskname = this.customTaskInfo[0].name;
+      }
+      else if(this.settingParams.taskID === 9){
+        this.custom2TaskInfo[0].name = taskName;
+        this.custom2taskname = this.custom2TaskInfo[0].name;
+      }
       Logger.info(TAG, 'event2 callback:' + JSON.stringify(eventData.data?.taskName));
     };
     // 订阅eventId为2的事件
@@ -90,17 +100,21 @@ export struct TaskChooseItem {
   build() {
     Row() {
       //Text(this.settingParams.taskName).fontSize(Const.DEFAULT_20).fontWeight(FontWeight.Medium)
-      //ID为8时可编辑
+      //ID为8/9时可编辑
       /*---------------------------*/
-      if (this.settingParams.taskID === 8) {
+      if (this.settingParams.taskID === 8 || this.settingParams.taskID === 9) {
         //Text(this.settingParams.taskName)
-        Text(this.customtaskname)
+        //Text(this.customtaskname)
+        Text(this.settingParams.taskID === 8 ? this.customtaskname : this.custom2taskname)
           .fontSize(Const.DEFAULT_20)
           .fontWeight(FontWeight.Medium)
         //新增
           .onClick(() => {
             router.pushUrl({
-              url : 'pages/CustomTaskEDit'
+              url : 'pages/CustomTaskEDit',
+              params: {
+                taskID : Number(this.settingParams.taskID)
+              }
             })
           })
         //用新页面了舍弃这里的
