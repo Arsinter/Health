@@ -18,9 +18,48 @@ import { CommonConstants as Const } from '../../common/constants/CommonConstants
 import { formatParams } from '../../viewmodel/TaskViewModel';
 import { ITaskItem } from '../../model/TaskInitList';
 
+/*用户自定义名称*/
+//新增引用custom task相关的
+import CustomTaskApi from '../../common/database/tables/CustomTaskApi';  //数据库接口
+import TaskData from '../../viewmodel/TaskData';                       //自定义任务数据类型
+import emitter from '@ohos.events.emitter';                            //订阅相关
+import { util } from '@kit.ArkTS';
+import Logger from '../../common/utils/Logger';
+
+
 @Component
 export default struct TaskList {
+  /*新增，读数据库获得用户自定义数据*/
+  private CustomTaskTable = new CustomTaskApi(() => {
+  });
+  @State customTaskInfo: TaskData[] = [];
+  @State customtaskname: string = '--';
+  /*----------*/
   @Consume taskList: ITaskItem[];
+
+  /*新增一个异步,来读取用户自定义的*/
+  async aboutToAppear() {
+    //数据库中取出用户自定义的数据
+    this.CustomTaskTable.getRdbStore(() => { // 获取数据库
+      this.CustomTaskTable.query(8, (result: TaskData[]) => { // 查询数据库中的用户自定义名称
+        if (result && result.length > 0) {
+          this.customTaskInfo.push(result[0]);
+          this.customtaskname = this.customTaskInfo[0].name;
+          Logger.info('DetailCustomInfo查到了', `${this.customTaskInfo[0].name}`);
+        } else {
+          // 如果没有查询到数据，插入新数据
+          let newCustomInfo = new TaskData();
+          this.CustomTaskTable.insertData(newCustomInfo, (id: number) => {
+            newCustomInfo.id = id;
+            this.customTaskInfo.push(newCustomInfo);
+            this.customtaskname = this.customTaskInfo[0].name;
+            Logger.info('DetailCustomInfo没有新建的', `${this.customTaskInfo[0].id}`);
+          });
+        }
+      }, false);
+    });
+  }
+
 
   build() {
     List({ space: Const.LIST_ITEM_SPACE }) {
@@ -32,7 +71,11 @@ export default struct TaskList {
                 .width(Const.DEFAULT_24)
                 .height(Const.DEFAULT_24)
                 .margin({ right: Const.DEFAULT_8 })
-              Text(item?.taskName)
+              /*改成taskID == 8 时 还要显示出用户自定义的任务名称*/
+              //Text(item?.taskName)
+              //这种写法有错会[object Object : customname]。。。。
+              //Text(item?.taskID === 8 ? (item?.taskName + `: ${this.customtaskname}`) : item?.taskName)
+              Text(item?.taskID === 8 ? ('自定义' + `: ${this.customtaskname}`) : item?.taskName)
                 .fontSize(Const.DEFAULT_20)
                 .fontColor($r('app.color.titleColor'))
             }

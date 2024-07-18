@@ -16,6 +16,13 @@
 import { ITaskItem } from '../../model/TaskInitList';
 import { CommonConstants as Const } from '../../common/constants/CommonConstants';
 import { taskType } from '../../viewmodel/TaskInfo';
+import Logger from '../../common/utils/Logger';
+
+/*新增*/
+import CustomTaskApi from '../../common/database/tables/CustomTaskApi';  //数据库接口
+import TaskData from '../../viewmodel/TaskData';                       //自定义任务数据类型
+import emitter from '@ohos.events.emitter';                            //订阅相关
+import { util } from '@kit.ArkTS';
 
 @Extend(Text)
 function targetSetCommon() {
@@ -54,10 +61,81 @@ function frequencyStyle(isOpen: boolean, isAlarm: boolean) {
 @Component
 export struct TaskChooseItem {
   @Consume settingParams: ITaskItem;
-
+  /*新增自定义任务相关*/
+  private CustomTaskTable = new CustomTaskApi(() => {
+  });
+  @Consume customTaskInfo: TaskData[];
+  @Consume customtaskname: string;
+  inputTaskName: string = '';
+  /*--------------------------------------*/
   build() {
     Row() {
-      Text(this.settingParams.taskName).fontSize(Const.DEFAULT_20).fontWeight(FontWeight.Medium)
+      //Text(this.settingParams.taskName).fontSize(Const.DEFAULT_20).fontWeight(FontWeight.Medium)
+      //ID为8时可编辑
+      /*---------------------------*/
+      if (this.settingParams.taskID === 8) {
+        //Text(this.settingParams.taskName)
+        Text('任务名称:')
+          .fontSize(Const.DEFAULT_20)
+          .fontWeight(FontWeight.Medium)
+        TextInput({text:`${this.customtaskname}`})
+          .fontSize(Const.DEFAULT_20)
+          .fontWeight(FontWeight.Medium)
+          .width(100)  // 设置宽度
+          .onChange((value) => {
+            this.inputTaskName = String(value);
+            Logger.info('我是用户输入的自定义名称', JSON.stringify(this.inputTaskName));
+          })
+        Button('保存')
+          //.fontColor("#FFFFFF")
+          .width($r('app.float.default_10'))
+          //.backgroundColor("#00FF00")
+          // Write the information and clear the content so that the text box is cleared after you click Save.
+          .onClick(() => {
+            /*if (this.inputTaskName == '' || this.inputTaskName.length > 30) {
+              //这里可以加一个判断逻辑，不合法时弹窗
+            }*/
+            //保存用户输入逻辑
+            this.customtaskname = this.inputTaskName;
+            this.customTaskInfo[0].name = this.inputTaskName;
+            this.CustomTaskTable.getRdbStore(() => { // 获取数据库
+              this.CustomTaskTable.query(1, (result: TaskData[]) => { // 查询数据库中的用户
+                this.customTaskInfo.push(result[0]);
+                this.customTaskInfo[0].name = this.inputTaskName;
+                Logger.info('inputCustomname我保存用户输入', `${this.inputTaskName}`);
+                this.CustomTaskTable.updateData(this.customTaskInfo[0], () => {
+                });
+                //这里修改名称后，默认之前的任务被关闭，使得更新逻辑正常(也不太正常...)
+                //让任务关闭时，提醒同步关即可
+                this.settingParams.isOpen = false;
+                //if语句新增
+                if(this.settingParams.isOpen == false){
+                  this.settingParams.isAlarm = false;
+                }
+                /*// 定义一个eventId为1的事件，事件优先级为Low
+                let event: emitter.InnerEvent = {
+                  eventId: 1,
+                  priority: emitter.EventPriority.LOW
+                }
+                // 将修改后的名字发送出去
+                let eventData: emitter.EventData = {
+                  data: {
+                    content: this.name,
+                    id: 1,
+                    isEmpty: false
+                  }
+                };
+                // 发送eventId为1的事件，事件内容为eventData
+                emitter.emit(event, eventData);*/
+              }, false);
+            });
+          })
+      } else {
+        Text(this.settingParams.taskName)
+          .fontSize(Const.DEFAULT_20)
+          .fontWeight(FontWeight.Medium)
+      }
+      /*-------------------------*/
       Toggle({ type: ToggleType.Switch, isOn: this.settingParams.isOpen })
         .width(Const.DEFAULT_56)
         .height(Const.DEFAULT_32)

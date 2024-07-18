@@ -19,6 +19,11 @@ import { TaskMapById } from '../../model/TaskInitList';
 import { CommonConstants as Const } from '../../common/constants/CommonConstants';
 import { GlobalContext } from '../../common/utils/GlobalContext';
 
+//新增引用custom task相关的
+import CustomTaskApi from '../../common/database/tables/CustomTaskApi';  //数据库接口
+import TaskData from '../../viewmodel/TaskData';                       //自定义任务数据类型
+import Logger from '../../common/utils/Logger'
+
 @Extend(Text)
 function textStyle() {
   .fontColor($r('app.color.white'))
@@ -38,10 +43,42 @@ export struct TaskDetailDialog {
   @State showButton: boolean = true;
   @Consume dialogCallBack: CustomDialogCallback;
 
+  /*新增，读数据库获得用户自定义数据*/
+  private CustomTaskTable = new CustomTaskApi(() => {
+  });
+  @State customTaskInfo: TaskData[] = [];
+  @State customtaskname: string = '.';
+
+  async aboutToAppear() {
+    //数据库中取出用户自定义的数据
+    this.CustomTaskTable.getRdbStore(() => { // 获取数据库
+      this.CustomTaskTable.query(8, (result: TaskData[]) => { // 查询数据库中的用户自定义名称
+        if (result && result.length > 0) {
+          this.customTaskInfo.push(result[0]);
+          this.customtaskname = this.customTaskInfo[0].name;
+          Logger.info('taskdetaildialogxxx', `${this.customTaskInfo[0].name}`);
+        } else {
+          // 如果没有查询到数据，插入新数据
+          let newCustomInfo = new TaskData();
+          this.CustomTaskTable.insertData(newCustomInfo, (id: number) => {
+            newCustomInfo.id = id;
+            this.customTaskInfo.push(newCustomInfo);
+            this.customtaskname = this.customTaskInfo[0].name;
+            Logger.info('taskdetaildialogxxx', `${this.customTaskInfo[0].id}`);
+          });
+        }
+      }, false);
+    });
+
+  }
+    /*--------------新增结束---------------*/
+
   build() {
-    Column() {
+     Column() {
       TaskBaseInfo({
-        taskName: TaskMapById[this.currentTask?.taskID - 1].taskName
+        //自定义任务时传递数据库里的参数
+        //taskName: TaskMapById[this.currentTask?.taskID - 1].taskName
+        taskName: this.currentTask?.taskID === 8 ? this.customtaskname : TaskMapById[this.currentTask?.taskID - 1].taskName
       });
 
       TaskClock({
@@ -51,8 +88,10 @@ export struct TaskDetailDialog {
         },
         cancel: () => {
           this.controller.close();
+          Logger.info('build比toappear快！');
         },
         showButton: this.showButton
+
       })
     }
     .height($r('app.float.default_451'))
@@ -67,7 +106,10 @@ export struct TaskDetailDialog {
       bottom: $r('app.float.default_12'),
       left: $r('app.float.default_20')
     })
+
   }
+
+
 }
 
 @Component

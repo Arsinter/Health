@@ -21,7 +21,7 @@ import { returnTimeStamp, createAppleRange, createDrinkRange, createSmileRange, 
 import { taskType } from '../../viewmodel/TaskInfo';
 import { CommonConstants as Const } from '../..//common/constants/CommonConstants';
 import { FrequencyContentType } from '../../model/TaskInitList';
-
+import Logger from '../../common/utils/Logger';
 @CustomDialog
 export struct TargetSettingDialog {
   @Consume settingParams: ITaskItem;
@@ -33,6 +33,7 @@ export struct TargetSettingDialog {
   runRange: string[] = createRunRange(); //新增跑步范围
   currentValue: string = this.settingParams.targetValue;
   currentTime: string = Const.DEFAULT_TIME;
+
 
   compareTime(startTime: string, endTime: string) {
     if (returnTimeStamp(this.currentTime) < returnTimeStamp(startTime) ||
@@ -46,6 +47,7 @@ export struct TargetSettingDialog {
   }
 
   setTargetValue() {
+    //Logger.info('current中', `${this.currentTime}`);
     if (this.settingParams?.taskID === taskType.getup) {
       if (!this.compareTime(Const.GET_UP_EARLY_TIME, Const.GET_UP_LATE_TIME)) {
         return;
@@ -60,7 +62,15 @@ export struct TargetSettingDialog {
       this.settingParams.targetValue = this.currentTime;
       return;
     }
+    //新增自定义类型逻辑
+    if (this.settingParams?.taskID === taskType.custom) {
+      this.settingParams.targetValue = this.currentTime;
+      return;
+    }
+    //Logger.info('为什么设置不成功！', `${this.settingParams?.taskID}`);
     this.settingParams.targetValue = this.currentValue;
+    //Logger.info('为什么设置不成功！', `${this.currentValue}`);
+    //Logger.info('为什么设置不成功！', `${this.settingParams.targetValue}`);
   }
 
   build() {
@@ -76,7 +86,9 @@ export struct TargetSettingDialog {
       .width(Const.THOUSANDTH_1000)
       .justifyContent(FlexAlign.Start)
 
-      if ([taskType.getup, taskType.sleepEarly].indexOf(this.settingParams?.taskID) > Const.HAS_NO_INDEX) {
+      //新增自定义类型
+      //if ([taskType.getup, taskType.sleepEarly].indexOf(this.settingParams?.taskID) > Const.HAS_NO_INDEX) {
+      if ([taskType.getup, taskType.sleepEarly, taskType.custom].indexOf(this.settingParams?.taskID) > Const.HAS_NO_INDEX) {
         TimePicker({
           selected: new Date(`${new Date().toDateString()} 8:00:00`),
         })
@@ -84,6 +96,7 @@ export struct TargetSettingDialog {
           .useMilitaryTime(true)
           .onChange((value: TimePickerResult) => {
             this.currentTime = formatTime(value);
+            //Logger.info('currentTimeasdaad', `${this.currentTime}`);
           })
       } else {
       //新增修改
@@ -118,8 +131,11 @@ export struct TargetSettingDialog {
 
         Text($r('app.string.confirm')).fontSize(Const.DEFAULT_20).fontColor($r('app.color.blueColor'))
           .onClick(() => {
+            //Logger.info('current前', `${this.currentTime}`);
             this.setTargetValue();
+            //Logger.info('current后', `${this.currentTime}`);
             this.controller.close();
+
           })
       }
       .justifyContent(FlexAlign.SpaceAround)

@@ -20,7 +20,7 @@ import {
   columnDayInfoList,
   columnGlobalInfoList,
   columnTaskInfoInfoList,
-  columnFormInfoList
+  columnFormInfoList,
 } from '../model/RdbColumnModel';
 import RdbUtils from '../common/database/rdb/RdbUtils';
 import Logger from '../common/utils/Logger';

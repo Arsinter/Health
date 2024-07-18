@@ -28,7 +28,9 @@ struct AgencyCard {
     clean: $r('app.media.ic_task_brush'),
     sleep: $r('app.media.ic_task_night'),
     //新增run
-    run: $r('app.media.ic_task_run')
+    run: $r('app.media.ic_task_run'),
+    //新增自定义
+    custom: $r('app.media.ic_task_custom')
   } as iconInfo;
   /*
    * The action type.
@@ -120,8 +122,12 @@ struct AgencyCard {
       case 'sleep':
         result = $r('app.media.ic_task_night');
         break;
+      //新增 run custom
       case 'run':
         result = $r('app.media.ic_task_run');
+        break;
+      case 'custom':
+        result = $r('app.media.ic_task_custom');
         break;
       default:
         break;
@@ -257,4 +263,5 @@ interface iconInfo {
   clean: Resource;
   sleep: Resource;
   run: Resource;
+  custom : Resource
 }
