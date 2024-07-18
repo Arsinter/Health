@@ -43,24 +43,36 @@ export struct TaskCard {
     this.taskInfo = JSON.parse(this.taskInfoStr);
   }
 
+  // @Builder
+  // targetValueBuilder() {
+  //   if (this.taskInfo.isDone) {
+  //     HealthText({ title: '', titleResource: $r('app.string.task_done') })
+  //     //调试用
+  //     /*Text(`Status: ${this.taskInfoStr}`)
+  //       .fontSize($r('app.float.default_24'))
+  //       .fontWeight(Const.FONT_WEIGHT_400);*/
+  //   } else {
+  //     Row() {
+  //       HealthText({
+  //         title: this.taskInfo.finValue || `--`,
+  //         fontSize: $r('app.float.default_24')
+  //       })
+  //       Text(` / ${this.taskInfo.targetValue} ${TaskMapById[this.taskInfo.taskID - 1].unit}`)
+  //         .labelTextStyle()
+  //         .fontWeight(Const.FONT_WEIGHT_400)
+  //     }
+  //   }
+  // }
   @Builder
   targetValueBuilder() {
-    if (this.taskInfo.isDone) {
-      HealthText({ title: '', titleResource: $r('app.string.task_done') })
-      //调试用
-      /*Text(`Status: ${this.taskInfoStr}`)
-        .fontSize($r('app.float.default_24'))
-        .fontWeight(Const.FONT_WEIGHT_400);*/
-    } else {
-      Row() {
-        HealthText({
-          title: this.taskInfo.finValue || `--`,
-          fontSize: $r('app.float.default_24')
-        })
-        Text(` / ${this.taskInfo.targetValue} ${TaskMapById[this.taskInfo.taskID - 1].unit}`)
-          .labelTextStyle()
-          .fontWeight(Const.FONT_WEIGHT_400)
-      }
+    Row() {
+      HealthText({
+        title: this.taskInfo.finValue || `--`,
+        fontSize: $r('app.float.default_24')
+      })
+      Text(` / ${this.taskInfo.targetValue} ${TaskMapById[this.taskInfo.taskID - 1].unit}`)
+        .labelTextStyle()
+        .fontWeight(Const.FONT_WEIGHT_400)
     }
   }
 
