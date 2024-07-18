@@ -4,7 +4,7 @@
     "pages/AdvertisingPage",
     "pages/MainPage",
     "pages/TaskListPage",
-    "pages/TaskEditPage"
+    "pages/TaskEditPage",
     "pages/CustomTaskEDit"
   ]
 }
