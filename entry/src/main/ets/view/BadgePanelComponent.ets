@@ -14,8 +14,12 @@
  */
 
 import { BadgeCard } from './BadgeCardComponent'
-import { getAchievementLevel, getSingleLevel, SINGLE_LEVEL_KEY_LIST } from '../model/AchieveModel'
-import { getBadgeCardItems, getContinueCardItems } from '../viewmodel/AchievementViewModel'
+import {
+  DEGREE_LEVEL_KEY_LIST,
+  getAchievementLevel,
+  getSingleDegree,
+  getSingleLevel, SINGLE_LEVEL_KEY_LIST } from '../model/AchieveModel'
+import { getBadgeCardItems, getContinueCardItems, getDegreeCardItems } from '../viewmodel/AchievementViewModel'
 import Logger from '../common/utils/Logger'
 import { ACHIEVEMENT_LEVEL_KEY } from '../model/AchieveModel'
 import { CommonConstants as Const } from '../common/constants/CommonConstants';
@@ -53,6 +57,25 @@ export struct SingleBadgePanel {
   build() {
     Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
       ForEach(getContinueCardItems(this.successiveDays), (item: CardInfo) => {
+        BadgeCard({ content: item.titleContent, imgSrc: item.achievement })
+      })
+    }
+    .width(Const.FULL_WIDTH)
+  }
+}
+
+@Component
+export struct DegreeBadgePanel {
+  @StorageProp(DEGREE_LEVEL_KEY_LIST) degrees: Array<number> = [];
+
+  aboutToAppear() {
+    Logger.debug('DegreeBadgePanel', 'aboutToAppear');
+    getSingleDegree();
+  }
+
+  build() {
+    Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
+      ForEach(getDegreeCardItems(this.degrees), (item: CardInfo) => {
         BadgeCard({ content: item.titleContent, imgSrc: item.achievement })
       })
     }

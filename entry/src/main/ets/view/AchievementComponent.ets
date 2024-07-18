@@ -14,7 +14,7 @@
  */
 
 import { CommonConstants as Const } from '../common/constants/CommonConstants';
-import { BadgePanel, SingleBadgePanel } from './BadgePanelComponent';
+import { BadgePanel, DegreeBadgePanel, SingleBadgePanel } from './BadgePanelComponent';
 import { TitleBar } from './TitleBarComponent';
 import Logger from '../common/utils/Logger';
 
@@ -35,6 +35,7 @@ export struct AchievementIndex {
           TitleBar()
           BadgePanel()
           SingleBadgePanel()
+          DegreeBadgePanel()
         }
       }
 
