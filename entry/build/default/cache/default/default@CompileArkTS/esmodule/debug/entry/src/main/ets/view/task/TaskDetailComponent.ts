@@ -2,6 +2,9 @@ if (!("finalizeConstruction" in ViewPU.prototype)) {
     Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
 }
 interface TaskDetail_Params {
+    CustomTaskTable?;
+    customTaskInfo?: TaskData[];
+    customtaskname?: string;
     broadCast?: BroadCast;
     settingParams?: ITaskItem;
     frequency?: string;
@@ -21,12 +24,20 @@ import { HealthDataSrcMgr } from "@bundle:com.example.healthy_life/entry/ets/com
 import { initFrequencyString, addTask, formatParams } from "@bundle:com.example.healthy_life/entry/ets/viewmodel/TaskViewModel";
 import { TaskDialogView } from "@bundle:com.example.healthy_life/entry/ets/view/dialog/TaskDialogView";
 import { GlobalContext } from "@bundle:com.example.healthy_life/entry/ets/common/utils/GlobalContext";
+import CustomTaskApi from "@bundle:com.example.healthy_life/entry/ets/common/database/tables/CustomTaskApi";
+import TaskData from "@bundle:com.example.healthy_life/entry/ets/viewmodel/TaskData";
 export default class TaskDetail extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
         super(parent, __localStorage, elmtId, extraInfo);
         if (typeof paramsLambda === "function") {
             this.paramsGenerator_ = paramsLambda;
         }
+        this.CustomTaskTable = new CustomTaskApi(() => {
+        });
+        this.__customTaskInfo = new ObservedPropertyObjectPU([], this, "customTaskInfo");
+        this.addProvidedVar("customTaskInfo", this.__customTaskInfo, false);
+        this.__customtaskname = new ObservedPropertySimplePU('--', this, "customtaskname");
+        this.addProvidedVar("customtaskname", this.__customtaskname, false);
         this.__broadCast = new ObservedPropertyObjectPU(HealthDataSrcMgr.getInstance().getBroadCast(), this, "broadCast");
         this.addProvidedVar("broadCast", this.__broadCast, false);
         this.__settingParams = new ObservedPropertyObjectPU(this.parseRouterParams(), this, "settingParams");
@@ -39,6 +50,15 @@ export default class TaskDetail extends ViewPU {
         this.finalizeConstruction();
     }
     setInitiallyProvidedValue(params: TaskDetail_Params) {
+        if (params.CustomTaskTable !== undefined) {
+            this.CustomTaskTable = params.CustomTaskTable;
+        }
+        if (params.customTaskInfo !== undefined) {
+            this.customTaskInfo = params.customTaskInfo;
+        }
+        if (params.customtaskname !== undefined) {
+            this.customtaskname = params.customtaskname;
+        }
         if (params.broadCast !== undefined) {
             this.broadCast = params.broadCast;
         }
@@ -55,17 +75,38 @@ export default class TaskDetail extends ViewPU {
     updateStateVars(params: TaskDetail_Params) {
     }
     purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__customTaskInfo.purgeDependencyOnElmtId(rmElmtId);
+        this.__customtaskname.purgeDependencyOnElmtId(rmElmtId);
         this.__broadCast.purgeDependencyOnElmtId(rmElmtId);
         this.__settingParams.purgeDependencyOnElmtId(rmElmtId);
         this.__frequency.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
+        this.__customTaskInfo.aboutToBeDeleted();
+        this.__customtaskname.aboutToBeDeleted();
         this.__broadCast.aboutToBeDeleted();
         this.__settingParams.aboutToBeDeleted();
         this.__frequency.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
+    /*新增，读数据库获得用户自定义数据*/
+    private CustomTaskTable;
+    private __customTaskInfo: ObservedPropertyObjectPU<TaskData[]>;
+    get customTaskInfo() {
+        return this.__customTaskInfo.get();
+    }
+    set customTaskInfo(newValue: TaskData[]) {
+        this.__customTaskInfo.set(newValue);
+    }
+    private __customtaskname: ObservedPropertySimplePU<string>;
+    get customtaskname() {
+        return this.__customtaskname.get();
+    }
+    set customtaskname(newValue: string) {
+        this.__customtaskname.set(newValue);
+    }
+    /*------------------------*/
     private __broadCast: ObservedPropertyObjectPU<BroadCast>;
     get broadCast() {
         return this.__broadCast.get();
@@ -103,20 +144,25 @@ export default class TaskDetail extends ViewPU {
         if (this.isChanged) {
             let context: Context = getContext(this) as common.Context;
             let taskInfo: TaskInfo = new TaskInfo(Const.ZERO, Const.GLOBAL_KEY, this.settingParams.taskID, this.settingParams.targetValue, this.settingParams.isAlarm, this.settingParams.startTime, this.settingParams.endTime, this.settingParams.frequency, false, '', this.settingParams.isOpen);
+            // 显示 taskInfo 的值
+            Logger.info('taskInfo:', JSON.stringify(taskInfo));
             addTask(taskInfo, context).then((res: number) => {
                 GlobalContext.getContext().setObject('taskListChange', true);
                 router.back({
                     url: 'pages/MainPage',
                     params: {
                         editTask: this.backIndexParams(),
+                        //新增返回用户自定义参数
+                        //custoMtask: JSON.stringify(this.customTaskInfo)
                     }
                 });
+                //Logger.info('this.backIndexParams()', JSON.stringify(this.backIndexParams()));
                 Logger.info('addTaskFinished', JSON.stringify(res));
             }).catch((error: Error) => {
                 promptAction.showToast({
                     message: Const.SETTING_FINISH_FAILED_MESSAGE
                 });
-                Logger.error('addTaskFailed', JSON.stringify(error));
+                Logger.error('addTaskFailed你是？', JSON.stringify(error));
             });
             return;
         }
@@ -124,13 +170,37 @@ export default class TaskDetail extends ViewPU {
             url: 'pages/MainPage',
         });
     }
-    aboutToAppear() {
+    //为了从数据库中读取用户自定义，这里修改为异步
+    async aboutToAppear() {
+        //aboutToAppear() {
+        Logger.info('are you ok');
         this.broadCast.off(BroadCastType.SHOW_TARGET_SETTING_DIALOG, () => {
         });
         this.broadCast.off(BroadCastType.SHOW_REMIND_TIME_DIALOG, () => {
         });
         this.broadCast.off(BroadCastType.SHOW_FREQUENCY_DIALOG, () => {
         });
+        //新增从customtask 数据库中取出用户自定义的数据
+        this.CustomTaskTable.getRdbStore(() => {
+            this.CustomTaskTable.query(8, (result: TaskData[]) => {
+                if (result && result.length > 0) {
+                    this.customTaskInfo.push(result[0]);
+                    this.customtaskname = this.customTaskInfo[0].name;
+                    Logger.info('DetailCustomInfo on taskdetailcomponent', `${this.customTaskInfo[0].name}`);
+                }
+                else {
+                    // 如果没有查询到数据，插入新数据
+                    let newCustomInfo = new TaskData();
+                    this.CustomTaskTable.insertData(newCustomInfo, (id: number) => {
+                        newCustomInfo.id = id;
+                        this.customTaskInfo.push(newCustomInfo);
+                        this.customtaskname = this.customTaskInfo[0].name;
+                        Logger.info('DetailCustomInfo on taskdetailcomponent没有表', `${this.customTaskInfo[0].id}`);
+                    });
+                }
+            }, false);
+        });
+        /*----------------------------------------------*/
     }
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -165,7 +235,7 @@ export default class TaskDetail extends ViewPU {
                 {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         if (isInitialRender) {
-                            let componentCall = new TaskChooseItem(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/task/TaskDetailComponent.ets", line: 108 });
+                            let componentCall = new TaskChooseItem(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/task/TaskDetailComponent.ets", line: 147 });
                             ViewPU.create(componentCall);
                             let paramsLambda = () => {
                                 return {};
@@ -198,8 +268,8 @@ export default class TaskDetail extends ViewPU {
                 ListItem.borderRadius(Const.DEFAULT_10);
                 ListItem.padding({ left: Const.DEFAULT_12, right: Const.DEFAULT_12 });
                 ListItem.enabled(this.settingParams?.isOpen
-                // && this.settingParams?.taskID !== taskType.smile
-                // && this.settingParams?.taskID !== taskType.brushTeeth
+                //&& this.settingParams?.taskID !== taskType.smile
+                //&& this.settingParams?.taskID !== taskType.brushTeeth
                 );
                 ListItem.onClick(() => {
                     this.broadCast.emit(BroadCastType.SHOW_TARGET_SETTING_DIALOG);
@@ -210,7 +280,7 @@ export default class TaskDetail extends ViewPU {
                 {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         if (isInitialRender) {
-                            let componentCall = new TargetSetItem(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/task/TaskDetailComponent.ets", line: 113 });
+                            let componentCall = new TargetSetItem(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/task/TaskDetailComponent.ets", line: 152 });
                             ViewPU.create(componentCall);
                             let paramsLambda = () => {
                                 return {};
@@ -249,7 +319,7 @@ export default class TaskDetail extends ViewPU {
                 {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         if (isInitialRender) {
-                            let componentCall = new OpenRemindItem(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/task/TaskDetailComponent.ets", line: 127 });
+                            let componentCall = new OpenRemindItem(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/task/TaskDetailComponent.ets", line: 166 });
                             ViewPU.create(componentCall);
                             let paramsLambda = () => {
                                 return {};
@@ -291,7 +361,7 @@ export default class TaskDetail extends ViewPU {
                 {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         if (isInitialRender) {
-                            let componentCall = new RemindTimeItem(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/task/TaskDetailComponent.ets", line: 133 });
+                            let componentCall = new RemindTimeItem(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/task/TaskDetailComponent.ets", line: 172 });
                             ViewPU.create(componentCall);
                             let paramsLambda = () => {
                                 return {};
@@ -333,7 +403,7 @@ export default class TaskDetail extends ViewPU {
                 {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         if (isInitialRender) {
-                            let componentCall = new FrequencyItem(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/task/TaskDetailComponent.ets", line: 142 });
+                            let componentCall = new FrequencyItem(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/task/TaskDetailComponent.ets", line: 181 });
                             ViewPU.create(componentCall);
                             let paramsLambda = () => {
                                 return {};
@@ -374,7 +444,7 @@ export default class TaskDetail extends ViewPU {
         {
             this.observeComponentCreation2((elmtId, isInitialRender) => {
                 if (isInitialRender) {
-                    let componentCall = new TaskDialogView(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/task/TaskDetailComponent.ets", line: 167 });
+                    let componentCall = new TaskDialogView(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/task/TaskDetailComponent.ets", line: 206 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {};

@@ -3,7 +3,7 @@ import type AbilityConstant from "@ohos:app.ability.AbilityConstant";
 import type Want from "@ohos:app.ability.Want";
 import type window from "@ohos:window";
 import { CommonConstants as Const } from "@bundle:com.example.healthy_life/entry/ets/common/constants/CommonConstants";
-import { columnDayInfoList, columnGlobalInfoList, columnTaskInfoInfoList, columnFormInfoList } from "@bundle:com.example.healthy_life/entry/ets/model/RdbColumnModel";
+import { columnDayInfoList, columnGlobalInfoList, columnTaskInfoInfoList, columnFormInfoList, } from "@bundle:com.example.healthy_life/entry/ets/model/RdbColumnModel";
 import RdbUtils from "@bundle:com.example.healthy_life/entry/ets/common/database/rdb/RdbUtils";
 import Logger from "@bundle:com.example.healthy_life/entry/ets/common/utils/Logger";
 import FormUtils from "@bundle:com.example.healthy_life/entry/ets/common/utils/FormUtils";
