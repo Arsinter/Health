@@ -23,6 +23,7 @@ import CustomTaskApi from '../../common/database/tables/CustomTaskApi';  //数�
 import TaskData from '../../viewmodel/TaskData';                       //自定义任务数据类型
 import emitter from '@ohos.events.emitter';                            //订阅相关
 import { util } from '@kit.ArkTS';
+import { router } from '@kit.ArkUI';
 
 @Extend(Text)
 function targetSetCommon() {
@@ -68,6 +69,24 @@ export struct TaskChooseItem {
   @Consume customtaskname: string;
   inputTaskName: string = '';
   /*--------------------------------------*/
+  //aboutToAppear是完全新增的,用于获取订阅的事件，来修改任务名称和类型
+  async aboutToAppear() {
+    const TAG: string = 'ThreadModel';
+    // 定义一个eventId为1的事件
+    let event: emitter.InnerEvent = {
+      eventId: 2
+    };
+    // 收到eventId为2的事件后执行该回调
+    let callback = (eventData: emitter.EventData): void => {
+      // 更新用户信息
+      let taskName = eventData.data?.taskName as string
+      this.customTaskInfo[0].name = taskName;
+      this.customtaskname = this.customTaskInfo[0].name;
+      Logger.info(TAG, 'event2 callback:' + JSON.stringify(eventData.data?.taskName));
+    };
+    // 订阅eventId为2的事件
+    emitter.on(event, callback);
+  }
   build() {
     Row() {
       //Text(this.settingParams.taskName).fontSize(Const.DEFAULT_20).fontWeight(FontWeight.Medium)
@@ -75,26 +94,30 @@ export struct TaskChooseItem {
       /*---------------------------*/
       if (this.settingParams.taskID === 8) {
         //Text(this.settingParams.taskName)
-        Text('任务名称:')
+        Text(this.customtaskname)
           .fontSize(Const.DEFAULT_20)
           .fontWeight(FontWeight.Medium)
-        TextInput({text:`${this.customtaskname}`})
+        //新增
+          .onClick(() => {
+            router.pushUrl({
+              url : 'pages/CustomTaskEDit'
+            })
+          })
+        //用新页面了舍弃这里的
+        /*TextInput({text:`${this.customtaskname}`})
           .fontSize(Const.DEFAULT_20)
           .fontWeight(FontWeight.Medium)
           .width(100)  // 设置宽度
           .onChange((value) => {
             this.inputTaskName = String(value);
             Logger.info('我是用户输入的自定义名称', JSON.stringify(this.inputTaskName));
-          })
-        Button('保存')
+          })*/
+        /*Button('保存')
           //.fontColor("#FFFFFF")
           .width($r('app.float.default_10'))
           //.backgroundColor("#00FF00")
           // Write the information and clear the content so that the text box is cleared after you click Save.
           .onClick(() => {
-            /*if (this.inputTaskName == '' || this.inputTaskName.length > 30) {
-              //这里可以加一个判断逻辑，不合法时弹窗
-            }*/
             //保存用户输入逻辑
             this.customtaskname = this.inputTaskName;
             this.customTaskInfo[0].name = this.inputTaskName;
@@ -112,24 +135,7 @@ export struct TaskChooseItem {
                 if(this.settingParams.isOpen == false){
                   this.settingParams.isAlarm = false;
                 }
-                /*// 定义一个eventId为1的事件，事件优先级为Low
-                let event: emitter.InnerEvent = {
-                  eventId: 1,
-                  priority: emitter.EventPriority.LOW
-                }
-                // 将修改后的名字发送出去
-                let eventData: emitter.EventData = {
-                  data: {
-                    content: this.name,
-                    id: 1,
-                    isEmpty: false
-                  }
-                };
-                // 发送eventId为1的事件，事件内容为eventData
-                emitter.emit(event, eventData);*/
-              }, false);
-            });
-          })
+                */
       } else {
         Text(this.settingParams.taskName)
           .fontSize(Const.DEFAULT_20)
