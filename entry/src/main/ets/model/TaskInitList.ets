@@ -164,6 +164,22 @@ export const TaskMapById: Array<ITaskItem> = [
     endTime: '00: 00',
     frequency: '1, 2, 3, 4, 5, 6, 7'
   },
+  //新增自定义暂时让他只支持设置时间
+  {
+    taskID: 8,
+    taskName: $r('app.string.task_custom'),
+    icon: $r('app.media.ic_task_custom'),
+    dialogBg: $r('app.media.ic_dialog_custom'),
+    targetValue: '08: 00',
+    isOpen: false,
+    unit: '',
+    step: 0,
+    isInit: true,
+    isAlarm: false,
+    startTime: '08: 00',
+    endTime: '00: 00',
+    frequency: '1, 2, 3, 4, 5, 6, 7'
+  },
 
 ]
 
@@ -198,6 +214,11 @@ export const RemindContentMap: Array<RemindContentItem> = [
   {
     title: Const.RUN_TASK_NAME,
     content: Const.RUN_CONTENT
+  },
+  //新增自定义用早起代替  之后想办法用数据库里保存的字段
+  {
+    title: Const.Custom_TASK_NAME,
+    content: Const.Custom_CONTENT
   },
 ];
 

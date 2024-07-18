@@ -92,6 +92,12 @@
       "name": "task_night",
       "value": "早睡"
     },
+
+    {
+      "name": "task_custom",
+      "value": "自定义"
+    },
+
     {
       "name": "task_done",
       "value": "已完成"

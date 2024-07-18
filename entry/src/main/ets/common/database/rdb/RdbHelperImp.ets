@@ -51,13 +51,14 @@ export class RdbHelperImp implements RdbHelper {
   }
 
   executeSql(sql: string): Promise<void> {
-    Logger.info(`executeSql sql : ${sql}`);
+    Logger.info(`executeSql sql试一下 : ${sql}`);
     return this.rdbStore.executeSql(sql);
   }
 
   createTable(tableName: string, columns: Array<ColumnInfo>): Promise<void> {
     Logger.info(`createTable tableName : ${tableName}, columns : ${JSON.stringify(columns)}`);
     let createTableSql = tableHelper.createTableSql(tableName, columns);
+    Logger.info(`createTable tableName3164 : ${createTableSql}`);
     return this.executeSql(createTableSql);
   }
 

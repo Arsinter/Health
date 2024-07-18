@@ -253,6 +253,10 @@ class FormUtils {
         case taskType.run:
           temp = this.getTemp(temp, TaskType.Run, Unit.Kile, false, item.isDone);
           break;
+        //新增自定义
+        case taskType.custom:
+          temp = this.getTemp(temp, TaskType.Custom, Unit.Empty, false, item.isDone);
+          break
         default:
           break;
       }

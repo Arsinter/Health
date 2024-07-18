@@ -43,6 +43,7 @@ export default class TaskInfo {
   finValue: string;
   isOpen: boolean;
 
+
   constructor(id: number, date: string, taskID: number, targetValue: string, isAlarm: boolean, startTime: string,
               endTime: string, frequency: string, isDone: boolean, finValue: string, isOpen = false) {
     this.id = id;
@@ -67,7 +68,9 @@ export enum taskType {
   'brushTeeth',
   'sleepEarly',
   //新增跑步
-  'run'
+  'run',
+  //新增自定义
+  'custom'
 }
 
 export const oneWeek = oneWeekDictFunc();

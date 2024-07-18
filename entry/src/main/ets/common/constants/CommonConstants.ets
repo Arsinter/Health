@@ -50,9 +50,10 @@ export class CommonConstants {
     columns: ['id', 'formId', 'formName', 'formDimension']
   } as CommonConstantsInfo
   // TaskNum
-  //应该是6+1了
+  //应该是6+1+1了
   //static readonly TASK_NUM = 6;
-  static readonly TASK_NUM = 7;
+  //static readonly TASK_NUM = 7;
+  static readonly TASK_NUM = 8;
   // THOUSANDTH
   static readonly THOUSANDTH_15: string = '1.5%'; // ‘1.5%’
   static readonly THOUSANDTH_12: string = '2.2%'; // ‘2.2%’
@@ -139,6 +140,7 @@ export class CommonConstants {
   static readonly GLOBAL_KEY: string = 'global';
   // RemindContent
   static readonly GET_UP_TASK_NAME: string = '早起';
+  static readonly Custom_TASK_NAME: string = '自定义任务';
   static readonly DRINK_TASK_NAME: string = '喝水';
   //新增跑步
   static readonly RUN_TASK_NAME: string = '每日跑步';
@@ -147,6 +149,7 @@ export class CommonConstants {
   static readonly BRUSH_TEETH_TASK_NAME: string = '每日刷牙';
   static readonly SLEEP_TASK_NAME: string = '早睡';
   static readonly GET_UP_CONTENT: string = '该早起啦';
+  static readonly Custom_CONTENT: string = '该做自定义任务啦!';
   static readonly DRINK_CONTENT: string = '该喝水啦';
   static readonly EAT_APPLE_CONTENT: string = '该吃苹果啦';
   static readonly SMILE_CONTENT: string = '请保持微笑';
@@ -204,6 +207,8 @@ export enum TaskType {
   Sleep = 'sleep',
   //新增跑步
   Run = 'run',
+  //新增自定义
+  Custom = 'custom'
 }
 
 export enum Unit {

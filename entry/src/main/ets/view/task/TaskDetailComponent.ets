@@ -33,6 +33,11 @@ import { HealthDataSrcMgr } from '../../common/utils/HealthDataSrcMgr';
 import { initFrequencyString, addTask, formatParams } from '../../viewmodel/TaskViewModel';
 import { TaskDialogView } from '../dialog/TaskDialogView';
 import { GlobalContext } from '../../common/utils/GlobalContext';
+//新增引用custom task相关的
+import CustomTaskApi from '../../common/database/tables/CustomTaskApi';  //数据库接口
+import TaskData from '../../viewmodel/TaskData';                       //自定义任务数据类型
+import emitter from '@ohos.events.emitter';                            //订阅相关
+import { util } from '@kit.ArkTS';
 
 @Styles
 function listItemStyle() {
@@ -44,9 +49,16 @@ function listItemStyle() {
 
 @Component
 export default struct TaskDetail {
+  /*新增，读数据库获得用户自定义数据*/
+  private CustomTaskTable = new CustomTaskApi(() => {
+  });
+  @Provide customTaskInfo: TaskData[] = [];
+  @Provide customtaskname: string = '--';
+  /*------------------------*/
   @Provide broadCast: BroadCast = HealthDataSrcMgr.getInstance().getBroadCast();
   @Provide @Watch('onParamsChanged') settingParams: ITaskItem = this.parseRouterParams();
   @Provide frequency: string = initFrequencyString(this.settingParams?.frequency);
+
   private isChanged: boolean = false;
 
   parseRouterParams() {
@@ -77,6 +89,8 @@ export default struct TaskDetail {
           url: 'pages/MainPage',
           params: {
             editTask: this.backIndexParams(),
+            //新增返回用户自定义参数
+            //custoMtask: JSON.stringify(this.customTaskInfo)
           }
         })
         //Logger.info('this.backIndexParams()', JSON.stringify(this.backIndexParams()));
@@ -93,14 +107,36 @@ export default struct TaskDetail {
       url: 'pages/MainPage',
     });
   }
-
-  aboutToAppear() {
+  //为了从数据库中读取用户自定义，这里修改为异步
+  async aboutToAppear() {
+  //aboutToAppear() {
+    Logger.info('are you ok');
     this.broadCast.off(BroadCastType.SHOW_TARGET_SETTING_DIALOG, () => {
     });
     this.broadCast.off(BroadCastType.SHOW_REMIND_TIME_DIALOG, () => {
     });
     this.broadCast.off(BroadCastType.SHOW_FREQUENCY_DIALOG, () => {
     });
+    //新增从customtask 数据库中取出用户自定义的数据
+    this.CustomTaskTable.getRdbStore(() => { // 获取数据库
+      this.CustomTaskTable.query(8, (result: TaskData[]) => { // 查询数据库中的用户自定义名称
+        if (result && result.length > 0) {
+          this.customTaskInfo.push(result[0]);
+          this.customtaskname = this.customTaskInfo[0].name;
+          Logger.info('DetailCustomInfo on taskdetailcomponent', `${this.customTaskInfo[0].name}`);
+        } else {
+          // 如果没有查询到数据，插入新数据
+          let newCustomInfo = new TaskData();
+          this.CustomTaskTable.insertData(newCustomInfo, (id: number) => {
+            newCustomInfo.id = id;
+            this.customTaskInfo.push(newCustomInfo);
+            this.customtaskname = this.customTaskInfo[0].name;
+            Logger.info('DetailCustomInfo on taskdetailcomponent没有表', `${this.customTaskInfo[0].id}`);
+          });
+        }
+      }, false);
+    });
+    /*----------------------------------------------*/
   }
 
   build() {
