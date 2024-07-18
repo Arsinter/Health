@@ -755,33 +755,5 @@
 			"type":	"profile",
 			"name":	"main_pages",
 			"id":	"0x010000BC"
-		}, {
-			"type":	"string",
-			"name":	"task_run",
-			"id":	"0x010000BD"
-		}, {
-			"type":	"media",
-			"name":	"ic_card_run",
-			"id":	"0x010000BE"
-		}, {
-			"type":	"media",
-			"name":	"ic_dialog_run",
-			"id":	"0x010000BF"
-		}, {
-			"type":	"media",
-			"name":	"ic_task_run",
-			"id":	"0x010000C0"
-		}, {
-			"type":	"string",
-			"name":	"task_custom",
-			"id":	"0x010000C1"
-		}, {
-			"type":	"media",
-			"name":	"ic_dialog_custom",
-			"id":	"0x010000C2"
-		}, {
-			"type":	"media",
-			"name":	"ic_task_custom",
-			"id":	"0x010000C3"
 		}]
 }

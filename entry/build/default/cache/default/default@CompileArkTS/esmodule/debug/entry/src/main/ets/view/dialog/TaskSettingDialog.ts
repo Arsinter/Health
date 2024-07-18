@@ -16,18 +16,17 @@ interface RemindTimeDialog_Params {
 interface TargetSettingDialog_Params {
     settingParams?: ITaskItem;
     controller?: CustomDialogController;
+    smileRange?: string[];
+    brushTeethRange?: string[];
     drinkRange?: string[];
     appleRange?: string[];
-    smileRange?: string[];
-    teethRange?: string[];
-    runRange?: string[];
     currentValue?: string;
     currentTime?: string;
 }
 import promptAction from "@ohos:promptAction";
 import type { ITaskItem } from '../../model/TaskInitList';
 import { frequencyRange } from "@bundle:com.example.healthy_life/entry/ets/common/utils/Utils";
-import { returnTimeStamp, createAppleRange, createDrinkRange, createSmileRange, createTeethRange, createRunRange, formatTime } from "@bundle:com.example.healthy_life/entry/ets/viewmodel/TaskViewModel";
+import { returnTimeStamp, createAppleRange, createDrinkRange, formatTime, createSmileRange, createBrushTeethRange } from "@bundle:com.example.healthy_life/entry/ets/viewmodel/TaskViewModel";
 import { taskType } from "@bundle:com.example.healthy_life/entry/ets/viewmodel/TaskInfo";
 import { CommonConstants as Const } from "@bundle:com.example.healthy_life/entry/ets/common/constants/CommonConstants";
 import type { FrequencyContentType } from '../../model/TaskInitList';
@@ -41,11 +40,10 @@ export class TargetSettingDialog extends ViewPU {
         this.controller = new CustomDialogController({
             builder: ''
         }, this);
+        this.smileRange = createSmileRange();
+        this.brushTeethRange = createBrushTeethRange();
         this.drinkRange = createDrinkRange();
         this.appleRange = createAppleRange();
-        this.smileRange = createSmileRange();
-        this.teethRange = createTeethRange();
-        this.runRange = createRunRange();
         this.currentValue = this.settingParams.targetValue;
         this.currentTime = Const.DEFAULT_TIME;
         this.setInitiallyProvidedValue(params);
@@ -55,20 +53,17 @@ export class TargetSettingDialog extends ViewPU {
         if (params.controller !== undefined) {
             this.controller = params.controller;
         }
+        if (params.smileRange !== undefined) {
+            this.smileRange = params.smileRange;
+        }
+        if (params.brushTeethRange !== undefined) {
+            this.brushTeethRange = params.brushTeethRange;
+        }
         if (params.drinkRange !== undefined) {
             this.drinkRange = params.drinkRange;
         }
         if (params.appleRange !== undefined) {
             this.appleRange = params.appleRange;
-        }
-        if (params.smileRange !== undefined) {
-            this.smileRange = params.smileRange;
-        }
-        if (params.teethRange !== undefined) {
-            this.teethRange = params.teethRange;
-        }
-        if (params.runRange !== undefined) {
-            this.runRange = params.runRange;
         }
         if (params.currentValue !== undefined) {
             this.currentValue = params.currentValue;
@@ -98,13 +93,13 @@ export class TargetSettingDialog extends ViewPU {
     setController(ctr: CustomDialogController) {
         this.controller = ctr;
     }
+    private smileRange: string[];
+    private brushTeethRange: string[];
     private drinkRange: string[];
     private appleRange: string[];
-    private smileRange: string[]; //新增笑次数
-    private teethRange: string[]; //新增刷牙次数
-    private runRange: string[]; //新增跑步范围
     private currentValue: string;
     private currentTime: string;
+    // 判断输入的起止时间是否合法
     compareTime(startTime: string, endTime: string) {
         if (returnTimeStamp(this.currentTime) < returnTimeStamp(startTime) ||
             returnTimeStamp(this.currentTime) > returnTimeStamp(endTime)) {
@@ -116,7 +111,6 @@ export class TargetSettingDialog extends ViewPU {
         return true;
     }
     setTargetValue() {
-        //Logger.info('current中', `${this.currentTime}`);
         if (this.settingParams?.taskID === taskType.getup) {
             if (!this.compareTime(Const.GET_UP_EARLY_TIME, Const.GET_UP_LATE_TIME)) {
                 return;
@@ -131,15 +125,7 @@ export class TargetSettingDialog extends ViewPU {
             this.settingParams.targetValue = this.currentTime;
             return;
         }
-        //新增自定义类型逻辑
-        if (this.settingParams?.taskID === taskType.custom) {
-            this.settingParams.targetValue = this.currentTime;
-            return;
-        }
-        //Logger.info('为什么设置不成功！', `${this.settingParams?.taskID}`);
         this.settingParams.targetValue = this.currentValue;
-        //Logger.info('为什么设置不成功！', `${this.currentValue}`);
-        //Logger.info('为什么设置不成功！', `${this.settingParams.targetValue}`);
     }
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -170,9 +156,8 @@ export class TargetSettingDialog extends ViewPU {
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             If.create();
-            //新增自定义类型
-            //if ([taskType.getup, taskType.sleepEarly].indexOf(this.settingParams?.taskID) > Const.HAS_NO_INDEX) {
-            if ([taskType.getup, taskType.sleepEarly, taskType.custom].indexOf(this.settingParams?.taskID) > Const.HAS_NO_INDEX) {
+            // 设置 目标设置 的范围
+            if ([taskType.getup, taskType.sleepEarly].indexOf(this.settingParams?.taskID) > Const.HAS_NO_INDEX) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         TimePicker.create({
@@ -182,44 +167,34 @@ export class TargetSettingDialog extends ViewPU {
                         TimePicker.useMilitaryTime(true);
                         TimePicker.onChange((value: TimePickerResult) => {
                             this.currentTime = formatTime(value);
-                            //Logger.info('currentTimeasdaad', `${this.currentTime}`);
                         });
                     }, TimePicker);
                     TimePicker.pop();
                 });
             }
-            else {
+            else if ([taskType.smile, taskType.brushTeeth].indexOf(this.settingParams?.taskID) > Const.HAS_NO_INDEX) {
                 this.ifElseBranchUpdateFunction(1, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        //新增修改
-                        //TextPicker({ range: this.settingParams?.taskID === taskType.drinkWater ? this.drinkRange : this.appleRange })
-                        TextPicker.create({
-                            range: this.settingParams?.taskID === taskType.drinkWater
-                                ? this.drinkRange
-                                : this.settingParams?.taskID === taskType.eatApple
-                                    ? this.appleRange
-                                    : this.settingParams?.taskID === taskType.smile
-                                        ? this.smileRange
-                                        : this.settingParams?.taskID === taskType.brushTeeth
-                                            ? this.teethRange
-                                            : this.settingParams?.taskID === taskType.run
-                                                ? this.runRange
-                                                : []
-                        });
-                        //新增修改
-                        //TextPicker({ range: this.settingParams?.taskID === taskType.drinkWater ? this.drinkRange : this.appleRange })
+                        TextPicker.create({ range: this.settingParams?.taskID === taskType.smile ? this.smileRange : this.brushTeethRange });
                         TextPicker.width(Const.THOUSANDTH_900);
-                        //新增修改
-                        //TextPicker({ range: this.settingParams?.taskID === taskType.drinkWater ? this.drinkRange : this.appleRange })
                         TextPicker.height(Const.THOUSANDTH_800);
-                        //新增修改
-                        //TextPicker({ range: this.settingParams?.taskID === taskType.drinkWater ? this.drinkRange : this.appleRange })
                         TextPicker.onChange((value: string | string[]) => {
                             this.currentValue = (value as string)?.split(' ')[0];
                         });
                     }, TextPicker);
-                    //新增修改
-                    //TextPicker({ range: this.settingParams?.taskID === taskType.drinkWater ? this.drinkRange : this.appleRange })
+                    TextPicker.pop();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(2, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        TextPicker.create({ range: this.settingParams?.taskID === taskType.drinkWater ? this.drinkRange : this.appleRange });
+                        TextPicker.width(Const.THOUSANDTH_900);
+                        TextPicker.height(Const.THOUSANDTH_800);
+                        TextPicker.onChange((value: string | string[]) => {
+                            this.currentValue = (value as string)?.split(' ')[0];
+                        });
+                    }, TextPicker);
                     TextPicker.pop();
                 });
             }
@@ -248,9 +223,7 @@ export class TargetSettingDialog extends ViewPU {
             Text.fontSize(Const.DEFAULT_20);
             Text.fontColor({ "id": 16777268, "type": 10001, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
             Text.onClick(() => {
-                //Logger.info('current前', `${this.currentTime}`);
                 this.setTargetValue();
-                //Logger.info('current后', `${this.currentTime}`);
                 this.controller.close();
             });
         }, Text);

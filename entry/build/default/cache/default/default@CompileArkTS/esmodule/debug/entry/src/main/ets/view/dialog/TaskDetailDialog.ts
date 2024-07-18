@@ -14,18 +14,12 @@ interface TaskDetailDialog_Params {
     currentTask?: TaskInfo;
     showButton?: boolean;
     dialogCallBack?: CustomDialogCallback;
-    CustomTaskTable?;
-    customTaskInfo?: TaskData[];
-    customtaskname?: string;
 }
 import type { CustomDialogCallback } from './CustomDialogView';
 import type TaskInfo from '../../viewmodel/TaskInfo';
 import { TaskMapById } from "@bundle:com.example.healthy_life/entry/ets/model/TaskInitList";
 import { CommonConstants as Const } from "@bundle:com.example.healthy_life/entry/ets/common/constants/CommonConstants";
 import { GlobalContext } from "@bundle:com.example.healthy_life/entry/ets/common/utils/GlobalContext";
-import CustomTaskApi from "@bundle:com.example.healthy_life/entry/ets/common/database/tables/CustomTaskApi";
-import TaskData from "@bundle:com.example.healthy_life/entry/ets/viewmodel/TaskData";
-import Logger from "@bundle:com.example.healthy_life/entry/ets/common/utils/Logger";
 function __Text__textStyle(): void {
     Text.fontColor({ "id": 16777290, "type": 10001, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
     Text.fontFamily({ "id": 16777222, "type": 10003, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
@@ -46,10 +40,6 @@ export class TaskDetailDialog extends ViewPU {
         this.__currentTask = this.initializeConsume("currentTask", "currentTask");
         this.__showButton = new ObservedPropertySimplePU(true, this, "showButton");
         this.__dialogCallBack = this.initializeConsume("dialogCallBack", "dialogCallBack");
-        this.CustomTaskTable = new CustomTaskApi(() => {
-        });
-        this.__customTaskInfo = new ObservedPropertyObjectPU([], this, "customTaskInfo");
-        this.__customtaskname = new ObservedPropertySimplePU('.', this, "customtaskname");
         this.setInitiallyProvidedValue(params);
         this.finalizeConstruction();
     }
@@ -60,15 +50,6 @@ export class TaskDetailDialog extends ViewPU {
         if (params.showButton !== undefined) {
             this.showButton = params.showButton;
         }
-        if (params.CustomTaskTable !== undefined) {
-            this.CustomTaskTable = params.CustomTaskTable;
-        }
-        if (params.customTaskInfo !== undefined) {
-            this.customTaskInfo = params.customTaskInfo;
-        }
-        if (params.customtaskname !== undefined) {
-            this.customtaskname = params.customtaskname;
-        }
     }
     updateStateVars(params: TaskDetailDialog_Params) {
     }
@@ -76,15 +57,11 @@ export class TaskDetailDialog extends ViewPU {
         this.__currentTask.purgeDependencyOnElmtId(rmElmtId);
         this.__showButton.purgeDependencyOnElmtId(rmElmtId);
         this.__dialogCallBack.purgeDependencyOnElmtId(rmElmtId);
-        this.__customTaskInfo.purgeDependencyOnElmtId(rmElmtId);
-        this.__customtaskname.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__currentTask.aboutToBeDeleted();
         this.__showButton.aboutToBeDeleted();
         this.__dialogCallBack.aboutToBeDeleted();
-        this.__customTaskInfo.aboutToBeDeleted();
-        this.__customtaskname.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
@@ -113,45 +90,6 @@ export class TaskDetailDialog extends ViewPU {
     set dialogCallBack(newValue: CustomDialogCallback) {
         this.__dialogCallBack.set(newValue);
     }
-    /*新增，读数据库获得用户自定义数据*/
-    private CustomTaskTable;
-    private __customTaskInfo: ObservedPropertyObjectPU<TaskData[]>;
-    get customTaskInfo() {
-        return this.__customTaskInfo.get();
-    }
-    set customTaskInfo(newValue: TaskData[]) {
-        this.__customTaskInfo.set(newValue);
-    }
-    private __customtaskname: ObservedPropertySimplePU<string>;
-    get customtaskname() {
-        return this.__customtaskname.get();
-    }
-    set customtaskname(newValue: string) {
-        this.__customtaskname.set(newValue);
-    }
-    async aboutToAppear() {
-        //数据库中取出用户自定义的数据
-        this.CustomTaskTable.getRdbStore(() => {
-            this.CustomTaskTable.query(8, (result: TaskData[]) => {
-                if (result && result.length > 0) {
-                    this.customTaskInfo.push(result[0]);
-                    this.customtaskname = this.customTaskInfo[0].name;
-                    Logger.info('taskdetaildialogxxx', `${this.customTaskInfo[0].name}`);
-                }
-                else {
-                    // 如果没有查询到数据，插入新数据
-                    let newCustomInfo = new TaskData();
-                    this.CustomTaskTable.insertData(newCustomInfo, (id: number) => {
-                        newCustomInfo.id = id;
-                        this.customTaskInfo.push(newCustomInfo);
-                        this.customtaskname = this.customTaskInfo[0].name;
-                        Logger.info('taskdetaildialogxxx', `${this.customTaskInfo[0].id}`);
-                    });
-                }
-            }, false);
-        });
-    }
-    /*--------------新增结束---------------*/
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
@@ -172,16 +110,12 @@ export class TaskDetailDialog extends ViewPU {
             this.observeComponentCreation2((elmtId, isInitialRender) => {
                 if (isInitialRender) {
                     let componentCall = new TaskBaseInfo(this, {
-                        //自定义任务时传递数据库里的参数
-                        //taskName: TaskMapById[this.currentTask?.taskID - 1].taskName
-                        taskName: this.currentTask?.taskID === 8 ? this.customtaskname : TaskMapById[this.currentTask?.taskID - 1].taskName
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/dialog/TaskDetailDialog.ets", line: 78 });
+                        taskName: TaskMapById[this.currentTask?.taskID - 1].taskName
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/dialog/TaskDetailDialog.ets", line: 43 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
-                            //自定义任务时传递数据库里的参数
-                            //taskName: TaskMapById[this.currentTask?.taskID - 1].taskName
-                            taskName: this.currentTask?.taskID === 8 ? this.customtaskname : TaskMapById[this.currentTask?.taskID - 1].taskName
+                            taskName: TaskMapById[this.currentTask?.taskID - 1].taskName
                         };
                     };
                     componentCall.paramsGenerator_ = paramsLambda;
@@ -201,10 +135,9 @@ export class TaskDetailDialog extends ViewPU {
                         },
                         cancel: () => {
                             this.controller.close();
-                            Logger.info('build比toappear快！');
                         },
                         showButton: this.showButton
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/dialog/TaskDetailDialog.ets", line: 84 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/dialog/TaskDetailDialog.ets", line: 47 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -214,7 +147,6 @@ export class TaskDetailDialog extends ViewPU {
                             },
                             cancel: () => {
                                 this.controller.close();
-                                Logger.info('build比toappear快！');
                             },
                             showButton: this.showButton
                         };

@@ -1,4 +1,319 @@
-Ôr@“§modules§plugins³pkgName2SourceRoots’ÔrAŸªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrBÚJ«"use strict";
+Ôr@“§modules§plugins³pkgName2SourceRoots’ÔrAŸªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrBÚ"¤"use strict";
+if (!("finalizeConstruction" in ViewPU.prototype)) {
+    Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
+}
+/*
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
+ * Licensed under the Apache License,Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+let progressStorage = new LocalStorage();
+class ProgressCard extends ViewPU {
+    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
+        super(parent, __localStorage, elmtId, extraInfo);
+        this.__numerator = this.createLocalStorageProp('numerator', 0, "numerator");
+        this.__denominator = this.createLocalStorageProp('denominator', 0, "denominator");
+        this.__percent = this.createLocalStorageProp('percent', '0', "percent");
+        if (typeof paramsLambda === "function") {
+            this.paramsGenerator_ = paramsLambda;
+        }
+        this.ACTION_TYPE = 'router';
+        this.ABILITY_NAME = 'EntryAbility';
+        this.FULL_WIDTH_PERCENT = '100%';
+        this.FULL_HEIGHT_PERCENT = '100%';
+        this.PROGRESS_LAYOUT_HEIGHT = '80%';
+        this.RESULTS_LAYOUT_HEIGHT = '20%';
+        this.PERCENTAGE = '%';
+        this.SLASHES = '/';
+        this.PROGRESS_TOTAL = 100;
+        this.TEXT_SLIGHTLY_BOLD = 500;
+        this.setInitiallyProvidedValue(params);
+        this.finalizeConstruction();
+    }
+    setInitiallyProvidedValue(params) {
+        if (params.ACTION_TYPE !== undefined) {
+            this.ACTION_TYPE = params.ACTION_TYPE;
+        }
+        if (params.ABILITY_NAME !== undefined) {
+            this.ABILITY_NAME = params.ABILITY_NAME;
+        }
+        if (params.FULL_WIDTH_PERCENT !== undefined) {
+            this.FULL_WIDTH_PERCENT = params.FULL_WIDTH_PERCENT;
+        }
+        if (params.FULL_HEIGHT_PERCENT !== undefined) {
+            this.FULL_HEIGHT_PERCENT = params.FULL_HEIGHT_PERCENT;
+        }
+        if (params.PROGRESS_LAYOUT_HEIGHT !== undefined) {
+            this.PROGRESS_LAYOUT_HEIGHT = params.PROGRESS_LAYOUT_HEIGHT;
+        }
+        if (params.RESULTS_LAYOUT_HEIGHT !== undefined) {
+            this.RESULTS_LAYOUT_HEIGHT = params.RESULTS_LAYOUT_HEIGHT;
+        }
+        if (params.PERCENTAGE !== undefined) {
+            this.PERCENTAGE = params.PERCENTAGE;
+        }
+        if (params.SLASHES !== undefined) {
+            this.SLASHES = params.SLASHES;
+        }
+        if (params.PROGRESS_TOTAL !== undefined) {
+            this.PROGRESS_TOTAL = params.PROGRESS_TOTAL;
+        }
+        if (params.TEXT_SLIGHTLY_BOLD !== undefined) {
+            this.TEXT_SLIGHTLY_BOLD = params.TEXT_SLIGHTLY_BOLD;
+        }
+    }
+    updateStateVars(params) {
+    }
+    purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__numerator.purgeDependencyOnElmtId(rmElmtId);
+        this.__denominator.purgeDependencyOnElmtId(rmElmtId);
+        this.__percent.purgeDependencyOnElmtId(rmElmtId);
+    }
+    aboutToBeDeleted() {
+        this.__numerator.aboutToBeDeleted();
+        this.__denominator.aboutToBeDeleted();
+        this.__percent.aboutToBeDeleted();
+        SubscriberManager.Get().delete(this.id__());
+        this.aboutToBeDeletedInternal();
+    }
+    get numerator() {
+        return this.__numerator.get();
+    }
+    set numerator(newValue) {
+        this.__numerator.set(newValue);
+    }
+    get denominator() {
+        return this.__denominator.get();
+    }
+    set denominator(newValue) {
+        this.__denominator.set(newValue);
+    }
+    get percent() {
+        return this.__percent.get();
+    }
+    set percent(newValue) {
+        this.__percent.set(newValue);
+    }
+    initialRender() {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.backgroundColor({ "id": 16777284, "type": 10001, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
+            Column.width(this.FULL_WIDTH_PERCENT);
+            Column.height(this.FULL_HEIGHT_PERCENT);
+            Column.onClick(() => {
+                postCardAction(this, {
+                    'action': this.ACTION_TYPE,
+                    'abilityName': this.ABILITY_NAME
+                });
+            });
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Stack.create();
+            Stack.height(this.PROGRESS_LAYOUT_HEIGHT);
+        }, Stack);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Progress.create({ value: 0, total: this.PROGRESS_TOTAL, type: ProgressType.Ring });
+            Progress.value(Number.parseInt(this.percent));
+            Progress.width({ "id": 16777342, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
+            Progress.height({ "id": 16777342, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
+            Progress.backgroundColor({ "id": 16777283, "type": 10001, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
+            Progress.style({ strokeWidth: { "id": 16777343, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" } });
+        }, Progress);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.justifyContent(FlexAlign.Center);
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(this.percent);
+            Text.fontSize({ "id": 16777341, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
+            Text.fontColor(Color.Black);
+            Text.fontWeight(FontWeight.Normal);
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(this.PERCENTAGE);
+            Text.fontSize({ "id": 16777340, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
+            Text.fontColor(Color.Black);
+            Text.fontWeight(this.TEXT_SLIGHTLY_BOLD);
+            Text.margin({ top: { "id": 16777339, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" } });
+        }, Text);
+        Text.pop();
+        Row.pop();
+        Stack.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.height(this.RESULTS_LAYOUT_HEIGHT);
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(this.numerator.toString());
+            Text.fontColor({ "id": 16777280, "type": 10001, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
+            Text.fontSize({ "id": 16777338, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
+            Text.lineHeight({ "id": 16777337, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
+            Text.fontWeight(FontWeight.Normal);
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(this.SLASHES + this.denominator);
+            Text.fontColor({ "id": 16777271, "type": 10001, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
+            Text.fontSize({ "id": 16777335, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
+            Text.lineHeight({ "id": 16777334, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
+            Text.fontWeight(FontWeight.Normal);
+        }, Text);
+        Text.pop();
+        Row.pop();
+        Column.pop();
+    }
+    rerender() {
+        this.updateDirtyElements();
+    }
+    static getEntryName() {
+        return "ProgressCard";
+    }
+}
+ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent());
+loadEtsCard(new ProgressCard(undefined, {}, progressStorage), "com.example.healthy_life/entry/ets/progress/pages/ProgressCard");
+ViewStackProcessor.StopGetAccessRecording();
+//# sourceMappingURL=ProgressCard.js.mapÂÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÔrC™°belongModulePathªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfoÙCC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry¥entryÃÂÙCC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry¥entry¥1.0.0Ô  ÃÚ…/*
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
+ * Licensed under the Apache License,Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+let progressStorage = new LocalStorage();
+
+@Entry(progressStorage)
+@Component
+struct ProgressCard {
+  @LocalStorageProp('numerator') numerator: number = 0;
+  @LocalStorageProp('denominator') denominator: number = 0;
+  @LocalStorageProp('percent') percent: string = '0';
+  /*
+   * The action type.
+   */
+  readonly ACTION_TYPE: string = 'router';
+  /*
+   * The ability name.
+   */
+  readonly ABILITY_NAME: string = 'EntryAbility';
+  /*
+   * The with percentage setting.
+   */
+  readonly FULL_WIDTH_PERCENT: string = '100%';
+  /*
+   * The height percentage setting.
+   */
+  readonly FULL_HEIGHT_PERCENT: string = '100%';
+  /*
+   * The progress layout height percentage setting.
+   */
+  readonly PROGRESS_LAYOUT_HEIGHT: string = '80%';
+  /*
+   * The finish results layout percentage setting.
+   */
+  readonly RESULTS_LAYOUT_HEIGHT: string = '20%';
+  /*
+   * The percent sign.
+   */
+  readonly PERCENTAGE: string = '%';
+  /*
+   * The slashes splicing.
+   */
+  readonly SLASHES: string = '/';
+  /**
+   * The progress total to 100.
+   */
+  readonly PROGRESS_TOTAL: number = 100;
+  /**
+   * The text slightly bold.
+   */
+  readonly TEXT_SLIGHTLY_BOLD: number = 500;
+
+  build() {
+    Column() {
+      Stack() {
+        Progress({ value: 0, total: this.PROGRESS_TOTAL, type: ProgressType.Ring })
+          .value(Number.parseInt(this.percent))
+          .width($r('app.float.progress_component_size'))
+          .height($r('app.float.progress_component_size'))
+          .backgroundColor($r('app.color.progress_background_color'))
+          .style({ strokeWidth: $r('app.float.progress_stroke_width') })
+        Row() {
+          Text(this.percent)
+            .fontSize($r('app.float.percent_text_size'))
+            .fontColor(Color.Black)
+            .fontWeight(FontWeight.Normal)
+          Text(this.PERCENTAGE)
+            .fontSize($r('app.float.percent_sign_size'))
+            .fontColor(Color.Black)
+            .fontWeight(this.TEXT_SLIGHTLY_BOLD)
+            .margin({ top: $r('app.float.percent_sign_margin') })
+        }
+        .justifyContent(FlexAlign.Center)
+      }
+      .height(this.PROGRESS_LAYOUT_HEIGHT)
+
+      Row() {
+        Text(this.numerator.toString())
+          .fontColor($r('app.color.numerator_text_color'))
+          .fontSize($r('app.float.numerator_text_size'))
+          .lineHeight($r('app.float.numerator_line_height'))
+          .fontWeight(FontWeight.Normal)
+        Text(this.SLASHES + this.denominator)
+          .fontColor($r('app.color.denominator_text_color'))
+          .fontSize($r('app.float.denominator_text_size'))
+          .lineHeight($r('app.float.denominator_line_height'))
+          .fontWeight(FontWeight.Normal)
+      }
+      .height(this.RESULTS_LAYOUT_HEIGHT)
+    }
+    .backgroundColor($r("app.color.progress_column_color"))
+    .width(this.FULL_WIDTH_PERCENT)
+    .height(this.FULL_HEIGHT_PERCENT)
+    .onClick(() => {
+      postCardAction(this, {
+        'action': this.ACTION_TYPE,
+        'abilityName': this.ABILITY_NAME
+      });
+    })
+  }
+}ÀB’ÔrD–§version¤fileªsourceRoot§sources¥names¨mappings¯ProgressCard.js ‘°ProgressCard.etsÜ ·‘”    ‘” ˜”   ” ” ” ” ”& &”( (”) )’” ” ‘”  –” ”7 ”ÌB ”ÌD 5”ÌE 6”ÌT 7–” ”9 ”ÌF !”ÌH 9”ÌI :”ÌZ ;–” ”5 ”> ”Ì@ 1”ÌC 4”ÌP 5’” !”# )’” "”* 0’”" "(”( ".’”# &)”) &/’”& *,”+ *1’”% .+”* .0’” 2 ” 2#’” 6” 6 ’” :$”! :'’”" >(”% >+‘” )’” !” *’” !” *’” #” .’” #” .’” ” &’” ” &‘” Ì@’” ÌA” ÌA
+”” ÌA” ÌA
+” Ìf”" Ìf˜” ÌA” ÌA
+” Ìg” Ìg
+” Ìg” Ìg” Ìg”0 Ìg"˜” ÌA” ÌA
+” Ìh” Ìh” Ìh” Ìh” Ìh”2 Ìh$—” ÌA” ÌA
+” Ìi” Ìi” Ìi” Ìi”  Ìi•” Ìj” Ìj” Ìj”# Ìj”% Ìj–” Ìk” Ìk” Ìk”" Ìk”# Ìk”. Ìk"–” Ìl”! Ìl”# Ìl”' Ìl”( Ìl”4 Ìl(“” Ìm” Ìm” Ìm	’” Ìn” Ìn’” ÌB” ÌB˜” ÌB” ÌB” ÌV” ÌV” ÌV” ÌV” ÌV”4 ÌV)Ü ” ÌC” ÌC” ÌC” ÌC”# ÌC”% ÌC”& ÌC”( ÌC”- ÌC"”/ ÌC$”3 ÌC(”4 ÌC)”ÌB ÌC7”ÌD ÌC9”ÌH ÌC=”ÌJ ÌC?”ÌV ÌCÌK”ÌW ÌCÌL”Ì[ ÌCÌP”Ì] ÌCÌR” ÌC” ÌC” ÌD” ÌD” ÌD”! ÌD”" ÌD”* ÌD ”+ ÌD!”/ ÌD%”0 ÌD&”7 ÌD-”8 ÌD.”” ÌC” ÌC” ÌE” ÌE”” ÌC” ÌC” ÌF” ÌF”” ÌC” ÌC” ÌG”$ ÌG™” ÌC” ÌC” ÌH” ÌH” ÌH” ÌH”( ÌH”Ì˜ ÌHÌE”Ìš ÌHÌG’” ÌI” ÌI˜” ÌI” ÌI” ÌT	” ÌT” ÌT”( ÌT!”) ÌT"”/ ÌT(–” ÌJ
+” ÌJ” ÌJ” ÌJ” ÌJ”$ ÌJ”” ÌJ
+” ÌJ” ÌK” ÌK˜” ÌJ
+” ÌJ” ÌL” ÌL” ÌL”  ÌL”! ÌL”& ÌL"˜” ÌJ
+” ÌJ” ÌM” ÌM” ÌM”& ÌM"”' ÌM#”- ÌM)’” ÌJ
+” ÌJ–” ÌN
+” ÌN” ÌN” ÌN” ÌN”' ÌN”” ÌN
+” ÌN” ÌO” ÌO˜” ÌN
+” ÌN” ÌP” ÌP” ÌP”  ÌP”! ÌP”& ÌP"˜” ÌN
+” ÌN” ÌQ” ÌQ” ÌQ”  ÌQ”! ÌQ”3 ÌQ/™” ÌN
+” ÌN” ÌR” ÌR” ÌR” ÌR” ÌR”Ì ÌR>”Ì ÌRÌ@’” ÌN
+” ÌN’” ÌI” ÌI’” ÌB” ÌB’” ÌX” ÌX	˜” ÌX” ÌX	” Ìd” Ìd” Ìd” Ìd” Ìd”1 Ìd(™” ÌY” ÌY” ÌY” ÌY” ÌY”& ÌY”' ÌY”/ ÌY$”1 ÌY&”” ÌY” ÌY” ÌZ” ÌZ”” ÌY” ÌY” Ì[” Ì[”” ÌY” ÌY” Ì\” Ì\˜” ÌY” ÌY” Ì]” Ì]” Ì]”& Ì] ”' Ì]!”- Ì]'’” ÌY” ÌYš” Ì^” Ì^” Ì^” Ì^” Ì^”$ Ì^”' Ì^”+ Ì^ ”, Ì^!”7 Ì^,”” Ì^” Ì^” Ì_” Ì_”” Ì^” Ì^” Ì`” Ì`”” Ì^” Ì^” Ìa” Ìa˜” Ì^” Ì^” Ìb” Ìb” Ìb”& Ìb ”' Ìb!”- Ìb'’” Ì^” Ì^’” ÌX” ÌX	’” ÌA” ÌA
+‘” Ìo’”, ”; ÔrE–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜ ¹‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ÂÔ  ÔrF”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCacheABÚGÒ"use strict";
 if (!("finalizeConstruction" in ViewPU.prototype)) {
     Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
 }
@@ -31,11 +346,7 @@ class AgencyCard extends ViewPU {
             apple: { "id": 16777388, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
             smile: { "id": 16777392, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
             clean: { "id": 16777389, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
-            sleep: { "id": 16777391, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
-            //æ–°å¢run
-            run: { "id": 16777408, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" },
-            //æ–°å¢è‡ªå®šä¹‰
-            custom: { "id": 16777411, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" }
+            sleep: { "id": 16777391, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" }
         };
         this.ACTION_TYPE = 'router';
         this.ABILITY_NAME = 'EntryAbility';
@@ -157,13 +468,6 @@ class AgencyCard extends ViewPU {
                 break;
             case 'sleep':
                 result = { "id": 16777391, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" };
-                break;
-            //æ–°å¢ run custom
-            case 'run':
-                result = { "id": 16777408, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" };
-                break;
-            case 'custom':
-                result = { "id": 16777411, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" };
                 break;
             default:
                 break;
@@ -350,7 +654,7 @@ class AgencyCardInfo {
 ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent());
 loadEtsCard(new AgencyCard(undefined, {}, agencyStorage), "com.example.healthy_life/entry/ets/agency/pages/AgencyCard");
 ViewStackProcessor.StopGetAccessRecording();
-//# sourceMappingURL=AgencyCard.js.mapÂÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.etsÔrC™°belongModulePathªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo¾D:\Healthy_life\v\Health\entry¥entryÃÂ¾D:\Healthy_life\v\Health\entry¥entry¥1.0.0Ô  ÃÚˆ/*
+//# sourceMappingURL=AgencyCard.js.mapÂÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsCÙCC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry¥entryÃÂÙCC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry¥entry¥1.0.0Ô  ÃÚ /*
  * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License,Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -378,11 +682,7 @@ struct AgencyCard {
     apple: $r('app.media.ic_task_apple'),
     smile: $r('app.media.ic_task_smile'),
     clean: $r('app.media.ic_task_brush'),
-    sleep: $r('app.media.ic_task_night'),
-    //æ–°å¢run
-    run: $r('app.media.ic_task_run'),
-    //æ–°å¢è‡ªå®šä¹‰
-    custom: $r('app.media.ic_task_custom')
+    sleep: $r('app.media.ic_task_night')
   } as iconInfo;
   /*
    * The action type.
@@ -473,13 +773,6 @@ struct AgencyCard {
         break;
       case 'sleep':
         result = $r('app.media.ic_task_night');
-        break;
-      //æ–°å¢ run custom
-      case 'run':
-        result = $r('app.media.ic_task_run');
-        break;
-      case 'custom':
-        result = $r('app.media.ic_task_custom');
         break;
       default:
         break;
@@ -614,369 +907,51 @@ interface iconInfo {
   smile: Resource;
   clean: Resource;
   sleep: Resource;
-  run: Resource;
-  custom : Resource
-}ÀB’ÔrD–§version¤fileªsourceRoot§sources¥names¨mappings­AgencyCard.js ‘®AgencyCard.etsÜ_‘”    ‘” ˜”   ” ” ” ” ”$ $”& &”' '’” ” ‘”  –” ”6 ”Ì@ ”ÌB =”ÌD ?”ÌR Ì@–” ”8 ”ÌD  ”ÌF 8”ÌK =”Ì[ >‘” “” ” 	”Ì *“” ” 	”Ì (“” ” 	”Ì (“” ” 	”Ì (“” ” 	”Ì (“” ” 	”Ì (’” ” “” ” ”Ì $’” ” “”  ”  
-”Ì‚  *‘”	 !’” %!”# %)’” )"”* )0’”" -(”( -.’”# 1)”) 1/’”! 5'”& 5,’”' 9-”, 92’”" =(”' =-’” ÌA%”% ÌA+’”  ÌE&”$ ÌE*’” ÌI” ÌI ˜”% ÌM+”) ÌM/”* ÌM0”: ÌMÌ@”= ÌMÌC”ÌA ÌMÌG”ÌB ÌMÌH”ÌI ÌMÌO’” ÌQ ” ÌQ!’” ÌU$” ÌU%’” ÌY"” ÌY%’”# Ì])”& Ì],’”" Ìa(”# Ìa)’”" Ìe(”% Ìe+‘” '’”  ” (’”  ” (’” "” ,’” "” ,”” Ìg” Ìg” Ìg” Ìg$•” Ìh” Ìh” Ìh”Ìƒ Ìh1”Ì„ Ìh2”” Ìi” Ìi” Ìi” Ìi“” Ìj” Ìj” Ìj”” Ìk” Ìk”Ì‡ Ìk0”Ìˆ Ìk1’” Ìl” Ìl“” Ìm” Ìm” Ìm”” Ìn” Ìn”Ì‡ Ìn.”Ìˆ Ìn/’” Ìo” Ìo“” Ìp” Ìp” Ìp”” Ìq” Ìq”Ì‡ Ìq.”Ìˆ Ìq/’” Ìr” Ìr“” Ìs” Ìs” Ìs”” Ìt” Ìt”Ì‡ Ìt.”Ìˆ Ìt/’” Ìu” Ìu“” Ìv” Ìv” Ìv”” Ìw” Ìw”Ì‡ Ìw.”Ìˆ Ìw/’” Ìx” Ìx“” Ìy” Ìy” Ìy”” Ìz” Ìz”Ì‡ Ìz.”Ìˆ Ìz/’” Ì{” Ì{’” Ì|” Ì|“” Ì}” Ì}” Ì}”” Ì~” Ì~”Ì‡ Ì~,”Ìˆ Ì~-’” Ì” Ì“” Ì€” Ì€” Ì€”” Ì” Ì”Ì‡ Ì/”Ìˆ Ì0’” Ì‚” Ì‚‘” Ìƒ’” Ì„” Ì„‘”	 Ì…”” Ì†” Ì†” Ì†” Ì†’” Ì‡” Ì‡‘” Ì‰’” ÌŠ” ÌŠ
-–” Ì‹” Ì‹
-” Ì‹” Ì‹” Ì‹”! Ì‹š” ÌŒ” ÌŒ”$ ÌŒ”& ÌŒ”+ ÌŒ”- ÌŒ”1 ÌŒ”2 ÌŒ”< ÌŒ%”> ÌŒ'•” ÌŒ” ÌŒ” Ì–	”$ Ì–”% Ì–“” Ì—
-”  Ì—”Ì Ì—3“” Ì˜
-” Ì˜”Ì Ì˜1“” Ì™
-”! Ì™”Ì‘ Ì™5“” Ìš
-”" Ìš”Ì’ Ìš7‘” Ì›	˜” ÌŒ” ÌŒ” Ìœ	”" Ìœ”# Ìœ”' Ìœ”( Ìœ”6 Ìœ"”” ÌŒ” ÌŒ” Ì	”, Ì˜” ÌŒ” ÌŒ” Ì	”" Ì”# Ì”' Ì”( Ì”: Ì&˜” ÌŒ” ÌŒ” ÌŸ	”# ÌŸ”$ ÌŸ”( ÌŸ”) ÌŸ”< ÌŸ(’” Ì
-” Ì’”( Ì”0 Ì™”$ Ì”, Ì”- Ì‘”3 Ì‘”4 Ì‘”6 Ì‘”; Ì‘”Ì« Ì‘?”Ì­ Ì‘ÌA””$ Ì”, Ì”- Ì’”9 Ì’˜”$ Ì”, Ì”- Ì“”< Ì“”= Ì“”ÌB Ì“"”ÌC Ì“#”ÌH Ì“(—”$ Ì”( Ì”) Ì”8 Ì"”ÌD Ì#”ÌL Ì+”ÌS Ì,’”$ Ì”, Ì’”  Ì”( ÌÜ ”; Ì”? Ì”Ì@ Ì”ÌH Ì”Ìb Ì””Ìc Ì””Ìk Ì”&”Ìm Ì”(”Ìo Ì”*”Ìp Ì”+”Ìt Ì”/”Ìu Ì”0”Ì~ Ì”9”Ì Ì”:”Ì‡ Ì”ÌB”Ìˆ Ì”ÌC’” Ì
-” Ì’” ÌŒ” ÌŒ‘” Ì ‘” Ì •” Ì¡” Ì¡” Ì¡”% Ì¡”6 Ì¡‘” Ì¢’” ÌŠ” ÌŠ
-‘” Ì¤’” Ì§” Ì§’” Ì¨” Ì¨
-˜” Ì¨” Ì¨
-” Ì´”! Ì´”" Ì´”+ Ì´”, Ì´”2 Ì´$˜” Ì¨” Ì¨
-” Ìµ” Ìµ
-” Ìµ” Ìµ” Ìµ”0 Ìµ"˜” Ì¨” Ì¨
-” Ì¶” Ì¶” Ì¶” Ì¶” Ì¶”2 Ì¶$”” Ì¨” Ì¨
-” Ì·”" Ì·—” Ì¨” Ì¨
-” Ì¸” Ì¸” Ì¸” Ì¸”  Ì¸–” Ì¹” Ì¹
-” Ì¹”" Ì¹”$ Ì¹”% Ì¹’” Ìº” Ìº’” Ì©” Ì©˜” Ì©” Ì©” Ìª	” Ìª” Ìª” Ìª” Ìª”. Ìª%˜” Ì©” Ì©” Ì«	” Ì«” Ì«” Ì«” Ì«”0 Ì«'˜” Ì©” Ì©” Ì¬	” Ì¬” Ì¬”$ Ì¬”% Ì¬”, Ì¬#’” Ì­” Ì­
-”” Ì­” Ì­
-” Ì®	” Ì®˜” Ì­” Ì­
-” Ì¯	” Ì¯” Ì¯”  Ì¯”! Ì¯”& Ì¯˜” Ì­” Ì­
-” Ì°	” Ì°” Ì°”& Ì°”' Ì°”- Ì°%˜” Ì­” Ì­
-” Ì±	” Ì±” Ì±” Ì±” Ì±”* Ì±"œ” Ì­” Ì­
-” Ì²	” Ì²” Ì²” Ì²” Ì²” Ì²”# Ì²”$ Ì²”3 Ì²+”5 Ì²-’” Ì­” Ì­
-’” Ì¨” Ì¨
-‘” Ì»”” Ì¾” Ì¾” Ì¾” Ì¾*’” Ì¿” Ì¿•” Ì¿” Ì¿” Ìã” Ìã” Ìã“” Ìä” Ìä
-”Ì„ Ìä.“” Ìå” Ìå”Ì… Ìå/‘” Ìæ˜” Ì¿” Ì¿” Ìç” Ìç
-” Ìç” Ìç” Ìç”- Ìç"˜” Ì¿” Ì¿” Ìè” Ìè” Ìè” Ìè” Ìè”3 Ìè(—” Ì¿” Ì¿” Ìé” Ìé” Ìé” Ìé” Ìé–” Ìê” Ìê
-” Ìê”" Ìê”$ Ìê”% Ìê’” Ìë” Ìë›” ÌÀ” ÌÀ” ÌÀ” ÌÀ” ÌÀ”3 ÌÀ&”4 ÌÀ'”< ÌÀ/”= ÌÀ0”ÌE ÌÀ8”ÌF ÌÀ9”” ÌÀ” ÌÀ” ÌÁ	” ÌÁ”” ÌÀ” ÌÀ” ÌÂ	” ÌÂ˜” ÌÀ” ÌÀ” ÌÃ	” ÌÃ” ÌÃ”$ ÌÃ”% ÌÃ”, ÌÃ#–” ÌÄ” ÌÄ
-” ÌÄ” ÌÄ”! ÌÄ”# ÌÄÜ ” ÌÅ” ÌÅ”$ ÌÅ”, ÌÅ”- ÌÅ”3 ÌÅ”4 ÌÅ”5 ÌÅ”6 ÌÅ”> ÌÅ'”? ÌÅ(”ÌJ ÌÅ3”ÌK ÌÅ4”ÌL ÌÅ5”ÌM ÌÅ6”ÌQ ÌÅ:”ÌR ÌÅ;”Ìg ÌÅÌP”Ìj ÌÅÌS”Ìr ÌÅÌ[”Ìs ÌÅÌ\”Ì~ ÌÅÌg”” ÌÅ” ÌÅ” ÌÆ”% ÌÆ”” ÌÅ” ÌÅ” ÌÇ”& ÌÇ˜” ÌÅ” ÌÅ” ÌÈ”$ ÌÈ”% ÌÈ”) ÌÈ”* ÌÈ”= ÌÈ+˜” ÌÅ” ÌÅ” ÌÉ”' ÌÉ”( ÌÉ”2 ÌÉ ”3 ÌÉ!”9 ÌÉ'˜” ÌÅ” ÌÅ” ÌÊ”) ÌÊ”* ÌÊ”. ÌÊ”/ ÌÊ”ÌA ÌÊ/˜” ÌÅ” ÌÅ” ÌË”& ÌË”' ÌË”0 ÌË”1 ÌË”4 ÌË"’” ÌÅ” ÌÅ‘” ÌÌ‘” ÌÌ’” ÌÍ” ÌÍ˜” ÌÍ” ÌÍ” Ìß	”( Ìß”) Ìß”- Ìß”. Ìß”Ì@ Ìß-˜” ÌÍ” ÌÍ” Ìà	”* Ìà”+ Ìà”4 Ìà!”5 Ìà"”8 Ìà%Ü ” ÌÎ
-” ÌÎ”$ ÌÎ”, ÌÎ”- ÌÎ”; ÌÎ&”< ÌÎ'”= ÌÎ(”> ÌÎ)”ÌB ÌÎ-”ÌC ÌÎ.”ÌS ÌÎ>”ÌT ÌÎ?”ÌU ÌÎÌ@”ÌV ÌÎÌA”Ì^ ÌÎÌI”Ì_ ÌÎÌJ”Ìg ÌÎÌR” ÌÎ
-” ÌÎ” ÌÏ”% ÌÏ”& ÌÏ”. ÌÏ”/ ÌÏ”= ÌÏ-”> ÌÏ.”? ÌÏ/”Ì¯ ÌĞ-”Ì° ÌĞ.”Í ÌÑ,Ü ” ÌÎ
-” ÌÎ” ÌÒ”' ÌÒ”( ÌÒ”0 ÌÒ ”1 ÌÒ!”? ÌÒ/”Ì@ ÌÒ0”ÌA ÌÒ1”ÌB ÌÒ2”ÌL ÌÒ<”ÌM ÌÒ=”ÌS ÌÒÌC”ÌT ÌÒÌD”ÌU ÌÒÌE”ÌV ÌÒÌF”ÌZ ÌÒÌJ”Ì[ ÌÒÌK”Ìm ÌÒÌ]” ÌÎ
-” ÌÎ” ÌÓ”& ÌÓ”' ÌÓ”/ ÌÓ”0 ÌÓ ”> ÌÓ.”? ÌÓ/”Ì@ ÌÓ0”Ì° ÌÔ-”Ì± ÌÔ.”Í  ÌÕ-’” ÌÎ
-” ÌÎš” ÌÖ
-” ÌÖ”$ ÌÖ”( ÌÖ”) ÌÖ”0 ÌÖ”3 ÌÖ”; ÌÖ&”< ÌÖ'”ÌG ÌÖ2”” ÌÖ
-” ÌÖ” Ì×”% Ì×˜” ÌÖ
-” ÌÖ” ÌØ”' ÌØ”( ÌØ”2 ÌØ"”3 ÌØ#”9 ÌØ)”” ÌÖ
-” ÌÖ” ÌÙ”& ÌÙ’” ÌÖ
-” ÌÖ–” ÌÚ
-” ÌÚ”$ ÌÚ”, ÌÚ”- ÌÚ”1 ÌÚ”” ÌÚ
-” ÌÚ” ÌÛ”% ÌÛ˜” ÌÚ
-” ÌÚ” ÌÜ”' ÌÜ”( ÌÜ”2 ÌÜ"”3 ÌÜ#”9 ÌÜ)”” ÌÚ
-” ÌÚ” Ìİ”& Ìİ’” ÌÚ
-” ÌÚ’” ÌÍ” ÌÍ‘” Ìá’” Ì¿” Ì¿‘” Ìì’” Ìî” Ìî•” Ìï” Ìï” Ìï” Ìï” Ìï–” Ìğ” Ìğ” Ìğ” Ìğ” Ìğ”& Ìğ –” Ìñ” Ìñ” Ìñ” Ìñ”  Ìñ”, Ìñ&“”	 Ìò”
- Ìò” Ìò’” Ìó” Ìó“”  Ìö ” Ìö” Ìö‘” Ìÿ’”* ”7 ÔrE–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜa‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+}ÀB’D­AgencyCard.js ‘®AgencyCard.etsÜT‘”    ‘” ˜”   ” ” ” ” ”$ $”& &”' '’” ” ‘”  –” ”6 ”Ì@ ”ÌB =”ÌD ?”ÌR Ì@–” ”8 ”ÌD  ”ÌF 8”ÌK =”Ì[ >‘” “” ” 	”Ì *“” ” 	”Ì (“” ” 	”Ì (“” ” 	”Ì (“” ” 	”Ì (“” ” 	”Ì (‘”	 ’” !!”# !)’” %"”* %0’”" )(”( ).’”# -)”) -/’”! 1'”& 1,’”' 5-”, 52’”" 9(”' 9-’” =%”% =+’”  ÌA&”$ ÌA*’” ÌE” ÌE ˜”% ÌI+”) ÌI/”* ÌI0”: ÌIÌ@”= ÌIÌC”ÌA ÌIÌG”ÌB ÌIÌH”ÌI ÌIÌO’” ÌM ” ÌM!’” ÌQ$” ÌQ%’” ÌU"” ÌU%’”# ÌY)”& ÌY,’”" Ì](”# Ì])’”" Ìa(”% Ìa+‘” '’”  ” (’”  ” (’” "” ,’” "” ,”” Ìc” Ìc” Ìc” Ìc$•” Ìd” Ìd” Ìd”Ìƒ Ìd1”Ì„ Ìd2”” Ìe” Ìe” Ìe” Ìe“” Ìf” Ìf” Ìf”” Ìg” Ìg”Ì‡ Ìg0”Ìˆ Ìg1’” Ìh” Ìh“” Ìi” Ìi” Ìi”” Ìj” Ìj”Ì‡ Ìj.”Ìˆ Ìj/’” Ìk” Ìk“” Ìl” Ìl” Ìl”” Ìm” Ìm”Ì‡ Ìm.”Ìˆ Ìm/’” Ìn” Ìn“” Ìo” Ìo” Ìo”” Ìp” Ìp”Ì‡ Ìp.”Ìˆ Ìp/’” Ìq” Ìq“” Ìr” Ìr” Ìr”” Ìs” Ìs”Ì‡ Ìs.”Ìˆ Ìs/’” Ìt” Ìt“” Ìu” Ìu” Ìu”” Ìv” Ìv”Ì‡ Ìv.”Ìˆ Ìv/’” Ìw” Ìw‘” Ìx’” Ìy” Ìy‘”	 Ìz”” Ì{” Ì{” Ì{” Ì{’” Ì|” Ì|‘” Ì~’” Ì” Ì
+–” Ì€” Ì€
+” Ì€” Ì€” Ì€”! Ì€š” Ì” Ì”$ Ì”& Ì”+ Ì”- Ì”1 Ì”2 Ì”< Ì%”> Ì'•” Ì” Ì” Ì‹	”$ Ì‹”% Ì‹“” ÌŒ
+”  ÌŒ”Ì ÌŒ3“” Ì
+” Ì”Ì Ì1“” Ì
+”! Ì”Ì‘ Ì5“” Ì
+”" Ì”Ì’ Ì7‘” Ì	˜” Ì” Ì” Ì‘	”" Ì‘”# Ì‘”' Ì‘”( Ì‘”6 Ì‘"”” Ì” Ì” Ì’	”, Ì’˜” Ì” Ì” Ì“	”" Ì“”# Ì“”' Ì“”( Ì“”: Ì“&˜” Ì” Ì” Ì”	”# Ì””$ Ì””( Ì””) Ì””< Ì”(’” Ì‚
+” Ì‚’”( Ìƒ”0 Ìƒ™”$ Ìƒ”, Ìƒ”- Ì†”3 Ì†”4 Ì†”6 Ì†”; Ì†”Ì« Ì†?”Ì­ Ì†ÌA””$ Ìƒ”, Ìƒ”- Ì‡”9 Ì‡˜”$ Ìƒ”, Ìƒ”- Ìˆ”< Ìˆ”= Ìˆ”ÌB Ìˆ"”ÌC Ìˆ#”ÌH Ìˆ(—”$ Ì„”( Ì„”) Ì„”8 Ì„"”ÌD Ì„#”ÌL Ì„+”ÌS Ì„,’”$ Ìƒ”, Ìƒ’”  Ìƒ”( ÌƒÜ ”; Ì‚”? Ì‚”Ì@ Ì‚”ÌH Ì‚”Ìb Ì‰”Ìc Ì‰”Ìk Ì‰&”Ìm Ì‰(”Ìo Ì‰*”Ìp Ì‰+”Ìt Ì‰/”Ìu Ì‰0”Ì~ Ì‰9”Ì Ì‰:”Ì‡ Ì‰ÌB”Ìˆ Ì‰ÌC’” Ì‚
+” Ì‚’” Ì” Ì‘” Ì•‘” Ì••” Ì–” Ì–” Ì–”% Ì–”6 Ì–‘” Ì—’” Ì” Ì
+‘” Ì™’” Ìœ” Ìœ’” Ì” Ì
+˜” Ì” Ì
+” Ì©”! Ì©”" Ì©”+ Ì©”, Ì©”2 Ì©$˜” Ì” Ì
+” Ìª” Ìª
+” Ìª” Ìª” Ìª”0 Ìª"˜” Ì” Ì
+” Ì«” Ì«” Ì«” Ì«” Ì«”2 Ì«$”” Ì” Ì
+” Ì¬”" Ì¬—” Ì” Ì
+” Ì­” Ì­” Ì­” Ì­”  Ì­–” Ì®” Ì®
+” Ì®”" Ì®”$ Ì®”% Ì®’” Ì¯” Ì¯’” Ì” Ì˜” Ì” Ì” ÌŸ	” ÌŸ” ÌŸ” ÌŸ” ÌŸ”. ÌŸ%˜” Ì” Ì” Ì 	” Ì ” Ì ” Ì ” Ì ”0 Ì '˜” Ì” Ì” Ì¡	” Ì¡” Ì¡”$ Ì¡”% Ì¡”, Ì¡#’” Ì¢” Ì¢
+”” Ì¢” Ì¢
+” Ì£	” Ì£˜” Ì¢” Ì¢
+” Ì¤	” Ì¤” Ì¤”  Ì¤”! Ì¤”& Ì¤˜” Ì¢” Ì¢
+” Ì¥	” Ì¥” Ì¥”& Ì¥”' Ì¥”- Ì¥%˜” Ì¢” Ì¢
+” Ì¦	” Ì¦” Ì¦” Ì¦” Ì¦”* Ì¦"œ” Ì¢” Ì¢
+” Ì§	” Ì§” Ì§” Ì§” Ì§” Ì§”# Ì§”$ Ì§”3 Ì§+”5 Ì§-’” Ì¢” Ì¢
+’” Ì” Ì
+‘” Ì°”” Ì³” Ì³” Ì³” Ì³*’” Ì´” Ì´•” Ì´” Ì´” ÌØ” ÌØ” ÌØ“” ÌÙ” ÌÙ
+”Ì„ ÌÙ.“” ÌÚ” ÌÚ”Ì… ÌÚ/‘” ÌÛ˜” Ì´” Ì´” ÌÜ” ÌÜ
+” ÌÜ” ÌÜ” ÌÜ”- ÌÜ"˜” Ì´” Ì´” Ìİ” Ìİ” Ìİ” Ìİ” Ìİ”3 Ìİ(—” Ì´” Ì´” ÌŞ” ÌŞ” ÌŞ” ÌŞ” ÌŞ–” Ìß” Ìß
+” Ìß”" Ìß”$ Ìß”% Ìß’” Ìà” Ìà›” Ìµ” Ìµ” Ìµ” Ìµ” Ìµ”3 Ìµ&”4 Ìµ'”< Ìµ/”= Ìµ0”ÌE Ìµ8”ÌF Ìµ9”” Ìµ” Ìµ” Ì¶	” Ì¶”” Ìµ” Ìµ” Ì·	” Ì·˜” Ìµ” Ìµ” Ì¸	” Ì¸” Ì¸”$ Ì¸”% Ì¸”, Ì¸#–” Ì¹” Ì¹
+” Ì¹” Ì¹”! Ì¹”# Ì¹Ü ” Ìº” Ìº”$ Ìº”, Ìº”- Ìº”3 Ìº”4 Ìº”5 Ìº”6 Ìº”> Ìº'”? Ìº(”ÌJ Ìº3”ÌK Ìº4”ÌL Ìº5”ÌM Ìº6”ÌQ Ìº:”ÌR Ìº;”Ìg ÌºÌP”Ìj ÌºÌS”Ìr ÌºÌ[”Ìs ÌºÌ\”Ì~ ÌºÌg”” Ìº” Ìº” Ì»”% Ì»”” Ìº” Ìº” Ì¼”& Ì¼˜” Ìº” Ìº” Ì½”$ Ì½”% Ì½”) Ì½”* Ì½”= Ì½+˜” Ìº” Ìº” Ì¾”' Ì¾”( Ì¾”2 Ì¾ ”3 Ì¾!”9 Ì¾'˜” Ìº” Ìº” Ì¿”) Ì¿”* Ì¿”. Ì¿”/ Ì¿”ÌA Ì¿/˜” Ìº” Ìº” ÌÀ”& ÌÀ”' ÌÀ”0 ÌÀ”1 ÌÀ”4 ÌÀ"’” Ìº” Ìº‘” ÌÁ‘” ÌÁ’” ÌÂ” ÌÂ˜” ÌÂ” ÌÂ” ÌÔ	”( ÌÔ”) ÌÔ”- ÌÔ”. ÌÔ”Ì@ ÌÔ-˜” ÌÂ” ÌÂ” ÌÕ	”* ÌÕ”+ ÌÕ”4 ÌÕ!”5 ÌÕ"”8 ÌÕ%Ü ” ÌÃ
+” ÌÃ”$ ÌÃ”, ÌÃ”- ÌÃ”; ÌÃ&”< ÌÃ'”= ÌÃ(”> ÌÃ)”ÌB ÌÃ-”ÌC ÌÃ.”ÌS ÌÃ>”ÌT ÌÃ?”ÌU ÌÃÌ@”ÌV ÌÃÌA”Ì^ ÌÃÌI”Ì_ ÌÃÌJ”Ìg ÌÃÌR” ÌÃ
+” ÌÃ” ÌÄ”% ÌÄ”& ÌÄ”. ÌÄ”/ ÌÄ”= ÌÄ-”> ÌÄ.”? ÌÄ/”Ì¯ ÌÅ-”Ì° ÌÅ.”Í ÌÆ,Ü ” ÌÃ
+” ÌÃ” ÌÇ”' ÌÇ”( ÌÇ”0 ÌÇ ”1 ÌÇ!”? ÌÇ/”Ì@ ÌÇ0”ÌA ÌÇ1”ÌB ÌÇ2”ÌL ÌÇ<”ÌM ÌÇ=”ÌS ÌÇÌC”ÌT ÌÇÌD”ÌU ÌÇÌE”ÌV ÌÇÌF”ÌZ ÌÇÌJ”Ì[ ÌÇÌK”Ìm ÌÇÌ]” ÌÃ
+” ÌÃ” ÌÈ”& ÌÈ”' ÌÈ”/ ÌÈ”0 ÌÈ ”> ÌÈ.”? ÌÈ/”Ì@ ÌÈ0”Ì° ÌÉ-”Ì± ÌÉ.”Í  ÌÊ-’” ÌÃ
+” ÌÃš” ÌË
+” ÌË”$ ÌË”( ÌË”) ÌË”0 ÌË”3 ÌË”; ÌË&”< ÌË'”ÌG ÌË2”” ÌË
+” ÌË” ÌÌ”% ÌÌ˜” ÌË
+” ÌË” ÌÍ”' ÌÍ”( ÌÍ”2 ÌÍ"”3 ÌÍ#”9 ÌÍ)”” ÌË
+” ÌË” ÌÎ”& ÌÎ’” ÌË
+” ÌË–” ÌÏ
+” ÌÏ”$ ÌÏ”, ÌÏ”- ÌÏ”1 ÌÏ”” ÌÏ
+” ÌÏ” ÌĞ”% ÌĞ˜” ÌÏ
+” ÌÏ” ÌÑ”' ÌÑ”( ÌÑ”2 ÌÑ"”3 ÌÑ#”9 ÌÑ)”” ÌÏ
+” ÌÏ” ÌÒ”& ÌÒ’” ÌÏ
+” ÌÏ’” ÌÂ” ÌÂ‘” ÌÖ’” Ì´” Ì´‘” Ìá’” Ìã” Ìã•” Ìä” Ìä” Ìä” Ìä” Ìä–” Ìå” Ìå” Ìå” Ìå” Ìå”& Ìå –” Ìæ” Ìæ” Ìæ” Ìæ”  Ìæ”, Ìæ&“”	 Ìç”
+ Ìç” Ìç’” Ìè” Ìè“”  Ìë ” Ìë” Ìë‘” Ìô’”* ”7 EÀ‘À‘ÀÜV‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
  ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌĞ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  Ìİ ‘”  ÌŞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìğ ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìı ‘”  Ìş ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
- ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ‘”  ÍK ‘”  ÍL ‘”  ÍM ‘”  ÍN ‘”  ÍO ‘”  ÍP ‘”  ÍQ ‘”  ÍR ‘”  ÍS ‘”  ÍT ‘”  ÍU ‘”  ÍV ‘”  ÍW ‘”  ÍX ‘”  ÍY ‘”  ÍZ ‘”  Í[ ‘”  Í\ ‘”  Í] ‘”  Í^ ‘”  Í_ ‘”  Í` ÂÔ  ÔrF”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCacheABÚ"¤"use strict";
-if (!("finalizeConstruction" in ViewPU.prototype)) {
-    Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
-}
-/*
- * Copyright (c) 2023 Huawei Device Co., Ltd.
- * Licensed under the Apache License,Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-let progressStorage = new LocalStorage();
-class ProgressCard extends ViewPU {
-    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
-        super(parent, __localStorage, elmtId, extraInfo);
-        this.__numerator = this.createLocalStorageProp('numerator', 0, "numerator");
-        this.__denominator = this.createLocalStorageProp('denominator', 0, "denominator");
-        this.__percent = this.createLocalStorageProp('percent', '0', "percent");
-        if (typeof paramsLambda === "function") {
-            this.paramsGenerator_ = paramsLambda;
-        }
-        this.ACTION_TYPE = 'router';
-        this.ABILITY_NAME = 'EntryAbility';
-        this.FULL_WIDTH_PERCENT = '100%';
-        this.FULL_HEIGHT_PERCENT = '100%';
-        this.PROGRESS_LAYOUT_HEIGHT = '80%';
-        this.RESULTS_LAYOUT_HEIGHT = '20%';
-        this.PERCENTAGE = '%';
-        this.SLASHES = '/';
-        this.PROGRESS_TOTAL = 100;
-        this.TEXT_SLIGHTLY_BOLD = 500;
-        this.setInitiallyProvidedValue(params);
-        this.finalizeConstruction();
-    }
-    setInitiallyProvidedValue(params) {
-        if (params.ACTION_TYPE !== undefined) {
-            this.ACTION_TYPE = params.ACTION_TYPE;
-        }
-        if (params.ABILITY_NAME !== undefined) {
-            this.ABILITY_NAME = params.ABILITY_NAME;
-        }
-        if (params.FULL_WIDTH_PERCENT !== undefined) {
-            this.FULL_WIDTH_PERCENT = params.FULL_WIDTH_PERCENT;
-        }
-        if (params.FULL_HEIGHT_PERCENT !== undefined) {
-            this.FULL_HEIGHT_PERCENT = params.FULL_HEIGHT_PERCENT;
-        }
-        if (params.PROGRESS_LAYOUT_HEIGHT !== undefined) {
-            this.PROGRESS_LAYOUT_HEIGHT = params.PROGRESS_LAYOUT_HEIGHT;
-        }
-        if (params.RESULTS_LAYOUT_HEIGHT !== undefined) {
-            this.RESULTS_LAYOUT_HEIGHT = params.RESULTS_LAYOUT_HEIGHT;
-        }
-        if (params.PERCENTAGE !== undefined) {
-            this.PERCENTAGE = params.PERCENTAGE;
-        }
-        if (params.SLASHES !== undefined) {
-            this.SLASHES = params.SLASHES;
-        }
-        if (params.PROGRESS_TOTAL !== undefined) {
-            this.PROGRESS_TOTAL = params.PROGRESS_TOTAL;
-        }
-        if (params.TEXT_SLIGHTLY_BOLD !== undefined) {
-            this.TEXT_SLIGHTLY_BOLD = params.TEXT_SLIGHTLY_BOLD;
-        }
-    }
-    updateStateVars(params) {
-    }
-    purgeVariableDependenciesOnElmtId(rmElmtId) {
-        this.__numerator.purgeDependencyOnElmtId(rmElmtId);
-        this.__denominator.purgeDependencyOnElmtId(rmElmtId);
-        this.__percent.purgeDependencyOnElmtId(rmElmtId);
-    }
-    aboutToBeDeleted() {
-        this.__numerator.aboutToBeDeleted();
-        this.__denominator.aboutToBeDeleted();
-        this.__percent.aboutToBeDeleted();
-        SubscriberManager.Get().delete(this.id__());
-        this.aboutToBeDeletedInternal();
-    }
-    get numerator() {
-        return this.__numerator.get();
-    }
-    set numerator(newValue) {
-        this.__numerator.set(newValue);
-    }
-    get denominator() {
-        return this.__denominator.get();
-    }
-    set denominator(newValue) {
-        this.__denominator.set(newValue);
-    }
-    get percent() {
-        return this.__percent.get();
-    }
-    set percent(newValue) {
-        this.__percent.set(newValue);
-    }
-    initialRender() {
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Column.create();
-            Column.backgroundColor({ "id": 16777284, "type": 10001, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
-            Column.width(this.FULL_WIDTH_PERCENT);
-            Column.height(this.FULL_HEIGHT_PERCENT);
-            Column.onClick(() => {
-                postCardAction(this, {
-                    'action': this.ACTION_TYPE,
-                    'abilityName': this.ABILITY_NAME
-                });
-            });
-        }, Column);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Stack.create();
-            Stack.height(this.PROGRESS_LAYOUT_HEIGHT);
-        }, Stack);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Progress.create({ value: 0, total: this.PROGRESS_TOTAL, type: ProgressType.Ring });
-            Progress.value(Number.parseInt(this.percent));
-            Progress.width({ "id": 16777342, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
-            Progress.height({ "id": 16777342, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
-            Progress.backgroundColor({ "id": 16777283, "type": 10001, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
-            Progress.style({ strokeWidth: { "id": 16777343, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" } });
-        }, Progress);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Row.create();
-            Row.justifyContent(FlexAlign.Center);
-        }, Row);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create(this.percent);
-            Text.fontSize({ "id": 16777341, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
-            Text.fontColor(Color.Black);
-            Text.fontWeight(FontWeight.Normal);
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create(this.PERCENTAGE);
-            Text.fontSize({ "id": 16777340, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
-            Text.fontColor(Color.Black);
-            Text.fontWeight(this.TEXT_SLIGHTLY_BOLD);
-            Text.margin({ top: { "id": 16777339, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" } });
-        }, Text);
-        Text.pop();
-        Row.pop();
-        Stack.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Row.create();
-            Row.height(this.RESULTS_LAYOUT_HEIGHT);
-        }, Row);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create(this.numerator.toString());
-            Text.fontColor({ "id": 16777280, "type": 10001, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
-            Text.fontSize({ "id": 16777338, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
-            Text.lineHeight({ "id": 16777337, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
-            Text.fontWeight(FontWeight.Normal);
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create(this.SLASHES + this.denominator);
-            Text.fontColor({ "id": 16777271, "type": 10001, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
-            Text.fontSize({ "id": 16777335, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
-            Text.lineHeight({ "id": 16777334, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
-            Text.fontWeight(FontWeight.Normal);
-        }, Text);
-        Text.pop();
-        Row.pop();
-        Column.pop();
-    }
-    rerender() {
-        this.updateDirtyElements();
-    }
-    static getEntryName() {
-        return "ProgressCard";
-    }
-}
-ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent());
-loadEtsCard(new ProgressCard(undefined, {}, progressStorage), "com.example.healthy_life/entry/ets/progress/pages/ProgressCard");
-ViewStackProcessor.StopGetAccessRecording();
-//# sourceMappingURL=ProgressCard.js.mapÂÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.etsC¾D:\Healthy_life\v\Health\entry¥entryÃÂ¾D:\Healthy_life\v\Health\entry¥entry¥1.0.0Ô  ÃÚ…/*
- * Copyright (c) 2023 Huawei Device Co., Ltd.
- * Licensed under the Apache License,Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-let progressStorage = new LocalStorage();
-
-@Entry(progressStorage)
-@Component
-struct ProgressCard {
-  @LocalStorageProp('numerator') numerator: number = 0;
-  @LocalStorageProp('denominator') denominator: number = 0;
-  @LocalStorageProp('percent') percent: string = '0';
-  /*
-   * The action type.
-   */
-  readonly ACTION_TYPE: string = 'router';
-  /*
-   * The ability name.
-   */
-  readonly ABILITY_NAME: string = 'EntryAbility';
-  /*
-   * The with percentage setting.
-   */
-  readonly FULL_WIDTH_PERCENT: string = '100%';
-  /*
-   * The height percentage setting.
-   */
-  readonly FULL_HEIGHT_PERCENT: string = '100%';
-  /*
-   * The progress layout height percentage setting.
-   */
-  readonly PROGRESS_LAYOUT_HEIGHT: string = '80%';
-  /*
-   * The finish results layout percentage setting.
-   */
-  readonly RESULTS_LAYOUT_HEIGHT: string = '20%';
-  /*
-   * The percent sign.
-   */
-  readonly PERCENTAGE: string = '%';
-  /*
-   * The slashes splicing.
-   */
-  readonly SLASHES: string = '/';
-  /**
-   * The progress total to 100.
-   */
-  readonly PROGRESS_TOTAL: number = 100;
-  /**
-   * The text slightly bold.
-   */
-  readonly TEXT_SLIGHTLY_BOLD: number = 500;
-
-  build() {
-    Column() {
-      Stack() {
-        Progress({ value: 0, total: this.PROGRESS_TOTAL, type: ProgressType.Ring })
-          .value(Number.parseInt(this.percent))
-          .width($r('app.float.progress_component_size'))
-          .height($r('app.float.progress_component_size'))
-          .backgroundColor($r('app.color.progress_background_color'))
-          .style({ strokeWidth: $r('app.float.progress_stroke_width') })
-        Row() {
-          Text(this.percent)
-            .fontSize($r('app.float.percent_text_size'))
-            .fontColor(Color.Black)
-            .fontWeight(FontWeight.Normal)
-          Text(this.PERCENTAGE)
-            .fontSize($r('app.float.percent_sign_size'))
-            .fontColor(Color.Black)
-            .fontWeight(this.TEXT_SLIGHTLY_BOLD)
-            .margin({ top: $r('app.float.percent_sign_margin') })
-        }
-        .justifyContent(FlexAlign.Center)
-      }
-      .height(this.PROGRESS_LAYOUT_HEIGHT)
-
-      Row() {
-        Text(this.numerator.toString())
-          .fontColor($r('app.color.numerator_text_color'))
-          .fontSize($r('app.float.numerator_text_size'))
-          .lineHeight($r('app.float.numerator_line_height'))
-          .fontWeight(FontWeight.Normal)
-        Text(this.SLASHES + this.denominator)
-          .fontColor($r('app.color.denominator_text_color'))
-          .fontSize($r('app.float.denominator_text_size'))
-          .lineHeight($r('app.float.denominator_line_height'))
-          .fontWeight(FontWeight.Normal)
-      }
-      .height(this.RESULTS_LAYOUT_HEIGHT)
-    }
-    .backgroundColor($r("app.color.progress_column_color"))
-    .width(this.FULL_WIDTH_PERCENT)
-    .height(this.FULL_HEIGHT_PERCENT)
-    .onClick(() => {
-      postCardAction(this, {
-        'action': this.ACTION_TYPE,
-        'abilityName': this.ABILITY_NAME
-      });
-    })
-  }
-}ÀB’D¯ProgressCard.js ‘°ProgressCard.etsÜ ·‘”    ‘” ˜”   ” ” ” ” ”& &”( (”) )’” ” ‘”  –” ”7 ”ÌB ”ÌD 5”ÌE 6”ÌT 7–” ”9 ”ÌF !”ÌH 9”ÌI :”ÌZ ;–” ”5 ”> ”Ì@ 1”ÌC 4”ÌP 5’” !”# )’” "”* 0’”" "(”( ".’”# &)”) &/’”& *,”+ *1’”% .+”* .0’” 2 ” 2#’” 6” 6 ’” :$”! :'’”" >(”% >+‘” )’” !” *’” !” *’” #” .’” #” .’” ” &’” ” &‘” Ì@’” ÌA” ÌA
-”” ÌA” ÌA
-” Ìf”" Ìf˜” ÌA” ÌA
-” Ìg” Ìg
-” Ìg” Ìg” Ìg”0 Ìg"˜” ÌA” ÌA
-” Ìh” Ìh” Ìh” Ìh” Ìh”2 Ìh$—” ÌA” ÌA
-” Ìi” Ìi” Ìi” Ìi”  Ìi•” Ìj” Ìj” Ìj”# Ìj”% Ìj–” Ìk” Ìk” Ìk”" Ìk”# Ìk”. Ìk"–” Ìl”! Ìl”# Ìl”' Ìl”( Ìl”4 Ìl(“” Ìm” Ìm” Ìm	’” Ìn” Ìn’” ÌB” ÌB˜” ÌB” ÌB” ÌV” ÌV” ÌV” ÌV” ÌV”4 ÌV)Ü ” ÌC” ÌC” ÌC” ÌC”# ÌC”% ÌC”& ÌC”( ÌC”- ÌC"”/ ÌC$”3 ÌC(”4 ÌC)”ÌB ÌC7”ÌD ÌC9”ÌH ÌC=”ÌJ ÌC?”ÌV ÌCÌK”ÌW ÌCÌL”Ì[ ÌCÌP”Ì] ÌCÌR” ÌC” ÌC” ÌD” ÌD” ÌD”! ÌD”" ÌD”* ÌD ”+ ÌD!”/ ÌD%”0 ÌD&”7 ÌD-”8 ÌD.”” ÌC” ÌC” ÌE” ÌE”” ÌC” ÌC” ÌF” ÌF”” ÌC” ÌC” ÌG”$ ÌG™” ÌC” ÌC” ÌH” ÌH” ÌH” ÌH”( ÌH”Ì˜ ÌHÌE”Ìš ÌHÌG’” ÌI” ÌI˜” ÌI” ÌI” ÌT	” ÌT” ÌT”( ÌT!”) ÌT"”/ ÌT(–” ÌJ
-” ÌJ” ÌJ” ÌJ” ÌJ”$ ÌJ”” ÌJ
-” ÌJ” ÌK” ÌK˜” ÌJ
-” ÌJ” ÌL” ÌL” ÌL”  ÌL”! ÌL”& ÌL"˜” ÌJ
-” ÌJ” ÌM” ÌM” ÌM”& ÌM"”' ÌM#”- ÌM)’” ÌJ
-” ÌJ–” ÌN
-” ÌN” ÌN” ÌN” ÌN”' ÌN”” ÌN
-” ÌN” ÌO” ÌO˜” ÌN
-” ÌN” ÌP” ÌP” ÌP”  ÌP”! ÌP”& ÌP"˜” ÌN
-” ÌN” ÌQ” ÌQ” ÌQ”  ÌQ”! ÌQ”3 ÌQ/™” ÌN
-” ÌN” ÌR” ÌR” ÌR” ÌR” ÌR”Ì ÌR>”Ì ÌRÌ@’” ÌN
-” ÌN’” ÌI” ÌI’” ÌB” ÌB’” ÌX” ÌX	˜” ÌX” ÌX	” Ìd” Ìd” Ìd” Ìd” Ìd”1 Ìd(™” ÌY” ÌY” ÌY” ÌY” ÌY”& ÌY”' ÌY”/ ÌY$”1 ÌY&”” ÌY” ÌY” ÌZ” ÌZ”” ÌY” ÌY” Ì[” Ì[”” ÌY” ÌY” Ì\” Ì\˜” ÌY” ÌY” Ì]” Ì]” Ì]”& Ì] ”' Ì]!”- Ì]'’” ÌY” ÌYš” Ì^” Ì^” Ì^” Ì^” Ì^”$ Ì^”' Ì^”+ Ì^ ”, Ì^!”7 Ì^,”” Ì^” Ì^” Ì_” Ì_”” Ì^” Ì^” Ì`” Ì`”” Ì^” Ì^” Ìa” Ìa˜” Ì^” Ì^” Ìb” Ìb” Ìb”& Ìb ”' Ìb!”- Ìb'’” Ì^” Ì^’” ÌX” ÌX	’” ÌA” ÌA
-‘” Ìo’”, ”; EÀ‘À‘ÀÜ ¹‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
- ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ÂÔ  FÔrG—¬commonPlugin²invalidCachePlugin´moduleInfoMetaPlugin±watchChangedFiles¬etsTransform¯buildInstrument¦genAbcÔrH’³resolveConflictMode°depName2RootPath’ Ã’ €ÔrI–°oldHarNameOhmMap¯pkgJsonFileHash­newOhmUrlHash­routerMapHash²caseSensitiveCheckªmoduleDeps’ B’ Ù 52c5f33230ea56a2aeae467df5dcdd03’ Â’ €’ Â’ ‚ÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.etsÔrJ“´localModuleInfoCache±allModuleNameHash¯pkgJsonFileHash’ ÔrK’ÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.etsÔrL–ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath§pkgNameªpkgVersion¥entryÃÂ¾D:\Healthy_life\v\Health\entry¥entry¥1.0.0L¥entryÃÂ¾D:\Healthy_life\v\Health\entry¥entry¥1.0.0’ Ù 1ac471fbeacb984ed5dda64acc26e28d’ Ù 52c5f33230ea56a2aeae467df5dcdd03ÔrM‘¶watchChangedFilesCache’ ±watchChangedFilesÔrN—³disableCacheOptions°lastResourcesArr¯enableDebugLine­fileCacheInfoµresourceListCacheInfo·resourceToFileCacheInfo³transformCacheFiles’ ÔrO•ªbundleName¯entryModuleName©runtimeOS±resourceTableHash°etsLoaderVersion¸com.example.healthy_life¥entry©HarmonyOSÙ 0adfa517c63d2b2c7b044dc5a6ddb750¨5.0.0.25’ ’ Â’ ÔrP”ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.etsÔrQ’¨hasEntry²fileToResourceListÃÜ µmedia_ic_task_morning³media_ic_task_water³media_ic_task_apple³media_ic_task_smile³media_ic_task_brush³media_ic_task_night¬string_empty¹float_agency_padding_left¸float_agency_padding_topºfloat_agency_padding_right»float_agency_padding_bottom»color_list_background_color¸float_agency_item_margin¸float_agency_item_radius¸color_no_data_background°media_ic_no_data³string_agencyNoTaskµfloat_empty_data_size¸float_agency_row_padding·float_agency_image_size¶float_text_common_size·color_text_common_color¶float_agency_text_bold¶color_hex_common_colorQÃ»color_progress_column_color½float_progress_component_size¿color_progress_background_color»float_progress_stroke_width·float_percent_text_size·float_percent_sign_size¹float_percent_sign_marginºcolor_numerator_text_color¹float_numerator_text_size»float_numerator_line_height¼color_denominator_text_color»float_denominator_text_size½float_denominator_line_heightQÃÜ µmedia_ic_task_morning³media_ic_task_water³media_ic_task_apple³media_ic_task_smile³media_ic_task_brush³media_ic_task_night±media_ic_task_run´media_ic_task_custom¬string_empty¹float_agency_padding_left¸float_agency_padding_topºfloat_agency_padding_right»float_agency_padding_bottom»color_list_background_color¸float_agency_item_margin¸float_agency_item_radius¸color_no_data_background°media_ic_no_data³string_agencyNoTaskµfloat_empty_data_size¸float_agency_row_padding·float_agency_image_size¶float_text_common_size·color_text_common_color¶float_agency_text_bold¶color_hex_common_colorQÃ»color_progress_column_color½float_progress_component_size¿color_progress_background_color»float_progress_stroke_width·float_percent_text_size·float_percent_sign_size¹float_percent_sign_marginºcolor_numerator_text_color¹float_numerator_text_size»float_numerator_line_height¼color_denominator_text_color»float_denominator_text_size½float_denominator_line_height’ Ü Ä¸string_EntryAbility_desc¹string_EntryAbility_label¼string_EntryFormAbility_desc½string_EntryFormAbility_label³string_HarmonyHeiTi¸string_HarmonyHeiTi_Boldºstring_HarmonyHeiTi_Medium°string_Helvetica¹string_PingFangSC_Regular²string_achievement³string_agencyNoTask¬string_alert³string_alert_button´string_alert_message³string_already_open¯string_app_name­string_cancel¯string_clock_in¯string_complete®string_confirm¬string_empty°string_frequency­string_got_it®string_jump_ad±string_mine_about¹string_mine_check_updates¹string_mine_personal_data²string_module_desc®string_no_task´string_open_reminder³string_privacy_desc´string_privacy_title²string_remind_time¹string_set_your_frequency«string_sure¶string_tab_achievement¯string_tab_home¯string_tab_mine¶string_target_progressµstring_target_setting½string_task_achievement_level±string_task_apple±string_task_brush²string_task_custom°string_task_done°string_task_list³string_task_morning±string_task_night²string_task_reason¯string_task_run±string_task_smile±string_task_water«color_black¯color_blueColor±color_borderColor°color_btnBgColor¼color_denominator_text_color³color_disabledColor¶color_hex_common_color·color_launcherBlueColor±color_leveBgColor¯color_leveColor»color_list_background_color±color_mineBgColor¸color_no_data_backgroundºcolor_numerator_text_color´color_primaryBgColor°color_primaryRed¿color_progress_background_color»color_progress_column_color´color_signatureColor´color_statusTipColor³color_tabTitleColor·color_text_common_color°color_titleColor«color_white·float_agency_image_size¸float_agency_item_margin¸float_agency_item_radius»float_agency_padding_bottom¹float_agency_padding_leftºfloat_agency_padding_right¸float_agency_padding_top¸float_agency_row_padding¶float_agency_text_bold¯float_default_1°float_default_10±float_default_100°float_default_12±float_default_120±float_default_132°float_default_14°float_default_16°float_default_18°float_default_20°float_default_22±float_default_220°float_default_24°float_default_26±float_default_267°float_default_28±float_default_316°float_default_36¯float_default_4°float_default_40°float_default_42°float_default_44±float_default_451°float_default_48¯float_default_5°float_default_56¯float_default_6°float_default_64°float_default_66¯float_default_7°float_default_71°float_default_72¯float_default_8°float_default_n8½float_denominator_line_height»float_denominator_text_sizeµfloat_empty_data_size»float_numerator_line_height¹float_numerator_text_size¹float_percent_sign_margin·float_percent_sign_size·float_percent_text_size½float_progress_component_size»float_progress_stroke_width¶float_text_common_size«media_ad_bg®media_app_icon«media_apple«media_brush®media_ic_ad_bgµmedia_ic_badge_30_off´media_ic_badge_30_on´media_ic_badge_3_off³media_ic_badge_3_onµmedia_ic_badge_50_off´media_ic_badge_50_onµmedia_ic_badge_73_off´media_ic_badge_73_on´media_ic_badge_7_off³media_ic_badge_7_onµmedia_ic_badge_99_off´media_ic_badge_99_on³media_ic_card_apple³media_ic_card_clean³media_ic_card_drink³media_ic_card_getup±media_ic_card_run³media_ic_card_sleep³media_ic_card_smile»media_ic_dialog_brush_teeth¶media_ic_dialog_customµmedia_ic_dialog_drinkºmedia_ic_dialog_eat_applesµmedia_ic_dialog_getup³media_ic_dialog_runµmedia_ic_dialog_sleepµmedia_ic_dialog_smile±media_ic_home_add¶media_ic_home_all_done°media_ic_home_bg·media_ic_home_half_done´media_ic_home_undone´media_ic_mine_search°media_ic_no_data³media_ic_right_grey²media_ic_splash_bgÙ media_ic_tabs_achievement_normal½media_ic_tabs_achievement_sel¹media_ic_tabs_home_normal¶media_ic_tabs_home_sel¹media_ic_tabs_mine_normal¶media_ic_tabs_mine_sel³media_ic_task_apple³media_ic_task_brush´media_ic_task_customµmedia_ic_task_morning³media_ic_task_night±media_ic_task_run³media_ic_task_smile³media_ic_task_water­media_ic_user¯media_icon_userªmedia_logo­media_morning«media_night¬media_search«media_smile¯media_splash_bg«media_water³profile_form_config²profile_main_pages’ ÔrRÜ Äµmedia_ic_task_morning³media_ic_task_water³media_ic_task_apple³media_ic_task_smile³media_ic_task_brush³media_ic_task_night¬string_empty¹float_agency_padding_left¸float_agency_padding_topºfloat_agency_padding_right»float_agency_padding_bottom»color_list_background_color¸float_agency_item_margin¸float_agency_item_radius¸color_no_data_background°media_ic_no_data³string_agencyNoTaskµfloat_empty_data_size¸float_agency_row_padding·float_agency_image_size¶float_text_common_size·color_text_common_color¶float_agency_text_bold¶color_hex_common_color»color_progress_column_color½float_progress_component_size¿color_progress_background_color»float_progress_stroke_width·float_percent_text_size·float_percent_sign_size¹float_percent_sign_marginºcolor_numerator_text_color¹float_numerator_text_size»float_numerator_line_height¼color_denominator_text_color»float_denominator_text_size½float_denominator_line_height¸string_EntryAbility_desc¹string_EntryAbility_label¼string_EntryFormAbility_desc½string_EntryFormAbility_label³string_HarmonyHeiTi¸string_HarmonyHeiTi_Boldºstring_HarmonyHeiTi_Medium°string_Helvetica¹string_PingFangSC_Regular²string_achievement¬string_alert³string_alert_button´string_alert_message³string_already_open¯string_app_name­string_cancel¯string_clock_in¯string_complete®string_confirm°string_frequency­string_got_it®string_jump_ad±string_mine_about¹string_mine_check_updates¹string_mine_personal_data²string_module_desc®string_no_task´string_open_reminder³string_privacy_desc´string_privacy_title²string_remind_time¹string_set_your_frequency«string_sure¶string_tab_achievement¯string_tab_home¯string_tab_mine¶string_target_progressµstring_target_setting½string_task_achievement_level±string_task_apple±string_task_brush°string_task_done°string_task_list³string_task_morning±string_task_night²string_task_reason¯string_task_run±string_task_smile±string_task_water«color_black¯color_blueColor±color_borderColor°color_btnBgColor³color_disabledColor·color_launcherBlueColor±color_leveBgColor¯color_leveColor±color_mineBgColor´color_primaryBgColor°color_primaryRed´color_signatureColor´color_statusTipColor³color_tabTitleColor°color_titleColor«color_white¯float_default_1°float_default_10±float_default_100°float_default_12±float_default_120±float_default_132°float_default_14°float_default_16°float_default_18°float_default_20°float_default_22±float_default_220°float_default_24°float_default_26±float_default_267°float_default_28±float_default_316°float_default_36¯float_default_4°float_default_40°float_default_42°float_default_44±float_default_451°float_default_48¯float_default_5°float_default_56¯float_default_6°float_default_64°float_default_66¯float_default_7°float_default_71°float_default_72¯float_default_8°float_default_n8«media_ad_bg®media_app_icon«media_apple«media_brush®media_ic_ad_bgµmedia_ic_badge_30_off´media_ic_badge_30_on´media_ic_badge_3_off³media_ic_badge_3_onµmedia_ic_badge_50_off´media_ic_badge_50_onµmedia_ic_badge_73_off´media_ic_badge_73_on´media_ic_badge_7_off³media_ic_badge_7_onµmedia_ic_badge_99_off´media_ic_badge_99_on³media_ic_card_apple³media_ic_card_clean³media_ic_card_drink³media_ic_card_getup±media_ic_card_run³media_ic_card_sleep³media_ic_card_smile»media_ic_dialog_brush_teethµmedia_ic_dialog_drinkºmedia_ic_dialog_eat_applesµmedia_ic_dialog_getup³media_ic_dialog_runµmedia_ic_dialog_sleepµmedia_ic_dialog_smile±media_ic_home_add¶media_ic_home_all_done°media_ic_home_bg·media_ic_home_half_done´media_ic_home_undone´media_ic_mine_search³media_ic_right_grey²media_ic_splash_bgÙ media_ic_tabs_achievement_normal½media_ic_tabs_achievement_sel¹media_ic_tabs_home_normal¶media_ic_tabs_home_sel¹media_ic_tabs_mine_normal¶media_ic_tabs_mine_sel±media_ic_task_run­media_ic_user¯media_icon_userªmedia_logo­media_morning«media_night¬media_search«media_smile¯media_splash_bg«media_water³profile_form_config²profile_main_pages²string_task_custom¶media_ic_dialog_custom´media_ic_task_custom’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.ets’ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.ets’ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.ets’ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.ets’ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.ets’ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.ets’ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.ets’ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.ets’ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.ets’ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.ets’ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.ets’ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.ets’ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÙKD:\Healthy_life\v\Health\entry\src\main\ets\progress\pages\ProgressCard.ets‘ÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙGD:\Healthy_life\v\Health\entry\src\main\ets\agency\pages\AgencyCard.ets’ BÔrS‘²needCoverageInsert’ ÂÔrT’°is_cache_invalid¶ark_compiler_meta_info’ Â’ Ùâ12:12:HarmonyOS:D:\soft\deveco\DevEco Studio\sdk\HarmonyOS-NEXT-DB1\openharmony\ets\build-tools\ets-loader:5.0.0.25:Beta1:com.example.healthy_life:1ac471fbeacb984ed5dda64acc26e28d:type:D:\Healthy_life\v\Health\entry\modules.apB
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ‘”  ÍK ‘”  ÍL ‘”  ÍM ‘”  ÍN ‘”  ÍO ‘”  ÍP ‘”  ÍQ ‘”  ÍR ‘”  ÍS ‘”  ÍT ‘”  ÍU ÂÔ  FÔrG—¬commonPlugin²invalidCachePlugin´moduleInfoMetaPlugin±watchChangedFiles¬etsTransform¯buildInstrument¦genAbcÔrH’³resolveConflictMode°depName2RootPath’ Ã’ €ÔrI–°oldHarNameOhmMap¯pkgJsonFileHash­newOhmUrlHash­routerMapHash²caseSensitiveCheckªmoduleDeps’ B’ Ù 52c5f33230ea56a2aeae467df5dcdd03’ Â’ €’ Â’ ‚ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÔrJ“´localModuleInfoCache±allModuleNameHash¯pkgJsonFileHash’ ÔrK’ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.etsÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.etsÔrL–ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath§pkgNameªpkgVersion¥entryÃÂÙCC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry¥entry¥1.0.0L¥entryÃÂÙCC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry¥entry¥1.0.0’ Ù 6356ac49ecf49e6af75567d988768c76’ Ù 52c5f33230ea56a2aeae467df5dcdd03ÔrM‘¶watchChangedFilesCache’ ±watchChangedFilesÔrN—³disableCacheOptions°lastResourcesArr¯enableDebugLine­fileCacheInfoµresourceListCacheInfo·resourceToFileCacheInfo³transformCacheFiles’ ÔrO•ªbundleName¯entryModuleName©runtimeOS±resourceTableHash°etsLoaderVersion¸com.example.healthy_life¥entry©HarmonyOSÙ f68aff736333edfe6eddf0708a7e4f06¨5.0.0.25’ ’ Â’ KÔrP’¨hasEntry²fileToResourceListÃÜ µmedia_ic_task_morning³media_ic_task_water³media_ic_task_apple³media_ic_task_smile³media_ic_task_brush³media_ic_task_night¬string_empty¹float_agency_padding_left¸float_agency_padding_topºfloat_agency_padding_right»float_agency_padding_bottom»color_list_background_color¸float_agency_item_margin¸float_agency_item_radius¸color_no_data_background°media_ic_no_data³string_agencyNoTaskµfloat_empty_data_size¸float_agency_row_padding·float_agency_image_size¶float_text_common_size·color_text_common_color¶float_agency_text_bold¶color_hex_common_colorPÃ»color_progress_column_color½float_progress_component_size¿color_progress_background_color»float_progress_stroke_width·float_percent_text_size·float_percent_sign_size¹float_percent_sign_marginºcolor_numerator_text_color¹float_numerator_text_size»float_numerator_line_height¼color_denominator_text_color»float_denominator_text_size½float_denominator_line_height’ Ü ½¸string_EntryAbility_desc¹string_EntryAbility_label¼string_EntryFormAbility_desc½string_EntryFormAbility_label³string_HarmonyHeiTi¸string_HarmonyHeiTi_Boldºstring_HarmonyHeiTi_Medium°string_Helvetica¹string_PingFangSC_Regular²string_achievement³string_agencyNoTask¬string_alert³string_alert_button´string_alert_message³string_already_open¯string_app_name­string_cancel¯string_clock_in¯string_complete®string_confirm¬string_empty°string_frequency­string_got_it®string_jump_ad±string_mine_about¹string_mine_check_updates¹string_mine_personal_data²string_module_desc®string_no_task´string_open_reminder³string_privacy_desc´string_privacy_title²string_remind_time¹string_set_your_frequency«string_sure¶string_tab_achievement¯string_tab_home¯string_tab_mine¶string_target_progressµstring_target_setting½string_task_achievement_level±string_task_apple±string_task_brush°string_task_done°string_task_list³string_task_morning±string_task_night²string_task_reason±string_task_smile±string_task_water«color_black¯color_blueColor±color_borderColor°color_btnBgColor¼color_denominator_text_color³color_disabledColor¶color_hex_common_color·color_launcherBlueColor±color_leveBgColor¯color_leveColor»color_list_background_color±color_mineBgColor¸color_no_data_backgroundºcolor_numerator_text_color´color_primaryBgColor°color_primaryRed¿color_progress_background_color»color_progress_column_color´color_signatureColor´color_statusTipColor³color_tabTitleColor·color_text_common_color°color_titleColor«color_white·float_agency_image_size¸float_agency_item_margin¸float_agency_item_radius»float_agency_padding_bottom¹float_agency_padding_leftºfloat_agency_padding_right¸float_agency_padding_top¸float_agency_row_padding¶float_agency_text_bold¯float_default_1°float_default_10±float_default_100°float_default_12±float_default_120±float_default_132°float_default_14°float_default_16°float_default_18°float_default_20°float_default_22±float_default_220°float_default_24°float_default_26±float_default_267°float_default_28±float_default_316°float_default_36¯float_default_4°float_default_40°float_default_42°float_default_44±float_default_451°float_default_48¯float_default_5°float_default_56¯float_default_6°float_default_64°float_default_66¯float_default_7°float_default_71°float_default_72¯float_default_8°float_default_n8½float_denominator_line_height»float_denominator_text_sizeµfloat_empty_data_size»float_numerator_line_height¹float_numerator_text_size¹float_percent_sign_margin·float_percent_sign_size·float_percent_text_size½float_progress_component_size»float_progress_stroke_width¶float_text_common_size«media_ad_bg®media_app_icon«media_apple«media_brush®media_ic_ad_bgµmedia_ic_badge_30_off´media_ic_badge_30_on´media_ic_badge_3_off³media_ic_badge_3_onµmedia_ic_badge_50_off´media_ic_badge_50_onµmedia_ic_badge_73_off´media_ic_badge_73_on´media_ic_badge_7_off³media_ic_badge_7_onµmedia_ic_badge_99_off´media_ic_badge_99_on³media_ic_card_apple³media_ic_card_clean³media_ic_card_drink³media_ic_card_getup³media_ic_card_sleep³media_ic_card_smile»media_ic_dialog_brush_teethµmedia_ic_dialog_drinkºmedia_ic_dialog_eat_applesµmedia_ic_dialog_getupµmedia_ic_dialog_sleepµmedia_ic_dialog_smile±media_ic_home_add¶media_ic_home_all_done°media_ic_home_bg·media_ic_home_half_done´media_ic_home_undone´media_ic_mine_search°media_ic_no_data³media_ic_right_grey²media_ic_splash_bgÙ media_ic_tabs_achievement_normal½media_ic_tabs_achievement_sel¹media_ic_tabs_home_normal¶media_ic_tabs_home_sel¹media_ic_tabs_mine_normal¶media_ic_tabs_mine_sel³media_ic_task_apple³media_ic_task_brushµmedia_ic_task_morning³media_ic_task_night³media_ic_task_smile³media_ic_task_water­media_ic_user¯media_icon_userªmedia_logo­media_morning«media_night¬media_search«media_smile¯media_splash_bg«media_water³profile_form_config²profile_main_pages’ ÔrQÜ %µmedia_ic_task_morning³media_ic_task_water³media_ic_task_apple³media_ic_task_smile³media_ic_task_brush³media_ic_task_night¬string_empty¹float_agency_padding_left¸float_agency_padding_topºfloat_agency_padding_right»float_agency_padding_bottom»color_list_background_color¸float_agency_item_margin¸float_agency_item_radius¸color_no_data_background°media_ic_no_data³string_agencyNoTaskµfloat_empty_data_size¸float_agency_row_padding·float_agency_image_size¶float_text_common_size·color_text_common_color¶float_agency_text_bold¶color_hex_common_color»color_progress_column_color½float_progress_component_size¿color_progress_background_color»float_progress_stroke_width·float_percent_text_size·float_percent_sign_size¹float_percent_sign_marginºcolor_numerator_text_color¹float_numerator_text_size»float_numerator_line_height¼color_denominator_text_color»float_denominator_text_size½float_denominator_line_height‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙlC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\agency\pages\AgencyCard.ets‘ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.ets‘ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.ets‘ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.ets‘ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.ets‘ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.ets‘ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.ets‘ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.ets‘ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.ets‘ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.ets‘ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.ets‘ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.ets‘ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.ets‘ÙpC:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\src\main\ets\progress\pages\ProgressCard.ets’ BÔrR‘²needCoverageInsert’ ÂÔrS’°is_cache_invalid¶ark_compiler_meta_info’ Â’ Ú12:12:HarmonyOS:C:\Program Files\Huawei\DevEco Studio\sdk\HarmonyOS-NEXT-DB1\openharmony\ets\build-tools\ets-loader:5.0.0.25:Beta1:com.example.healthy_life:6356ac49ecf49e6af75567d988768c76:type:C:\Users\Fanful\Downloads\Documents\Healthy_life\Healthy_life\entry\modules.apB
