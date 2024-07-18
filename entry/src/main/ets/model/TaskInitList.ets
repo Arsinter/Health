@@ -227,3 +227,5 @@ export const RemindContentMap: Array<RemindContentItem> = [
 export const ACHIEVEMENT_LEVEL_LIST = [3, 7, 30, 50, 73, 99];
 
 export const CONTINUE_LEVEL_LIST = [3, 7, 30]; //连续打卡等级
+
+export const DEGREE_LEVEL_LIST = [200, 300, 400];//打卡百分比等级

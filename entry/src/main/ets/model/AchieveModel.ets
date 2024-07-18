@@ -23,6 +23,10 @@ export const SINGLE_LEVEL_KEYS = ['AchievementGetEarly','AchievementDrink','Achi
   'AchievementSmile','AchievementBrush','AchievementSleepEarly','AchievementRun'];
 export const SINGLE_LEVEL_KEY_LIST = 'SingleLevelKeyList'
 
+export const DEGREE_LEVEL_KEY_LIST = 'DegreeLevelKeyList'
+export const SINGLE_DEGREE_KEYS = ['DegreeGetEarly','DegreeDrink','DegreeApple',
+  'DegreeSmile','DegreeBrush','DegreeSleepEarly','DegreeRun'];
+
 export function getAchievementLevel() {
   GlobalInfoApi.query((res: GlobalInfo) => {
     let globalInfo: GlobalInfo = res;
@@ -51,6 +55,23 @@ export function getSingleLevel() {
     }, i)
   }
   AppStorage.set<Array<number>>(SINGLE_LEVEL_KEY_LIST, successiveDays);
+
+}
+
+export async function getSingleDegree() {
+  let degrees: Array<number> = [];
+  for(let i = 1; i <= 7; i++){
+    if(i == 1 || i == 6) continue;
+    let res = await GlobalInfoApi.queryInstant(i * 100);
+    let globalInfo: GlobalInfo = res;
+    let achievementStr = globalInfo.achievements ?? '';
+    let achievements = achievementStr.split(',');
+    if (achievements.length > 1) {
+      degrees.push(Number(achievements[achievements.length - 1]));
+    }
+    else degrees.push(0);
+  }
+  AppStorage.set<Array<number>>(DEGREE_LEVEL_KEY_LIST, degrees);
 
 }
 

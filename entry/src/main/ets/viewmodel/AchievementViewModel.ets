@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import CardInfo from './CardInfo';
-import { ACHIEVEMENT_LEVEL_LIST, AchievementMap, CONTINUE_LEVEL_LIST } from '../model/TaskInitList';
+import { ACHIEVEMENT_LEVEL_LIST, AchievementMap, CONTINUE_LEVEL_LIST, DEGREE_LEVEL_LIST } from '../model/TaskInitList';
 
 export function getBadgeCardItems(successiveDays: number): Array<CardInfo> {
   let badgeMileStones = ACHIEVEMENT_LEVEL_LIST;
@@ -42,6 +42,27 @@ export function getContinueCardItems(successiveDays: Array<number>): Array<CardI
       let cardInfo: CardInfo = new CardInfo();
       cardInfo.titleContent =  '连续' + titleContent + '天' + ContinueList[k] ;
       cardInfo.achievement = getAchievement(`${onOrOff}_${badgeMileStones[i]}`);  // 复用图片
+      cardItems.push(cardInfo);
+    }
+  }
+  return cardItems;
+}
+
+export function getDegreeCardItems(degrees: Array<number>): Array<CardInfo> {
+  let ContinueList: Array<string> = ['喝水','吃苹果','每日微笑','每日刷牙','跑步'];
+  // let targets: Array<number> = [1,1,1,1,1,1,1];//打卡项目设定目标,应从外部读取
+  let badgeMileStones = DEGREE_LEVEL_LIST;   // 百分比成就标准
+  let cardItems: Array<CardInfo> = [];
+  // 经测试以下逻辑无误
+  // degrees[0] = 2;
+  // degrees[1] = 4;
+  for (let k = 0; k < ContinueList.length; k++){
+    for (let i = 0; i < badgeMileStones.length; i++) {
+      let onOrOff = degrees[k] >= badgeMileStones[i] ? 'on' : 'off';
+      let titleContent = String(badgeMileStones[i]);
+      let cardInfo: CardInfo = new CardInfo();
+      cardInfo.titleContent =  titleContent + '%完成' + ContinueList[k] ;
+      cardInfo.achievement = getAchievement(`${onOrOff}__${badgeMileStones[i]}`);  // on/off__2/3/4
       cardItems.push(cardInfo);
     }
   }
@@ -86,6 +107,24 @@ function getAchievement(key: string) {
       break;
     case 'on_99':
       result = AchievementMap.on_99;
+      break;
+    case 'on__200':
+      result = AchievementMap.on__2;
+      break;
+    case 'off__200':
+      result = AchievementMap.off__2;
+      break;
+    case 'on__300':
+      result = AchievementMap.on__3;
+      break;
+    case 'off__300':
+      result = AchievementMap.off__3;
+      break;
+    case 'on__400':
+      result = AchievementMap.on__4;
+      break;
+    case 'off__400':
+      result = AchievementMap.off__4;
       break;
     default:
       break;
