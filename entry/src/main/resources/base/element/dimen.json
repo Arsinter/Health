@@ -121,6 +121,10 @@
       "value": "132vp"
     },
     {
+      "name": "default_200",
+      "value": "200vp"
+    },
+    {
       "name": "default_220",
       "value": "220vp"
     },

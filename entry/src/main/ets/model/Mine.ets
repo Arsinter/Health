@@ -16,20 +16,42 @@
 export interface InfoItem {
   id: string;
   title: Resource;
+  content?: string;
   icon?: Resource;
 }
 
 export const MineInfoList: InfoItem[] = [
   {
     id: '1',
-    title: $r('app.string.mine_personal_data')
+    title:$r('app.string.mine_nickname'), // 昵称
+    content:'nickname'
   },
   {
     id: '2',
-    title: $r('app.string.mine_check_updates')
+    title:$r('app.string.mine_gender'), // 昵称
+    content:'gender'   // 性别
   },
   {
     id: '3',
-    title: $r('app.string.mine_about')
+    title:$r('app.string.mine_birthday'), // 昵称
+    content:'birthday'   // 出生日期
+  },
+  {
+    id: '4',
+    title:$r('app.string.mine_height'), // 昵称
+    content:'height'   // 身高
+  },
+  {
+    id: '5',
+    title:$r('app.string.mine_weight'), // 昵称
+    content:'weight'   // 体重
+  },
+  {
+    id: '6',
+    title: $r('app.string.mine_check_updates')  // 检查更新
+  },
+  {
+    id: '7',
+    title: $r('app.string.mine_about')  // 关于
   }
 ];

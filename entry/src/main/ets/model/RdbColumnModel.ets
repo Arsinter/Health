@@ -51,5 +51,12 @@ export const columnFormInfoList: Array<ColumnInfo> = [
 ];
 
 
+export const columnPersonalInfoList: Array<ColumnInfo> = [
+  new ColumnInfo('name', 'text', -1, true, true, false),
+  new ColumnInfo('birthday', 'text', -1, false, false, false),
+  new ColumnInfo('gender', 'text', -1, false, false, false),
+  new ColumnInfo('height', 'text', -1, false, false, false),
+  new ColumnInfo('weight', 'text', -1, false, false, false)
+];
 
 
