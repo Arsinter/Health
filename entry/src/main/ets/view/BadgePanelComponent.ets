@@ -25,7 +25,7 @@ import { ACHIEVEMENT_LEVEL_KEY } from '../model/AchieveModel'
 import { CommonConstants as Const } from '../common/constants/CommonConstants';
 import CardInfo from '../viewmodel/CardInfo'
 
-let achievementDebug = false;
+let achievementDebug = true;
 
 // 连续打卡全部代办天数
 let DebugDays: number = 99;
