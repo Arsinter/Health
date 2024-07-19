@@ -13,9 +13,12 @@
  * limitations under the License.
  */
 
-import { ACHIEVEMENT_LEVEL_LIST } from './TaskInitList';
+import { ACHIEVEMENT_LEVEL_LIST, DEGREE_LEVEL_LIST, TaskMapById } from './TaskInitList';
 import GlobalInfo from '../viewmodel/GlobalInfo';
 import GlobalInfoApi from '../common/database/tables/GlobalInfoApi';
+import { relationalStore } from '@kit.ArkData';
+import RdbUtils from '../common/database/rdb/RdbUtils';
+import TaskInfo from '../viewmodel/TaskInfo';
 
 export const ACHIEVEMENT_LEVEL_KEY = 'AchievementLevelKey';
 
@@ -60,17 +63,45 @@ export function getSingleLevel() {
 
 export async function getSingleDegree() {
   let degrees: Array<number> = [];
-  for(let i = 1; i <= 7; i++){
-    if(i == 1 || i == 6) continue;
-    let res = await GlobalInfoApi.queryInstant(i * 100);
-    let globalInfo: GlobalInfo = res;
-    let achievementStr = globalInfo.achievements ?? '';
-    let achievements = achievementStr.split(',');
-    if (achievements.length > 1) {
-      degrees.push(Number(achievements[achievements.length - 1]));
+  let targets: Array<number> = [];
+  let badgeMileStones = DEGREE_LEVEL_LIST;   // 百分比成就标准
+  //获取target
+  for(let k = 0; k <= 6; k++){
+    if(Number(TaskMapById[k].targetValue))
+      targets.push(Number(TaskMapById[k].targetValue))
+    else{
+      targets.push(0)
     }
-    else degrees.push(0);
   }
+  // 获取fin并算出degree
+
+  // 方法1
+  for(let k = 0; k <= 6; k++) {
+    if(targets[k] == 0) continue;
+    let predicates = new relationalStore.RdbPredicates('taskInfo');
+    predicates.equalTo('id', k+1);
+    let resultSet = await RdbUtils.query(predicates).then(resultSet => {
+      if(!resultSet){
+        degrees.push(2);
+      }else{
+        let fin = Number(resultSet.getString(resultSet.getColumnIndex('finValue')));
+        degrees.push(fin/targets[k]);
+      }
+    });
+
+  }
+
+  // 方法2
+  // for(let k = 0; k <= 6; k++){
+  //   if(targets[k] == 0) continue;
+  //   if(Number(TaskMapById[k].finValue))
+  //     degrees.push(Number(TaskMapById[k].finValue)/targets[k])
+  //   else{
+  //     degrees.push(0)
+  //   }
+  // }
+
+
   AppStorage.set<Array<number>>(DEGREE_LEVEL_KEY_LIST, degrees);
 
 }
@@ -83,3 +114,6 @@ export function isReachNewAchievement(globalInfo: GlobalInfo): boolean {
   }
   return false;
 }
+
+
+

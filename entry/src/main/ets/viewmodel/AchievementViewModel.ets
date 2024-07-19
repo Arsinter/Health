@@ -13,11 +13,14 @@
  * limitations under the License.
  */
 import CardInfo from './CardInfo';
-import { ACHIEVEMENT_LEVEL_LIST, AchievementMap, CONTINUE_LEVEL_LIST, DEGREE_LEVEL_LIST } from '../model/TaskInitList';
+import { ACHIEVEMENT_LEVEL_LIST, AchievementMap, CONTINUE_LEVEL_LIST, DEGREE_LEVEL_LIST,
+  TaskMapById,
+  ITaskItem} from '../model/TaskInitList';
 
 export function getBadgeCardItems(successiveDays: number): Array<CardInfo> {
   let badgeMileStones = ACHIEVEMENT_LEVEL_LIST;
   let cardItems: Array<CardInfo> = [];
+
   for (let i = 0; i < badgeMileStones.length; i++) {
     let onOrOff = successiveDays >= badgeMileStones[i] ? 'on' : 'off';
     let titleContent = String(badgeMileStones[i]);
@@ -31,7 +34,6 @@ export function getBadgeCardItems(successiveDays: number): Array<CardInfo> {
 
 export function getContinueCardItems(successiveDays: Array<number>): Array<CardInfo> {
   let ContinueList: Array<string> = ['早起','喝水','吃苹果','每日微笑','每日刷牙','早睡','跑步'];
-
   let badgeMileStones = CONTINUE_LEVEL_LIST;   // 单任务成就标准
   let cardItems: Array<CardInfo> = [];
 
@@ -49,9 +51,28 @@ export function getContinueCardItems(successiveDays: Array<number>): Array<CardI
 }
 
 export function getDegreeCardItems(degrees: Array<number>): Array<CardInfo> {
-  let ContinueList: Array<string> = ['喝水','吃苹果','每日微笑','每日刷牙','跑步'];
-  // let targets: Array<number> = [1,1,1,1,1,1,1];//打卡项目设定目标,应从外部读取
+  // degrees = [];
+  let targets: Array<number> = [];
   let badgeMileStones = DEGREE_LEVEL_LIST;   // 百分比成就标准
+  // //调试用
+  // let tasksInfo :Array<ITaskItem> =  TaskMapById;
+  // //获取target
+  // for(let k = 0; k <= 6; k++){
+  //   if(Number(TaskMapById[k].targetValue))
+  //     targets.push(Number(TaskMapById[k].targetValue))
+  //   else{
+  //     targets.push(0)
+  //   }
+  // }
+  // for(let k = 0; k <= 6; k++){
+  //   if(targets[k] == 0) continue;
+  //   if(Number(TaskMapById[k].finValue))
+  //     degrees.push(Number(TaskMapById[k].finValue)/targets[k])
+  //   else{
+  //     degrees.push(0)
+  //   }
+  // }
+  let ContinueList: Array<string> = ['喝水','吃苹果','每日微笑','每日刷牙','跑步'];
   let cardItems: Array<CardInfo> = [];
   // 经测试以下逻辑无误
   // degrees[0] = 2;
@@ -59,7 +80,7 @@ export function getDegreeCardItems(degrees: Array<number>): Array<CardInfo> {
   for (let k = 0; k < ContinueList.length; k++){
     for (let i = 0; i < badgeMileStones.length; i++) {
       let onOrOff = degrees[k] >= badgeMileStones[i] ? 'on' : 'off';
-      let titleContent = String(badgeMileStones[i]);
+      let titleContent = String(badgeMileStones[i]*100);
       let cardInfo: CardInfo = new CardInfo();
       cardInfo.titleContent =  titleContent + '%完成' + ContinueList[k] ;
       cardInfo.achievement = getAchievement(`${onOrOff}__${badgeMileStones[i]}`);  // on/off__2/3/4
@@ -108,22 +129,22 @@ function getAchievement(key: string) {
     case 'on_99':
       result = AchievementMap.on_99;
       break;
-    case 'on__200':
+    case 'on__2':
       result = AchievementMap.on__2;
       break;
-    case 'off__200':
+    case 'off__2':
       result = AchievementMap.off__2;
       break;
-    case 'on__300':
+    case 'on__3':
       result = AchievementMap.on__3;
       break;
-    case 'off__300':
+    case 'off__3':
       result = AchievementMap.off__3;
       break;
-    case 'on__400':
+    case 'on__4':
       result = AchievementMap.on__4;
       break;
-    case 'off__400':
+    case 'off__4':
       result = AchievementMap.off__4;
       break;
     default:
