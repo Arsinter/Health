@@ -52,8 +52,12 @@ export default struct TaskDetail {
   /*新增，读数据库获得用户自定义数据*/
   private CustomTaskTable = new CustomTaskApi(() => {
   });
+  //时间类
   @Provide customTaskInfo: TaskData[] = [];
   @Provide customtaskname: string = '--';
+  //次数类
+  @Provide custom2TaskInfo: TaskData[] = [];
+  @Provide custom2taskname: string = '--';
   /*------------------------*/
   @Provide broadCast: BroadCast = HealthDataSrcMgr.getInstance().getBroadCast();
   @Provide @Watch('onParamsChanged') settingParams: ITaskItem = this.parseRouterParams();
@@ -107,7 +111,7 @@ export default struct TaskDetail {
       url: 'pages/MainPage',
     });
   }
-  //为了从数据库中读取用户自定义，这里修改为异步
+  //添加async
   async aboutToAppear() {
   //aboutToAppear() {
     Logger.info('are you ok');
@@ -132,6 +136,24 @@ export default struct TaskDetail {
             this.customTaskInfo.push(newCustomInfo);
             this.customtaskname = this.customTaskInfo[0].name;
             Logger.info('DetailCustomInfo on taskdetailcomponent没有表', `${this.customTaskInfo[0].id}`);
+          });
+        }
+      }, false);
+    });
+    this.CustomTaskTable.getRdbStore(() => { // 获取数据库
+      this.CustomTaskTable.query(9, (result: TaskData[]) => { // 查询数据库中的用户自定义名称
+        if (result && result.length > 0) {
+          this.custom2TaskInfo.push(result[0]);
+          this.custom2taskname = this.custom2TaskInfo[0].name;
+          Logger.info('DetailCustomInfo on taskdetailcomponent', `${this.custom2TaskInfo[0].name}`);
+        } else {
+          // 如果没有查询到数据，插入新数据
+          let newCustomInfo = new TaskData();
+          this.CustomTaskTable.insertData(newCustomInfo, (id: number) => {
+            newCustomInfo.id = id;
+            this.custom2TaskInfo.push(newCustomInfo);
+            this.custom2taskname = this.custom2TaskInfo[0].name;
+            Logger.info('DetailCustomInfo on taskdetailcomponent没有表', `${this.custom2TaskInfo[0].id}`);
           });
         }
       }, false);

@@ -51,6 +51,9 @@ export const TaskList: TaskInfo[] = [
   new TaskInfo(4, '', 5, '21:30', true, '', ';', '', false, '', true),
   new TaskInfo(5, '', 6, '22:00', true, '', ';', '', false, '', true),
   new TaskInfo(6, '', 7, '1.0', true, '', ';', '', false, '', true),
+  new TaskInfo(7, '', 8, '11:11', true, '', ';', '', false, '', true),
+  new TaskInfo(8, '', 9, '1', true, '', ';', '', false, '', true),
+
 ]
 
 let achievementMap = new AchievementMapInfo();
@@ -182,6 +185,22 @@ export const TaskMapById: Array<ITaskItem> = [
     endTime: '00: 00',
     frequency: '1, 2, 3, 4, 5, 6, 7'
   },
+  //新增自定义2支持设置次数
+  {
+    taskID: 9,
+    taskName: $r('app.string.task_custom2'),
+    icon: $r('app.media.ic_task_custom2'),
+    dialogBg: $r('app.media.ic_dialog_custom2'),
+    targetValue: '1',
+    isOpen: false,
+    unit: '次',
+    step: 1,//次数类
+    isInit: true,
+    isAlarm: false,
+    startTime: '08: 00',
+    endTime: '00: 00',
+    frequency: '1, 2, 3, 4, 5, 6, 7'
+  },
 
 ]
 
@@ -217,11 +236,17 @@ export const RemindContentMap: Array<RemindContentItem> = [
     title: Const.RUN_TASK_NAME,
     content: Const.RUN_CONTENT
   },
-  //新增自定义用早起代替  之后想办法用数据库里保存的字段
+  //新增自定义1
   {
     title: Const.Custom_TASK_NAME,
     content: Const.Custom_CONTENT
   },
+  //新增自定义2
+  {
+    title: Const.Custom2_TASK_NAME,
+    content: Const.Custom2_CONTENT
+  }
+
 ];
 
 export const ACHIEVEMENT_LEVEL_LIST = [3, 7, 30, 50, 73, 99];
