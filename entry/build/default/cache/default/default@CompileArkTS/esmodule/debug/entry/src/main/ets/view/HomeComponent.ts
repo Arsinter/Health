@@ -26,7 +26,11 @@ import { BroadCastType } from "@bundle:com.example.healthy_life/entry/ets/common
 import type { BroadCast } from "@bundle:com.example.healthy_life/entry/ets/common/utils/BroadCast";
 import { CommonConstants as Const } from "@bundle:com.example.healthy_life/entry/ets/common/constants/CommonConstants";
 import type AchievementInfo from '../viewmodel/AchievementInfo';
+import type DayInfo from '../viewmodel/DayInfo';
 const WHITE_COLOR_0X = 255;
+class structofDayInfoArr {
+    dayInfoArr: DayInfo[] = [];
+}
 function __Text__titleTextStyle(): void {
     Text.fontSize({ "id": 16777307, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" });
     Text.fontWeight(Const.FONT_WEIGHT_500);
@@ -184,6 +188,20 @@ export default class HomeIndex extends ViewPU {
             router.pushUrl({ url: 'pages/TaskListPage' });
         }
     }
+    showCalendar() {
+        // let dayInfoMap_tmp: structofDayInfoMap = {
+        //   dayInfoMap: this.homeStore.dayInfoMap
+        // };
+        // let dayInfoArr_tmp: DayInfo[] = [];
+        // for (let item of this.homeStore.dateArr) {
+        //   dayInfoArr_tmp.push(item.dayInfo);
+        // }
+        // let dayInfoArrStruct_tmp: structofDayInfoArr = {
+        //   dayInfoArr : dayInfoArr_tmp
+        // };
+        // router.pushUrl({ url: 'pages/CalendarDetailPage' , params: dayInfoArrStruct_tmp} );
+        router.pushUrl({ url: 'pages/CalendarDetailPage', params: this.homeStore });
+    }
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Stack.create();
@@ -207,7 +225,7 @@ export default class HomeIndex extends ViewPU {
         {
             this.observeComponentCreation2((elmtId, isInitialRender) => {
                 if (isInitialRender) {
-                    let componentCall = new HomeTopView(this, { homeStore: this.__homeStore }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/HomeComponent.ets", line: 126 });
+                    let componentCall = new HomeTopView(this, { homeStore: this.__homeStore }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/HomeComponent.ets", line: 146 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -257,7 +275,7 @@ export default class HomeIndex extends ViewPU {
                                         let componentCall = new TaskCard(this, {
                                             taskInfoStr: JSON.stringify(item),
                                             clickAction: (isClick: boolean) => this.taskItemAction(item, isClick)
-                                        }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/HomeComponent.ets", line: 131 });
+                                        }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/HomeComponent.ets", line: 151 });
                                         ViewPU.create(componentCall);
                                         let paramsLambda = () => {
                                             return {
@@ -300,7 +318,7 @@ export default class HomeIndex extends ViewPU {
                     {
                         this.observeComponentCreation2((elmtId, isInitialRender) => {
                             if (isInitialRender) {
-                                let componentCall = new HealthText(this, { title: '', titleResource: { "id": 16777245, "type": 10003, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" }, fontSize: { "id": 16777306, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" } }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/HomeComponent.ets", line: 153 });
+                                let componentCall = new HealthText(this, { title: '', titleResource: { "id": 16777245, "type": 10003, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" }, fontSize: { "id": 16777306, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" } }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/HomeComponent.ets", line: 173 });
                                 ViewPU.create(componentCall);
                                 let paramsLambda = () => {
                                     return {
@@ -333,7 +351,7 @@ export default class HomeIndex extends ViewPU {
                         clickAction: () => {
                             this.editTaskAction();
                         }
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/HomeComponent.ets", line: 167 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/HomeComponent.ets", line: 187 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -367,7 +385,7 @@ export default class HomeIndex extends ViewPU {
         {
             this.observeComponentCreation2((elmtId, isInitialRender) => {
                 if (isInitialRender) {
-                    let componentCall = new CustomDialogView(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/HomeComponent.ets", line: 183 });
+                    let componentCall = new CustomDialogView(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/HomeComponent.ets", line: 203 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {};

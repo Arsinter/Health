@@ -48,8 +48,11 @@ class GlobalInfoApi {
    * @param globalInfo
    * @param callback
    */
-  insertData(globalInfo: GlobalInfo, callback: Function): void {
+  insertData(globalInfo: GlobalInfo, callback: Function, id: number = 0): void {
     const valueBucket = generateBucket(globalInfo);
+    if (id) {
+      valueBucket['id'] = id;
+    }
     RdbUtils.insert('GlobalInfo', valueBucket).then(result => {
       callback(result);
     });

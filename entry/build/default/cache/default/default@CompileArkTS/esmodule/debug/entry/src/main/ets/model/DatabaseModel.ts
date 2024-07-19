@@ -24,6 +24,19 @@ export class DatabaseModel {
                         Logger.info('AppStart', 'Insert globalInfo success: ' + JSON.stringify(globalInfo));
                     }
                 });
+                // insert global achievement data
+                for (let i = 1; i <= Const.TASK_NUM; i++) {
+                    GlobalInfoApi.insertData(globalInfo, (isDone: number) => {
+                        if (isDone) {
+                            Logger.info('AppStart', 'Insert globalInfo success: ' + JSON.stringify(globalInfo));
+                        }
+                    }, i);
+                    GlobalInfoApi.insertData(globalInfo, (isDone: number) => {
+                        if (isDone) {
+                            Logger.info('AppStart', 'Insert globalInfo success: ' + JSON.stringify(globalInfo));
+                        }
+                    }, i * 100);
+                }
                 self.insertGlobalTask();
                 let dayInfo: DayInfo = new DayInfo(date, 0, 0);
                 DayInfoApi.insertData(dayInfo, (isDone: number) => {
