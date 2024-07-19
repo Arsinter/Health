@@ -76,7 +76,7 @@ export struct TaskChooseItem {
   async aboutToAppear() {
     Logger.info('custom2taskname孩子' + JSON.stringify(this.custom2taskname));
     const TAG: string = 'ThreadModel';
-    // 定义一个eventId为1的事件
+    // 定义一个eventId为2的事件
     let event: emitter.InnerEvent = {
       eventId: 2
     };

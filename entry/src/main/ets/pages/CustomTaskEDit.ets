@@ -175,6 +175,7 @@ struct Index {
                 return
               }
               // 保存成功
+
               this.CustomTaskTable.getRdbStore(() => { // 获取数据库
                 this.CustomTaskTable.query(this.taskID, (result: TaskData[]) => { // 查询数据库中的用户
                   if(this.taskID === 8){
@@ -193,24 +194,24 @@ struct Index {
                     this.CustomTaskTable.updateData(this.customTaskInfo[0], () => {
                     });
                   }
-                  // 定义一个eventId为1的事件，事件优先级为Low
-                  let event: emitter.InnerEvent = {
-                    eventId: 2,
-                    priority: emitter.EventPriority.LOW
-                  }
-                  // 将修改后的名字发送出去
-                  let eventData: emitter.EventData = {
-                    data: {
-                      taskName: this.name,
-                      //targetType: this.type,
-                      id: 8,
-                      isEmpty: false
-                    }
-                  };
-                  // 发送eventId为2的事件，事件内容为eventData
-                  emitter.emit(event, eventData);
                 }, false);
               });
+              // 定义一个eventId为1的事件，事件优先级为Low
+              let event: emitter.InnerEvent = {
+                eventId: 2,
+                priority: emitter.EventPriority.LOW
+              }
+              // 将修改后的名字发送出去
+              let eventData: emitter.EventData = {
+                data: {
+                  taskName: this.name,
+                  //targetType: this.type,
+                  id: 8,
+                  isEmpty: false
+                }
+              };
+              // 发送eventId为2的事件，事件内容为eventData
+              emitter.emit(event, eventData);
 
               if (this.dialogController2 != null) {
                 this.dialogController2.open();
