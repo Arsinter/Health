@@ -167,6 +167,26 @@
       "value": "HarmonyHeiTi-Medium"
     },
     {
+      "name": "mine_nickname",
+      "value": "昵称"
+    },
+    {
+      "name": "mine_gender",
+      "value": "性别"
+    },
+    {
+      "name": "mine_birthday",
+      "value": "出生日期"
+    },
+    {
+      "name": "mine_height",
+      "value": "身高"
+    },
+    {
+      "name": "mine_weight",
+      "value": "体重"
+    },
+    {
       "name": "sure",
       "value": "确定"
     },
