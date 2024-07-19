@@ -1,0 +1,78 @@
+[2024-07-19T09:37:48.838] [DEBUG] debug-file - env: nodejsVersion=v18.20.1
+[2024-07-19T09:37:48.925] [DEBUG] debug-file - env: daemon=true
+[2024-07-19T09:37:48.840] [DEBUG] debug-file - env: hvigor-config.json5 content = { modelVersion: '5.0.0', dependencies: {} }
+[2024-07-19T09:37:49.564] [DEBUG] debug-file - java daemon tryConnect failed Error: connect ECONNREFUSED ::1:45050
+[2024-07-19T09:37:49.575] [DEBUG] debug-file - java daemon started at port 45050 pid 5516
+[2024-07-19T09:37:49.585] [DEBUG] debug-file - hvigor start cli arguments:{
+  prop: [ 'product=default' ],
+  sync: true,
+  parallel: true,
+  incremental: true,
+  daemon: true,
+  _: [ '--analyze=normal' ]
+}
+[2024-07-19T09:37:49.631] [DEBUG] debug-file - session manager: set active socket. socketId=2vYE6g2VmqOYMdkMAAAB
+[2024-07-19T09:37:50.212] [DEBUG] debug-file - Hvigor init with startParameters:{
+  hvigorfileTypeCheck: false,
+  parallelExecution: true,
+  incrementalExecution: true,
+  printStackTrace: false,
+  daemon: true,
+  analyze: 0,
+  logLevel: Level { level: 20000, levelStr: 'INFO', colour: 'green' }
+}
+[2024-07-19T09:37:50.218] [DEBUG] debug-file - Cache service initialization finished in 6 ms 
+[2024-07-19T09:37:50.227] [DEBUG] debug-file - hvigorfile, resolving C:\Users\18752\Desktop\zzt\HIT\huawei\Health-main\hvigorfile.ts
+[2024-07-19T09:37:51.942] [DEBUG] debug-file - hvigorfile, require result:  {}
+[2024-07-19T09:37:51.942] [DEBUG] debug-file - hvigorfile, binding system plugins {}
+[2024-07-19T09:37:52.105] [DEBUG] debug-file - Start initialize project's product build option map with build mode debug.
+[2024-07-19T09:37:52.105] [DEBUG] debug-file - Picking option from product 'default' with build mode 'debug'.
+[2024-07-19T09:37:52.106] [DEBUG] debug-file - Product 'default' build option: {}
+[2024-07-19T09:37:52.106] [DEBUG] debug-file - End initialize project's product build option map with build mode 'debug'.
+[2024-07-19T09:37:52.108] [DEBUG] debug-file - Product 'default' using build option: {
+  "debuggable": true
+} in this build.
+[2024-07-19T09:37:52.109] [DEBUG] debug-file - No signingConfig found, initRemoteHspCache failed.
+[2024-07-19T09:37:52.112] [DEBUG] debug-file - Local scan or download HarmonyOS sdk components toolchains,ets,js,native
+[2024-07-19T09:37:52.117] [DEBUG] debug-file - Local scan or download hmscore sdk components toolchains,ets,native
+[2024-07-19T09:37:52.123] [DEBUG] debug-file - Sdk init in 13 ms 
+[2024-07-19T09:37:52.138] [DEBUG] debug-file - Project task initialization takes 14 ms 
+[2024-07-19T09:37:52.138] [DEBUG] debug-file - hvigorfile, resolve finished C:\Users\18752\Desktop\zzt\HIT\huawei\Health-main\hvigorfile.ts
+[2024-07-19T09:37:52.142] [DEBUG] debug-file - hvigorfile, resolving C:\Users\18752\Desktop\zzt\HIT\huawei\Health-main\entry\hvigorfile.ts
+[2024-07-19T09:37:52.146] [DEBUG] debug-file - hvigorfile, require result:  {}
+[2024-07-19T09:37:52.146] [DEBUG] debug-file - hvigorfile, binding system plugins {}
+[2024-07-19T09:37:52.154] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=debug
+[2024-07-19T09:37:52.154] [DEBUG] debug-file - Target 'default' config: {}
+[2024-07-19T09:37:52.154] [DEBUG] debug-file - Module 'entry' target 'default' build option: {
+  "debuggable": true,
+  "copyFrom": "default"
+}
+[2024-07-19T09:37:52.154] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2024-07-19T09:37:52.154] [DEBUG] debug-file - Module 'entry' target 'default' using build option: {
+  "debuggable": true,
+  "copyFrom": "default"
+} in this build.
+[2024-07-19T09:37:52.160] [DEBUG] debug-file - Module entry task initialization takes 4 ms 
+[2024-07-19T09:37:52.160] [DEBUG] debug-file - hvigorfile, resolve finished C:\Users\18752\Desktop\zzt\HIT\huawei\Health-main\entry\hvigorfile.ts
+[2024-07-19T09:37:52.206] [DEBUG] debug-file - hvigorfile, resolve hvigorfile dependencies in 46 ms 
+[2024-07-19T09:37:52.207] [DEBUG] debug-file - project has submodules:entry
+[2024-07-19T09:37:52.207] [DEBUG] debug-file - start to load updatedOhPackageInfo to the disk
+[2024-07-19T09:37:52.214] [DEBUG] debug-file - load to the disk finished
+[2024-07-19T09:37:52.226] [DEBUG] debug-file - Module Health-main Collected Dependency: C:\Users\18752\Desktop\zzt\HIT\huawei\Health-main\oh_modules\.ohpm\lunar@1.0.0\oh_modules\lunar,C:\Users\18752\Desktop\zzt\HIT\huawei\Health-main\oh_modules\.ohpm\cjcalendar@2.0.7\oh_modules\cjcalendar
+[2024-07-19T09:37:52.226] [DEBUG] debug-file - Module Health-main's total dependency: 2
+[2024-07-19T09:37:52.230] [DEBUG] debug-file - Module entry Collected Dependency: C:\Users\18752\Desktop\zzt\HIT\huawei\Health-main\oh_modules\.ohpm\lunar@1.0.0\oh_modules\lunar,C:\Users\18752\Desktop\zzt\HIT\huawei\Health-main\oh_modules\.ohpm\cjcalendar@2.0.7\oh_modules\cjcalendar
+[2024-07-19T09:37:52.230] [DEBUG] debug-file - Module entry's total dependency: 2
+[2024-07-19T09:37:52.234] [DEBUG] debug-file - Configuration phase cost:2 s 12 ms 
+[2024-07-19T09:37:52.236] [DEBUG] debug-file - Configuration task cost before running: 2 s 32 ms 
+[2024-07-19T09:37:52.237] [DEBUG] debug-file - Executing task :entry:init
+[2024-07-19T09:37:52.237] [DEBUG] debug-file - entry : init cost memory 0.0151214599609375
+[2024-07-19T09:37:52.237] [DEBUG] debug-file - runTaskFromQueue task cost before running: 2 s 33 ms 
+[2024-07-19T09:37:52.238] [INFO] debug-file - Finished :entry:init... after 1 ms 
+[2024-07-19T09:37:52.238] [DEBUG] debug-file - Executing task ::init
+[2024-07-19T09:37:52.238] [DEBUG] debug-file - Health-main : init cost memory 0.01238250732421875
+[2024-07-19T09:37:52.238] [DEBUG] debug-file - runTaskFromQueue task cost before running: 2 s 34 ms 
+[2024-07-19T09:37:52.238] [INFO] debug-file - Finished ::init... after 1 ms 
+[2024-07-19T09:37:52.249] [DEBUG] debug-file - Module 'entry' target 'default' using build option: {
+  "debuggable": true,
+  "copyFrom": "default"
+} in this build.
