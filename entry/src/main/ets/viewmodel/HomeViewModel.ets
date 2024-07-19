@@ -29,6 +29,8 @@ import GlobalInfo from './GlobalInfo';
 import WeekCalendarInfo from './WeekCalendarInfo';
 import AchievementInfo from './AchievementInfo';
 
+import HashMap from '@ohos.util.HashMap'; // 导入HashMap模块
+
 @Observed
 export class HomeStore {
   public currentDate: Date;
@@ -37,6 +39,7 @@ export class HomeStore {
   public showDate: number;
   public dateTitle: string;
   public selectedDayInfo: WeekDateModel = new WeekDateModel('', '', new Date()); // task info on selected day
+  public dayInfoMap: HashMap<number, DayInfo> = new HashMap();
 
   constructor(currentDate: Date) {
     this.currentDate = currentDate;
@@ -45,6 +48,32 @@ export class HomeStore {
     this.selectedDay = (new Date().getDay() + WEEK_DAY_NUM - 1) % WEEK_DAY_NUM;
   }
 
+  // public initData() {
+  //   let weekCalendarInfo: WeekCalendarInfo = initializeOnStartUp(this.currentDate);
+  //   this.dateArr = weekCalendarInfo.arr;
+  //   Logger.info('this.currentDate', this.currentDate.toDateString());
+  //   Logger.info('initWeekData dateArr', JSON.stringify(weekCalendarInfo.strArr))
+  //   // get data form db
+  //   DatabaseApi.query(dateToStr(new Date()), (taskList: TaskInfo[], dayInfo: DayInfo) => {
+  //     Logger.info('Current Day Task Info: ', JSON.stringify(taskList));
+  //     DayInfoApi.queryList(weekCalendarInfo.strArr, (res: DayInfo[]) => {
+  //       let tempList = res.concat(dayInfo);
+  //       Logger.info('initDayInfoList: ', JSON.stringify(res));
+  //       for (let i = 0; i < this.dateArr.length; i++) {
+  //         let tempDayInfo = tempList.find((item: DayInfo) => item.date === this.dateArr[i].dateStr) || new DayInfo(this.dateArr[i].dateStr, 0, 0);
+  //         weekCalendarInfo.arr[i].dayInfo = tempDayInfo;
+  //         if (this.dateArr[i].dateStr === dateToStr(new Date(this.showDate))) {
+  //           // get tasks of showDate
+  //           weekCalendarInfo.arr[i].taskList = taskList;
+  //         }
+  //       }
+  //       this.dateArr = weekCalendarInfo.arr;
+  //       setTimeout(() => {
+  //         this.setSelectedShowDate(this.showDate);
+  //       }, 0)
+  //     })
+  //   })
+  // }
   public initData() {
     let weekCalendarInfo: WeekCalendarInfo = initializeOnStartUp(this.currentDate);
     this.dateArr = weekCalendarInfo.arr;
@@ -64,7 +93,19 @@ export class HomeStore {
             weekCalendarInfo.arr[i].taskList = taskList;
           }
         }
+        // for (let i = 0; i < 30; i++) {
+        //   let tempDayInfo = tempList.find((item: DayInfo) => item.date === this.dateArr[i].dateStr) || new DayInfo(this.dateArr[i].dateStr, 0, 0);
+        //   weekCalendarInfo.arr[i].dayInfo = tempDayInfo;
+        //   if (this.dateArr[i].dateStr === dateToStr(new Date(this.showDate))) {
+        //     // get tasks of showDate
+        //     weekCalendarInfo.arr[i].taskList = taskList;
+        //   }
+        // }
         this.dateArr = weekCalendarInfo.arr;
+        for (let item of this.dateArr) {
+          // this.dayInfoMap[Number(item.date)] = item.dayInfo;
+          this.dayInfoMap.set(Number(item.date), item.dayInfo);
+        }
         setTimeout(() => {
           this.setSelectedShowDate(this.showDate);
         }, 0)

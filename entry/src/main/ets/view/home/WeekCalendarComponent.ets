@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { display } from '@kit.ArkUI';
+import { display, router } from '@kit.ArkUI';
 import WeekCalendarMethods, { ScrollTo } from '../../viewmodel/CalendarViewModel';
 import { HomeStore } from '../../viewmodel/HomeViewModel';
 import HealthText from '../../view/HealthTextComponent';
@@ -21,6 +21,7 @@ import { WeekDateModel } from '../../model/WeekCalendarModel';
 import { sameDate } from '../../common/utils/Utils';
 import { CommonConstants as Const } from '../../common/constants/CommonConstants';
 import Logger from '../../common/utils/Logger';
+import AddCalendarBtn from './AddCalendarBtnComponent';
 
 export const WEEK_DAY_WIDTH: number = 100 / Const.WEEK_DAY_NUM;
 
@@ -58,6 +59,11 @@ export struct WeekCalendar {
     return $r('app.media.ic_home_half_done');
   }
 
+  showCalendar() {
+
+    router.pushUrl({ url: 'pages/CalendarDetailPage', params: this.homeStore });
+  }
+
   @Builder
   ArrowIcon(isRight: boolean) {
     Row() {
@@ -82,7 +88,14 @@ export struct WeekCalendar {
           HealthText({ title: this.homeStore.dateTitle, fontSize: $r('app.float.default_14') })
             .margin($r('app.float.default_12'))
           this.ArrowIcon(true)
+
+          AddCalendarBtn({
+            clickAction: () => {
+              this.showCalendar();
+            }
+          })
         }
+        .margin({ left: 30 })
         .justifyContent(FlexAlign.Center)
 
         Scroll(this.scroller) {
@@ -99,7 +112,8 @@ export struct WeekCalendar {
                 Divider()
                   .margin({ top: Const.DEFAULT_2, bottom: $r('app.float.default_4') })
                   .width($r('app.float.default_12'))
-                  .color(sameDate(item.date, this.homeStore.showDate) ? $r('app.color.blueColor') : $r('app.color.white'))
+                  .color(sameDate(item.date, this.homeStore.showDate) ? $r('app.color.blueColor') :
+                  $r('app.color.white'))
                 Image(this.getProgressImg(item))
                   .height($r('app.float.default_28'))
                   .objectFit(ImageFit.Contain)
@@ -141,7 +155,8 @@ export struct WeekCalendar {
       this.currentPage = this.homeStore.dateArr.length / Const.WEEK_DAY_NUM - page - 1;
       Logger.info('HomeIndex', 'onScrollEnd: page ' + page + ', listLength ' + this.homeStore.dateArr.length);
       let dayModel: WeekDateModel = this.homeStore.dateArr[Const.WEEK_DAY_NUM * page+this.homeStore.selectedDay];
-      Logger.info('HomeIndex', 'currentItem: ' + JSON.stringify(dayModel) + ', selectedDay  ' + this.homeStore.selectedDay);
+      Logger.info('HomeIndex',
+        'currentItem: ' + JSON.stringify(dayModel) + ', selectedDay  ' + this.homeStore.selectedDay);
       this.homeStore!.setSelectedShowDate(dayModel!.date!.getTime());
     }
     this.isPageScroll = false;

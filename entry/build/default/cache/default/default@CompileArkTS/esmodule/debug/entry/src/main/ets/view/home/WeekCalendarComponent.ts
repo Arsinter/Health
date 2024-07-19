@@ -10,6 +10,7 @@ interface WeekCalendar_Params {
     isPageScroll?: boolean;
 }
 import display from "@ohos:display";
+import router from "@ohos:router";
 import WeekCalendarMethods from "@bundle:com.example.healthy_life/entry/ets/viewmodel/CalendarViewModel";
 import type { ScrollTo } from "@bundle:com.example.healthy_life/entry/ets/viewmodel/CalendarViewModel";
 import type { HomeStore } from '../../viewmodel/HomeViewModel';
@@ -18,6 +19,7 @@ import type { WeekDateModel } from '../../model/WeekCalendarModel';
 import { sameDate } from "@bundle:com.example.healthy_life/entry/ets/common/utils/Utils";
 import { CommonConstants as Const } from "@bundle:com.example.healthy_life/entry/ets/common/constants/CommonConstants";
 import Logger from "@bundle:com.example.healthy_life/entry/ets/common/utils/Logger";
+import AddCalendarBtn from "@bundle:com.example.healthy_life/entry/ets/view/home/AddCalendarBtnComponent";
 export const WEEK_DAY_WIDTH: number = 100 / Const.WEEK_DAY_NUM;
 const DEFAULT_SCROLL_WIDTH = 336; // default calendar width
 const DEFAULT_SCROLL_PERCENT = 0.934; // default calendar width percent
@@ -96,6 +98,9 @@ export class WeekCalendar extends ViewPU {
         }
         return { "id": 16777376, "type": 20000, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" };
     }
+    showCalendar() {
+        router.pushUrl({ url: 'pages/CalendarDetailPage', params: this.homeStore });
+    }
     ArrowIcon(isRight: boolean, parent = null) {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create();
@@ -131,6 +136,7 @@ export class WeekCalendar extends ViewPU {
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create();
+            Row.margin({ left: 30 });
             Row.justifyContent(FlexAlign.Center);
         }, Row);
         this.ArrowIcon.bind(this)(false, this);
@@ -141,7 +147,7 @@ export class WeekCalendar extends ViewPU {
         {
             this.observeComponentCreation2((elmtId, isInitialRender) => {
                 if (isInitialRender) {
-                    let componentCall = new HealthText(this, { title: this.homeStore.dateTitle, fontSize: { "id": 16777306, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" } }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/home/WeekCalendarComponent.ets", line: 82 });
+                    let componentCall = new HealthText(this, { title: this.homeStore.dateTitle, fontSize: { "id": 16777306, "type": 10002, params: [], "bundleName": "com.example.healthy_life", "moduleName": "entry" } }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/home/WeekCalendarComponent.ets", line: 88 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -160,6 +166,29 @@ export class WeekCalendar extends ViewPU {
         }
         __Common__.pop();
         this.ArrowIcon.bind(this)(true, this);
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new AddCalendarBtn(this, {
+                        clickAction: () => {
+                            this.showCalendar();
+                        }
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/view/home/WeekCalendarComponent.ets", line: 92 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            clickAction: () => {
+                                this.showCalendar();
+                            }
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {});
+                }
+            }, { name: "AddCalendarBtn" });
+        }
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Scroll.create(this.scroller);

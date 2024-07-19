@@ -26,8 +26,13 @@ import { HealthDataSrcMgr } from '../common/utils/HealthDataSrcMgr';
 import { BroadCast, BroadCastType } from '../common/utils/BroadCast';
 import { CommonConstants as Const } from '../common/constants/CommonConstants';
 import AchievementInfo from '../viewmodel/AchievementInfo';
+import DayInfo from '../viewmodel/DayInfo'
 
 const WHITE_COLOR_0X = 255;
+
+class structofDayInfoArr {
+  dayInfoArr: DayInfo[] = [];
+}
 
 @Styles
 function allSize() {
@@ -117,6 +122,21 @@ export default struct HomeIndex {
     if (this.homeStore.checkCurrentDay()) {
       router.pushUrl({ url: 'pages/TaskListPage' });
     }
+  }
+
+  showCalendar() {
+    // let dayInfoMap_tmp: structofDayInfoMap = {
+    //   dayInfoMap: this.homeStore.dayInfoMap
+    // };
+    // let dayInfoArr_tmp: DayInfo[] = [];
+    // for (let item of this.homeStore.dateArr) {
+    //   dayInfoArr_tmp.push(item.dayInfo);
+    // }
+    // let dayInfoArrStruct_tmp: structofDayInfoArr = {
+    //   dayInfoArr : dayInfoArr_tmp
+    // };
+    // router.pushUrl({ url: 'pages/CalendarDetailPage' , params: dayInfoArrStruct_tmp} );
+    router.pushUrl({ url: 'pages/CalendarDetailPage' , params: this.homeStore} );
   }
 
   build() {
