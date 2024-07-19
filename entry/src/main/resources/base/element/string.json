@@ -95,7 +95,11 @@
 
     {
       "name": "task_custom",
-      "value": "自定义"
+      "value": "自定义1"
+    },
+    {
+      "name": "task_custom2",
+      "value": "自定义2"
     },
 
     {

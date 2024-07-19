@@ -30,16 +30,19 @@ import Logger from '../../common/utils/Logger';
 @Component
 export default struct TaskList {
   /*新增，读数据库获得用户自定义数据*/
+  //时间类任务和次数类任务
   private CustomTaskTable = new CustomTaskApi(() => {
   });
   @State customTaskInfo: TaskData[] = [];
   @State customtaskname: string = '--';
+  @State custom2TaskInfo: TaskData[] = [];
+  @State custom2taskname: string = '--';
   /*----------*/
   @Consume taskList: ITaskItem[];
 
-  /*新增一个异步,来读取用户自定义的*/
+  /*新增读取用户自定义的*/
   async aboutToAppear() {
-    //数据库中取出用户自定义的数据
+    //数据库中取出用户自定义时间类数据
     this.CustomTaskTable.getRdbStore(() => { // 获取数据库
       this.CustomTaskTable.query(8, (result: TaskData[]) => { // 查询数据库中的用户自定义名称
         if (result && result.length > 0) {
@@ -53,11 +56,33 @@ export default struct TaskList {
             newCustomInfo.id = id;
             this.customTaskInfo.push(newCustomInfo);
             this.customtaskname = this.customTaskInfo[0].name;
-            Logger.info('DetailCustomInfo没有新建的', `${this.customTaskInfo[0].id}`);
+            Logger.info('DetailCustomInfo没有新建的自定义任务1id', `${this.customTaskInfo[0].id}`);
           });
         }
       }, false);
     });
+    //获取次数类任务
+    this.CustomTaskTable.getRdbStore(() => { // 获取数据库
+      this.CustomTaskTable.query(9, (result: TaskData[]) => { // 查询数据库中的用户自定义名称
+        if (result && result.length > 0) {
+          this.custom2TaskInfo.push(result[0]);
+          this.custom2taskname = this.custom2TaskInfo[0].name;
+          Logger.info('DetailCustomInfo查到了任务2', `${this.custom2TaskInfo[0].name}`);
+          Logger.info('DetailCustomInfo查到了任务2', `${this.custom2TaskInfo[0].id}`);
+        } else {
+          // 如果没有查询到数据，插入新数据
+          let newCustomInfo = new TaskData();
+          newCustomInfo.id = 9;
+          this.CustomTaskTable.insertData(newCustomInfo, (id: number) => {
+            newCustomInfo.id = id;
+            this.custom2TaskInfo.push(newCustomInfo);
+            this.custom2taskname = this.custom2TaskInfo[0].name;
+            Logger.info('DetailCustomInfo没有新建的自定义2id', `${this.custom2TaskInfo[0].id}`);
+          });
+        }
+      }, false);
+    });
+    //Logger.info('custom2taskname父' + JSON.stringify(this.custom2taskname));
   }
 
 
@@ -75,7 +100,7 @@ export default struct TaskList {
               //Text(item?.taskName)
               //这种写法有错会[object Object : customname]。。。。
               //Text(item?.taskID === 8 ? (item?.taskName + `: ${this.customtaskname}`) : item?.taskName)
-              Text(item?.taskID === 8 ? ('自定义' + `: ${this.customtaskname}`) : item?.taskName)
+              Text(item?.taskID === 8 ? ('时间类' + `: ${this.customtaskname}`) : (item?.taskID === 9 ? ('次数类' + `: ${this.custom2taskname}`) : item?.taskName))
                 .fontSize(Const.DEFAULT_20)
                 .fontColor($r('app.color.titleColor'))
             }

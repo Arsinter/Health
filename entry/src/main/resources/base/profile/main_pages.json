@@ -5,6 +5,6 @@
     "pages/MainPage",
     "pages/TaskListPage",
     "pages/TaskEditPage",
-    "pages/CalendarDetailPage"
-  ]
+    "pages/CalendarDetailPage",
+    "pages/CustomTaskEDit"
 }

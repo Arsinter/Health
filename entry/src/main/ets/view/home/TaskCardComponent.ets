@@ -47,6 +47,9 @@ export struct TaskCard {
   });
   @State customTaskInfo: TaskData[] = [];
   @State customtaskname: string = '--';
+  //自定义次数类
+  @State custom2TaskInfo: TaskData[] = [];
+  @State custom2taskname: string = '--';
   /*----------*/
 
   aboutToAppear() {
@@ -67,6 +70,24 @@ export struct TaskCard {
             this.customTaskInfo.push(newCustomInfo);
             this.customtaskname = this.customTaskInfo[0].name;
             Logger.info('CustomInfo没有新建的', `${this.customTaskInfo[0].id}`);
+          });
+        }
+      }, false);
+    });
+    this.CustomTaskTable.getRdbStore(() => { // 获取数据库
+      this.CustomTaskTable.query(9, (result: TaskData[]) => { // 查询数据库中的用户自定义名称
+        if (result && result.length > 0) {
+          this.custom2TaskInfo.push(result[0]);
+          this.custom2taskname = this.custom2TaskInfo[0].name;
+          Logger.info('CustomInfo查到了', `${this.custom2TaskInfo[0].name}`);
+        } else {
+          // 如果没有查询到数据，插入新数据
+          let newCustomInfo = new TaskData();
+          this.CustomTaskTable.insertData(newCustomInfo, (id: number) => {
+            newCustomInfo.id = id;
+            this.custom2TaskInfo.push(newCustomInfo);
+            this.custom2taskname = this.custom2TaskInfo[0].name;
+            Logger.info('CustomInfo没有新建的', `${this.custom2TaskInfo[0].id}`);
           });
         }
       }, false);
@@ -116,7 +137,7 @@ export struct TaskCard {
         HealthText({
           //修改title发过去的任务名称不为空，就可以显示出自定义名字
           //title: '',
-          title : this.taskInfo.taskID === 8 ? this.customtaskname : '',//this.customtaskname
+          title : this.taskInfo.taskID === 8 ? this.customtaskname : this.taskInfo.taskID === 9 ? this.custom2taskname : '',//this.customtaskname
           titleResource: TaskMapById[this.taskInfo.taskID - 1].taskName,
           fontFamily: $r('app.string.HarmonyHeiTi')
         })

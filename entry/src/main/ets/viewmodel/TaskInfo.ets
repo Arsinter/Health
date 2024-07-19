@@ -71,8 +71,10 @@ export enum taskType {
   'sleepEarly',
   //新增跑步
   'run',
-  //新增自定义
-  'custom'
+  //新增自定义时间类
+  'custom',
+  //新增自定义次数类
+  'custom2'
 }
 
 export const oneWeek = oneWeekDictFunc();
