@@ -14,7 +14,7 @@
  */
 
 import { ListInfo } from '../view/ListInfo';
-import { UserBaseInfo } from '../view/PersonalBaseInfo';
+import { UserBaseInfo } from '../view/UserBaseInfo';
 import { CommonConstants as Const } from '../common/constants/CommonConstants';
 import PersonalInfoApi from '../common/database/tables/PersonalInfoApi';
 import PersonalInfo from '../viewmodel/PersonalInfo';
